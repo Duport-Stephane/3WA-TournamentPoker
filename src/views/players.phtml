@@ -1,0 +1,47 @@
+    <h1>PLAYER LIST</h1>
+
+    <article class='flex-around'>
+        <table class='array'> 
+            <caption>Liste des joueurs en base</caption>
+            <thead> 
+                <tr> 
+                    <th>​Pseudo</th>
+                    <th>​Nom</th>
+                    <th>​Prénom</th> 
+                    <th>avatar</th>
+                </tr> 
+            </thead>
+            <tbody> 
+                <?= require '../controller/listUser.php' ?>
+            </tbody> 
+            <tfoot> 
+                <tr> 
+                    <td colspan="4">Nombre joueur : <?= count($_SESSION['posts']) ?></td>
+                </tr> 
+            </tfoot> 
+        </table>
+
+        <table class='array'> 
+            <caption>Liste des joueurs VALIDES</caption>
+            <thead> 
+                <tr> 
+                    <th>​Pseudo</th>
+                    <th>​Nom</th>
+                    <th>​Prénom</th> 
+                    <th>avatar</th>
+                </tr> 
+            </thead>
+            <tbody> 
+                <?= require '../controller/listUser.php' ?>
+            </tbody> 
+            <tfoot> 
+                <tr> 
+                    <td colspan="4">Nombre joueur : <?= count($_SESSION['posts']) ?></td>
+                </tr> 
+            </tfoot> 
+        </table>
+    </article>
+
+    <button class="new-user btn btn-info">Ajouter un joueur</button>
+    <button class="new-user btn btn-alert">Modifier un joueur</button>
+    <button class="new-user btn btn-danger">Supprimer un joueur</button>
