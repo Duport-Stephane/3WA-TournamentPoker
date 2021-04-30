@@ -4,3 +4,5 @@ L'application 3W Tournament Poker permet de gérer une partie, un tournoi ou mê
 
 Essai de modif
 "une petite modif pour voir" 
+
+Ligne a supprimer !
