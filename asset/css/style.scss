@@ -15,6 +15,7 @@ a {
     color: var(--fontColor);
     &:hover {
         color: var(--hoverNav);
+        text-shadow: 2px 2px 2px var(--textShadowNav);
         // background-color: rgba(255, 255, 255, 0.3);
         // border-radius: 10px;
     }
@@ -46,20 +47,20 @@ a {
     //-------------------------------
     // Theme Bleu
     --fontColor: #fff;
-    --bgColor: rgba(20, 36, 109, 0.5);
+    --bgColor: rgba(31, 48, 133, 0.5);
     --hoverNav: rgb(49, 156, 228);
     --currentNav: rgb(219, 55, 55);
     --textShadowNav: #000;
-    --textShadowH1: rgb(20, 36, 109);
+    --textShadowH1: rgb(31, 48, 133);
     --bgcolorDealerHover: rgb(49, 156, 228);
     --boxShadow: #fff;
     --bgColorCaption: rgba(255, 255, 255, 0.8);
-    --fontColorCaption: rgb(20, 36, 109);
-    --bgColorArray: rgba(20, 36, 109, 0.8);
+    --fontColorCaption: rgb(31, 48, 133);
+    --bgColorArray: rgba(31, 48, 133, 0.8);
     --bgHeadbandLeft: #fff;
-    --bgHeadbandRight: rgba(20, 36, 109, 0.8);
+    --bgHeadbandRight: rgba(31, 48, 133, 0.8);
     --border: #000;
-    --bgColorInfo: rgb(20, 36, 109);
+    --bgColorInfo: rgb(31, 48, 133);
     --bgColorAlert: rgb(161, 96, 20);
     --bgColorDanger: rgb(201, 40, 40);
     // ******************         FONT     ************************
@@ -238,10 +239,11 @@ footer img {
     padding-left: 1rem;
 }
 
-.array-box {
+.array-border {
     width: 33rem;
     height: 24rem;
     overflow: auto;
+    //// A RETIRER
     border: 1px solid black;
 }
 
@@ -253,6 +255,7 @@ footer img {
     & caption {
         color: var(--fontColorCaption);
         font-size: 1.5rem;
+        font-weight: bold;
         padding-top: .5rem;
         padding-bottom: .5rem;
         background-color: var(--bgColorCaption);

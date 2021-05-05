@@ -4,7 +4,7 @@
  * Refresh Tab User, Players
  */
 function refresh() {
-    fetch('../../src/services/ajax.php?action=refresh&type=user')
+    fetch('../../src/services/ajax.php?action=refresh&type=users')
         .then(response => response.json())
         .then(users => {
 
@@ -57,7 +57,7 @@ function refresh() {
             })
         });
 
-    fetch('../../src/services/ajax.php?action=refresh&type=player')
+    fetch('../../src/services/ajax.php?action=refresh&type=players')
         .then(response => response.json())
         .then(users => {
 
@@ -117,27 +117,15 @@ function refresh() {
 
 function addPlayerList(form) {
 
-    console.log("ADDPLAYER")
-        // on lance un fetch pour actualiser la table Player
+    // console.log("FETCH ADDPLAYER")
+    // Fetch pour actualiser la table Player
     fetch('../../src/services/ajax.php', {
-            method: 'post',
+            method: 'POST',
             body: form
         })
-        .then(response => console.log(response.text()))
+        .then(response => response.text())
         .then(response => refresh())
-
-    // si oui, récupérer la liste des inputs cochés
-    // inputs.forEach(function(input) {
-    //     console.log(input);
-    // })
-    // } else {
-    // si NON, afficher un message !
-
-    // }
-
-    // se servir de cette liste pour ajouter user.id dans la table player
-
-
+        // .then(response => console.log("resp : " + response))
 }
 
 
@@ -148,6 +136,15 @@ function addPlayerList(form) {
 
 function delPlayerList(form) {
 
+    // console.log("FETCH DELPLAYER")
+    // Fetch pour actualiser la table Player
+    fetch('../../src/services/ajax.php', {
+            method: 'POST',
+            body: form
+        })
+        .then(response => response.text())
+        .then(response => refresh())
+        // .then(response => console.log("resp : " + response))
 }
 
 

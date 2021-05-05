@@ -18,6 +18,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const address = window.location.href
     const pageAct = address.slice(address.lastIndexOf('=') + 1);
     if (pageAct === 'players') {
+
+        console.log('Appel REFRESH');
+
+        // Refresh la page PLAYER, pour afficher les 2 tableaux
         ajaxCallback.refresh();
 
         // Ecoute le click l'input ALL des 2 tableaux Users et Players 
@@ -25,10 +29,14 @@ document.addEventListener('DOMContentLoaded', function() {
         // Si décoché, alors décocher TOUS les inputs
         // @TODO : envisager l'activation de la coche par la TAB du clavier et la barre espace...
 
+        console.log('APPEL DE ALL INPUTS');
         // callback.checkInputAll();  --> name='checkboxall[]'
 
+
+        console.log('APPEL DE addplayer et delPlayer');
         // Ecoute des boutons Ajouter un player et Retirer un player
-        document.querySelector('.addPlayerList, .delPlayerList').addEventListener('submit', e => {
+        // document.querySelector('.addPlayerList, .delPlayerList').addEventListener('submit', e => {
+        $('.addPlayerList, .delPlayerList').on('submit', e => {
             // Block form auto refresh
             e.preventDefault();
             // console.log(e)
@@ -48,6 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     ajaxCallback.addPlayerList(form);
                     break;
                 case 'delPlayerList':
+                    // console.log('CASE DELPLAYERLIST')
                     // Ecoute le bouton del-player : récupère les inputs cochés dans le tableau players pour les supprimer de ce tableau (et donc les remettre dans l'autre, ce qui se fait tout seul grace à la requête de remplissage du tableau)
                     ajaxCallback.delPlayerList(form);
                     break;
@@ -61,7 +70,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // page TABLES
     //*******************************************************************
-    // Refresh la page PLAYER, pour afficher les 2 tableaux
     if (pageAct === 'canvas') {
         document.querySelector('.canvasOn').addEventListener('click', e => {
             e.preventDefault;

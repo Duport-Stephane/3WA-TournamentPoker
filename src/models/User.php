@@ -22,6 +22,22 @@ class User extends Database
     //     $_instance = new Database;
     // }
 
+
+    /**
+     * Test if id exist in table
+     * @param int user_id
+     */
+    public function isIdExist(int $user_id)
+    {
+        $query = 'SELECT id
+                    FROM user
+                    WHERE id = :user_id';
+        $param = [
+            ':user_id' => $user_id
+        ];
+        return $this->findOne($query, $param);
+    }
+
     /**
      * Get Users
      * ????????? param integer role_id 1 pour admin ?????
@@ -31,12 +47,12 @@ class User extends Database
      * @return array
      */
     // pour retourner l'ensemble des joueurs USER ou USER/ADMIN (mais pas admin seul)
-    // La requête dans le NOT EXISTS permet de ne pas prendre les joueurs DEJA validés pour le tournoi actuel
+    // La sous requête dans le NOT EXISTS permet de ne pas prendre les joueurs DEJA validés pour le tournoi actuel
 
     public function getUsers(int $dependUser_id, int $tournament_id): array
     {
         try {
-            $sql = 'SELECT user.id, nickName, firstName, lastName, avatar, role_id, dependUser_id 
+            $query = 'SELECT user.id, nickName, firstName, lastName, avatar, role_id, dependUser_id 
                 FROM user
                 WHERE role_id != :role_id
                 AND dependUser_id = :dependUser_id
@@ -54,7 +70,7 @@ class User extends Database
                 ':tournament_id'    => $tournament_id
             ];
 
-            $users = $this->findAll($sql, $param);
+            $users = $this->findAll($query, $param);
         } catch (DomainException $e) {
             echo $e->getMessage();
             die;
@@ -93,4 +109,5 @@ class User extends Database
 
         return $players ?? [];
     }
+
 }

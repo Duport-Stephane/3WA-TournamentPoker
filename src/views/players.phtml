@@ -11,22 +11,21 @@
         <?php $title = 'Liste des joueurs inscrits'; ?>
         <div>
             <?php require '../views/partials/headTab.phtml'; ?>
-            <div class='array-box tabUserList'>
+            <div class='array-border tabUserList'>
                 <!-- Emplacement du tableau des users -->
             </div>
         </div>
         <button type='submit' class='btn btn-info'>Valider un joueur</button>
     </form>
-
+    
     <form class='delPlayerList'>
         <input type='hidden' name='action' value='delPlayerList'>
         <?php $type = 'players'; ?>
         <?php $title = 'Liste des joueurs validés'; ?>
         <div>
             <?php require '../views/partials/headTab.phtml'; ?>
-            <div class='array-box tabPlayerList'>
+            <div class='array-border tabPlayerList'>
                 <!-- Emplacement du tableau des players -->
-
             </div>
         </div>
         <button type='submit' class='btn btn-alert'>Retirer un joueur de la liste</button>

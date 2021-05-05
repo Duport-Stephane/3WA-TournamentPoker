@@ -27,16 +27,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // @TODO : //////////////// DEPEND_USER_ID Prendre en compte pour n'afficher que les joueurs connu de cette admin //////////////////    
 
     if (isset($_POST['action']) && !empty($_POST['action']) && isset($_POST['type']) && !empty($_POST['type'])) {
-        extract($_POST);
+        // on peut supprimer le test sur ACTION qui ne sert pas pour l'instant
 
+        extract($_POST);
+        var_dump($_POST);
+        
         // en fonction du contenu de TYPE, remplir le tableau des USERS ou celui des PLAYERS
         switch ($type) {
-            case 'user':
-                // $_SESSION['users'] = $users;
+            case 'users':
                 echo json_encode($userM->getUsers(1, $_SESSION['tournament_id']));
                 break;
-            case 'player':
-                // $_SESSION['players'] = $players;
+            case 'players':
+                var_dump('players');
                 echo json_encode($userM->getPlayers($_SESSION['tournament_id']));
                 break;
             default:
