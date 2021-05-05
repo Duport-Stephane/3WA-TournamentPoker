@@ -1,31 +1,23 @@
 <?php
 
-// Appels de dépendances
-// require_once '../services/utils.php';
-
 // Mise à disposition de la session
 require_once '../services/session.php';
-
-// var_dump($_GET);
-// var_dump($_SERVER);
-// var_dump($_SESSION);
-// die;
 
 // Actions : Traitement (POST)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
-    var_dump('TABLE.PHP en POST');
+    var_dump('CANVAS.PHP en POST');
 
     // Si pas de param, je repars à l'accueil
     header('Location: ../index.php');
     exit;
 }
 
-// 1 er chargement de la page 'Table'
+// 1 er chargement de la page 'BONUS = CANVAS'
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
-    var_dump('TABLE.PHP en GET');
+    var_dump('CANVAS.PHP en GET');
 
 }
 
-header('location: ../controller/layout.php?page=tables');
+header('location: ../controller/layout.php?page=canvas');

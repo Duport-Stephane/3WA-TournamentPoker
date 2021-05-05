@@ -1,26 +1,28 @@
 <?php
 
+declare(strict_types=1);
+
 // Pour l'accès à la BDD sur l'T_IS_IDENTICAL// $pdo = new PDO('mysql:host=db.3wa.io;dbname=stephanedup_tournamentpoker','stephanedup','4de4aa2ada2ad77f4b495e0d884105d0');
 
 /**
  * Database class
  * Permet d'obtenir une connexion à une bdd de type MySQL
  */
-class Database
+abstract class Database
 {
-    public static $_instance;
+    protected static $_instance;
     
     public function __construct()
     {
         //	Connexion à la base de données
         try {
             self::$_instance = new PDO(
-                'mysql:host=localhost;dbname=tournamentpoker;charset=UTF8',
-                'root',
-                '',
-                // 'mysql:host=db.3wa.io;dbname=stephanedup_tournamentpoker;charset=UTF8',
-                // 'stephanedup',
-                // '4de4aa2ada2ad77f4b495e0d884105d0',
+                // 'mysql:host=localhost;dbname=tournamentpoker;charset=UTF8',
+                // 'root',
+                // '',
+                'mysql:host=db.3wa.io;dbname=stephanedup_tournamentpoker;charset=UTF8',
+                'stephanedup',
+                '4de4aa2ada2ad77f4b495e0d884105d0',
                 [
                     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
@@ -36,7 +38,7 @@ class Database
         }
     }
 
-    public function executeSql($sql, array $values = array()): int
+    public function executeSql($sql, array $values = array())
     {
         $query = self::$_instance->prepare($sql);
         $query->execute($values);
@@ -50,7 +52,7 @@ class Database
         return $query->fetchAll();
     }
 
-    public function findOne($sql, array $criteria = array()): array
+    public function findOne($sql, array $criteria = array())
     {
         $query = self::$_instance->prepare($sql);
         $query->execute($criteria);

@@ -6,16 +6,63 @@ body {
     text-align: center;
     max-width: 1280px;
     width: 100vw;
+    // max-height: 1024px;
+    font-family: 'Zilla Slab', serif;
 }
 
 a {
     text-decoration: none;
-    color: #fff;
+    color: var(--fontColor);
     &:hover {
-        color: yellowgreen;
+        color: var(--hoverNav);
         // background-color: rgba(255, 255, 255, 0.3);
         // border-radius: 10px;
     }
+}
+
+// *******************************************************************
+// *************         Déclaration de variables     ****************
+// *******************************************************************
+:root {
+    // ******************         COLORIS     ************************
+    // Theme Vert
+    // --fontColor: #fff;
+    // --bgColor: rgba(15, 68, 15, 0.502);
+    // --hoverNav: yellowgreen;
+    // --currentNav: rgb(219, 55, 55);
+    // --textShadowNav: #000;
+    // --textShadowH1: rgb(15, 68, 15);
+    // --bgcolorDealerHover: rgb(219, 55, 55);
+    // --boxShadow: #fff;
+    // --bgColorCaption: rgba(255, 255, 255, 0.8);
+    // --fontColorCaption: rgb(15, 68, 15);
+    // --bgColorArray: rgba(15, 110, 15, 0.8);
+    // --bgHeadbandLeft: #fff;
+    // --bgHeadbandRight: rgba(15, 68, 15, 0.5);
+    // --border: #000;
+    // --bgColorInfo: rgb(15, 68, 15);
+    // --bgColorAlert: rgb(161, 96, 20);
+    // --bgColorDanger: rgb(201, 40, 40);
+    //-------------------------------
+    // Theme Bleu
+    --fontColor: #fff;
+    --bgColor: rgba(20, 36, 109, 0.5);
+    --hoverNav: rgb(49, 156, 228);
+    --currentNav: rgb(219, 55, 55);
+    --textShadowNav: #000;
+    --textShadowH1: rgb(20, 36, 109);
+    --bgcolorDealerHover: rgb(49, 156, 228);
+    --boxShadow: #fff;
+    --bgColorCaption: rgba(255, 255, 255, 0.8);
+    --fontColorCaption: rgb(20, 36, 109);
+    --bgColorArray: rgba(20, 36, 109, 0.8);
+    --bgHeadbandLeft: #fff;
+    --bgHeadbandRight: rgba(20, 36, 109, 0.8);
+    --border: #000;
+    --bgColorInfo: rgb(20, 36, 109);
+    --bgColorAlert: rgb(161, 96, 20);
+    --bgColorDanger: rgb(201, 40, 40);
+    // ******************         FONT     ************************
 }
 
 // *******************************************************************
@@ -32,8 +79,8 @@ a {
     background-image: url('../../asset/images/Background-1.png');
     background-size: 1280px;
     background-repeat: no-repeat;
-    background-color: rgba(15, 68, 15, 0.5);
-    color: #fff;
+    background-color: var(--bgColor);
+    color: var(--fontColor);
 }
 
 // *******************************************************************
@@ -44,7 +91,7 @@ a {
     & nav {
         font-size: 2rem;
         width: 75%;
-        // background-color: #8a1515;
+        // background-color: var(--bgColorDanger);
         margin: 0 auto;
         & ul {
             margin: 0 0 0 5%;
@@ -54,8 +101,8 @@ a {
             list-style: none;
         }
         & .current {
-            color: rgb(219, 55, 55);
-            text-shadow: 2px 2px 4px black;
+            color: var(--currentNav);
+            text-shadow: 2px 2px 4px var(--textShadowNav);
         }
     }
 }
@@ -66,6 +113,10 @@ a {
 h1 {
     text-align: center;
     margin-top: .5rem;
+    // font-family: 'Rye', cursive;
+    font-family: 'Merienda', cursive;
+    font-size: 2.5rem;
+    text-shadow: 4px 2px var(--textShadowH1);
 }
 
 .container {
@@ -117,9 +168,12 @@ h1 {
 
 .dealer {
     width: 7rem;
+    // transition: box-shadow 1s;
     &:hover {
-        background-color: rgb(15, 68, 15);
+        background-color: var(--bgcolorDealerHover);
         border-radius: 3.5rem;
+        box-shadow: 4px 4px 8px var(--boxShadow), -4px -4px 8px var(--boxShadow), 4px -4px 8px var(--boxShadow), -4px 4px 8px var(--boxShadow);
+        ;
     }
 }
 
@@ -141,6 +195,10 @@ footer img {
 // *******************************************************************
 // ******************      MY FRAMEWORK      ************************
 // *******************************************************************
+.hide {
+    display: none;
+}
+
 .small {
     font-size: 0.8rem;
 }
@@ -155,7 +213,7 @@ footer img {
 .flex-around {
     display: flex;
     justify-content: space-around;
-    align-items: center;
+    // align-items: center;
 }
 
 .flex-center-items {
@@ -171,55 +229,84 @@ footer img {
 }
 
 .headband {
-    background-image: linear-gradient(90deg, #fff -30%, rgb(15, 68, 15) 60%);
+    background-image: linear-gradient(90deg, var(--bgHeadbandLeft) -30%, var(--bgHeadbandRight) 60%);
 }
 
 .token {
     width: 3rem;
-    padding-right: 0.5rem;
-    padding-left: 0.5rem;
+    padding-right: 1rem;
+    padding-left: 1rem;
+}
+
+.array-box {
+    width: 33rem;
+    height: 24rem;
+    overflow: auto;
+    border: 1px solid black;
 }
 
 .array {
-    background-color: rgba(15, 68, 15, 0.8);
+    table-layout: fixed;
+    width: 32rem;
+    background-color: var(--bgColorArray);
     border-collapse: collapse;
     & caption {
-        color: rgb(15, 68, 15);
+        color: var(--fontColorCaption);
         font-size: 1.5rem;
         padding-top: .5rem;
         padding-bottom: .5rem;
-        background-color: rgba(255, 255, 255, 0.8);
-        border: 1px solid black;
+        background-color: var(--bgColorCaption);
+        border: 1px solid var(--border);
         border-collapse: collapse;
     }
     & th,
     td {
-        padding: 0.5rem;
-        width: 5rem;
-        border: 1px solid black;
+        width: 4.5rem;
+        padding: 0 .5rem;
+        border: 1px solid var(--border);
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
-    & th,
-    tfoot td {
+    & th {
         font-weight: bold;
-        background-color: rgba(15, 110, 15, 0.8);
+        background-color: var(--bgColorArray);
+    }
+    & td {
+        text-align: left;
+    }
+    & td:first-child,
+    th:first-child {
+        text-align: center;
+        width: .3rem;
+        padding-top: .5rem;
+        padding-bottom: .5rem;
+    }
+    & td:nth-child(5),
+    th:nth-child(5) {
+        text-align: center;
+        width: 1.4em;
+    }
+    & td img {
+        max-height: 1.5rem;
     }
 }
 
 .btn {
-    color: #fff;
+    color: var(--fontColor);
     padding: 0.5rem;
-    border: 1px solid black;
+    margin: .5rem;
+    border: 1px solid var(--border);
     border-radius: 1rem;
 }
 
 .btn-info {
-    background-color: rgb(15, 68, 15);
+    background-color: var(--bgColorInfo);
 }
 
 .btn-alert {
-    background-color: rgb(161, 96, 20);
+    background-color: var(--bgColorAlert);
 }
 
 .btn-danger {
-    background-color: rgb(201, 40, 40);
+    background-color: var(--bgColorDanger);
 }

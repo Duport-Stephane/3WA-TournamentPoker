@@ -3,14 +3,35 @@ body {
   text-align: center;
   max-width: 1280px;
   width: 100vw;
+  font-family: "Zilla Slab", serif;
 }
 
 a {
   text-decoration: none;
-  color: #fff;
+  color: var(--fontColor);
 }
 a:hover {
-  color: yellowgreen;
+  color: var(--hoverNav);
+}
+
+:root {
+  --fontColor: #fff;
+  --bgColor: rgba(20, 36, 109, 0.5);
+  --hoverNav: rgb(49, 156, 228);
+  --currentNav: rgb(219, 55, 55);
+  --textShadowNav: #000;
+  --textShadowH1: rgb(20, 36, 109);
+  --bgcolorDealerHover: rgb(49, 156, 228);
+  --boxShadow: #fff;
+  --bgColorCaption: rgba(255, 255, 255, 0.8);
+  --fontColorCaption: rgb(20, 36, 109);
+  --bgColorArray: rgba(20, 36, 109, 0.8);
+  --bgHeadbandLeft: #fff;
+  --bgHeadbandRight: rgba(20, 36, 109, 0.8);
+  --border: #000;
+  --bgColorInfo: rgb(20, 36, 109);
+  --bgColorAlert: rgb(161, 96, 20);
+  --bgColorDanger: rgb(201, 40, 40);
 }
 
 .fond-Page {
@@ -18,8 +39,8 @@ a:hover {
   background-image: url("../../asset/images/Background-1.png");
   background-size: 1280px;
   background-repeat: no-repeat;
-  background-color: rgba(15, 68, 15, 0.5);
-  color: #fff;
+  background-color: var(--bgColor);
+  color: var(--fontColor);
 }
 
 .navHeader {
@@ -38,13 +59,16 @@ a:hover {
   list-style: none;
 }
 .navHeader nav .current {
-  color: #db3737;
-  text-shadow: 2px 2px 4px black;
+  color: var(--currentNav);
+  text-shadow: 2px 2px 4px var(--textShadowNav);
 }
 
 h1 {
   text-align: center;
   margin-top: 0.5rem;
+  font-family: "Merienda", cursive;
+  font-size: 2.5rem;
+  text-shadow: 4px 2px var(--textShadowH1);
 }
 
 .container {
@@ -93,8 +117,9 @@ h1 {
   width: 7rem;
 }
 .dealer:hover {
-  background-color: #0f440f;
+  background-color: var(--bgcolorDealerHover);
   border-radius: 3.5rem;
+  box-shadow: 4px 4px 8px var(--boxShadow), -4px -4px 8px var(--boxShadow), 4px -4px 8px var(--boxShadow), -4px 4px 8px var(--boxShadow);
 }
 
 footer section {
@@ -104,6 +129,10 @@ footer section {
 footer img {
   width: 1rem;
   padding-right: 0.7rem;
+}
+
+.hide {
+  display: none;
 }
 
 .small {
@@ -120,7 +149,6 @@ footer img {
 .flex-around {
   display: flex;
   justify-content: space-around;
-  align-items: center;
 }
 
 .flex-center-items {
@@ -136,55 +164,84 @@ footer img {
 }
 
 .headband {
-  background-image: linear-gradient(90deg, #fff -30%, #0f440f 60%);
+  background-image: linear-gradient(90deg, var(--bgHeadbandLeft) -30%, var(--bgHeadbandRight) 60%);
 }
 
 .token {
   width: 3rem;
-  padding-right: 0.5rem;
-  padding-left: 0.5rem;
+  padding-right: 1rem;
+  padding-left: 1rem;
+}
+
+.array-box {
+  width: 33rem;
+  height: 24rem;
+  overflow: auto;
+  border: 1px solid black;
 }
 
 .array {
-  background-color: rgba(15, 68, 15, 0.8);
+  table-layout: fixed;
+  width: 32rem;
+  background-color: var(--bgColorArray);
   border-collapse: collapse;
 }
 .array caption {
-  color: #0f440f;
+  color: var(--fontColorCaption);
   font-size: 1.5rem;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
-  background-color: rgba(255, 255, 255, 0.8);
-  border: 1px solid black;
+  background-color: var(--bgColorCaption);
+  border: 1px solid var(--border);
   border-collapse: collapse;
 }
 .array th,
 .array td {
-  padding: 0.5rem;
-  width: 5rem;
-  border: 1px solid black;
+  width: 4.5rem;
+  padding: 0 0.5rem;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.array th,
-.array tfoot td {
+.array th {
   font-weight: bold;
-  background-color: rgba(15, 110, 15, 0.8);
+  background-color: var(--bgColorArray);
+}
+.array td {
+  text-align: left;
+}
+.array td:first-child,
+.array th:first-child {
+  text-align: center;
+  width: 0.3rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+.array td:nth-child(5),
+.array th:nth-child(5) {
+  text-align: center;
+  width: 1.4em;
+}
+.array td img {
+  max-height: 1.5rem;
 }
 
 .btn {
-  color: #fff;
+  color: var(--fontColor);
   padding: 0.5rem;
-  border: 1px solid black;
+  margin: 0.5rem;
+  border: 1px solid var(--border);
   border-radius: 1rem;
 }
 
 .btn-info {
-  background-color: #0f440f;
+  background-color: var(--bgColorInfo);
 }
 
 .btn-alert {
-  background-color: #a16014;
+  background-color: var(--bgColorAlert);
 }
 
 .btn-danger {
-  background-color: #c92828;
+  background-color: var(--bgColorDanger);
 }/*# sourceMappingURL=style.css.map */

@@ -1,47 +1,35 @@
-    <h1>PLAYER LIST</h1>
+<!-- Mise à disposition de la session -->
+<?php require_once '../services/session.php'; ?>
 
-    <article class='flex-around'>
-        <table class='array'> 
-            <caption>Liste des joueurs en base</caption>
-            <thead> 
-                <tr> 
-                    <th>​Pseudo</th>
-                    <th>​Nom</th>
-                    <th>​Prénom</th> 
-                    <th>avatar</th>
-                </tr> 
-            </thead>
-            <tbody> 
-                <?= require '../controller/listUser.php' ?>
-            </tbody> 
-            <tfoot> 
-                <tr> 
-                    <td colspan="4">Nombre joueur : <?= count($_SESSION['posts']) ?></td>
-                </tr> 
-            </tfoot> 
-        </table>
+<h1>Player List</h1>
 
-        <table class='array'> 
-            <caption>Liste des joueurs VALIDES</caption>
-            <thead> 
-                <tr> 
-                    <th>​Pseudo</th>
-                    <th>​Nom</th>
-                    <th>​Prénom</th> 
-                    <th>avatar</th>
-                </tr> 
-            </thead>
-            <tbody> 
-                <?= require '../controller/listUser.php' ?>
-            </tbody> 
-            <tfoot> 
-                <tr> 
-                    <td colspan="4">Nombre joueur : <?= count($_SESSION['posts']) ?></td>
-                </tr> 
-            </tfoot> 
-        </table>
-    </article>
+<div class='flex-between'>
 
-    <button class="new-user btn btn-info">Ajouter un joueur</button>
-    <button class="new-user btn btn-alert">Modifier un joueur</button>
-    <button class="new-user btn btn-danger">Supprimer un joueur</button>
+    <form class='addPlayerList'>
+        <input type='hidden' name='action' value='addPlayerList'>
+        <?php $type = 'users'; ?>
+        <?php $title = 'Liste des joueurs inscrits'; ?>
+        <div>
+            <?php require '../views/partials/headTab.phtml'; ?>
+            <div class='array-box tabUserList'>
+                <!-- Emplacement du tableau des users -->
+            </div>
+        </div>
+        <button type='submit' class='btn btn-info'>Valider un joueur</button>
+    </form>
+
+    <form class='delPlayerList'>
+        <input type='hidden' name='action' value='delPlayerList'>
+        <?php $type = 'players'; ?>
+        <?php $title = 'Liste des joueurs validés'; ?>
+        <div>
+            <?php require '../views/partials/headTab.phtml'; ?>
+            <div class='array-box tabPlayerList'>
+                <!-- Emplacement du tableau des players -->
+
+            </div>
+        </div>
+        <button type='submit' class='btn btn-alert'>Retirer un joueur de la liste</button>
+    </form>
+
+</div>
