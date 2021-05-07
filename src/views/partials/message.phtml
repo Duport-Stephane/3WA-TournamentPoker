@@ -1,0 +1,19 @@
+<?php if (isset($_SESSION['error']) && !empty($_SESSION['errors'])) : ?>
+    <div class="alert alert-danger">
+        <?php foreach ($_SESSION['errors'] as $value) : ?>
+            <p><?= $value ?></p>
+        <?php endforeach; ?>
+    </div>
+<?php endif; ?>
+
+<?php if (isset($_SESSION['info']) && !empty($_SESSION['info'])) : ?>
+    <div class="alert alert-success">
+        <p><?= $_SESSION['info'] ?></p>
+    </div>
+<?php endif; ?>
+
+<?php
+// Juste pour s'assurer de ne pas afficher 2 fois les notifications -->
+unset($_SESSION['info']);
+unset($_SESSION['error']);
+?>

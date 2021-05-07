@@ -21,7 +21,7 @@ $userM = new User;
 // Actions : Traitement (POST)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    var_dump('PLAYER.PHP en POST');
+    // var_dump('PLAYER.PHP en POST');
 
     // @TODO : //////////////// ROLE_ID != 1 a modifier pour être plus généraliste ? //////////////////     
     // @TODO : //////////////// DEPEND_USER_ID Prendre en compte pour n'afficher que les joueurs connu de cette admin //////////////////    
@@ -30,15 +30,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // on peut supprimer le test sur ACTION qui ne sert pas pour l'instant
 
         extract($_POST);
-        var_dump($_POST);
-        
+        // var_dump($_POST);
+
         // en fonction du contenu de TYPE, remplir le tableau des USERS ou celui des PLAYERS
         switch ($type) {
-            case 'users':
+            case 'User':
+                $_SESSION['info'] = "La sélection fait maintenant partie des joueurs validés";
                 echo json_encode($userM->getUsers(1, $_SESSION['tournament_id']));
                 break;
-            case 'players':
-                var_dump('players');
+            case 'Player':
+                $_SESSION['info'] = "La sélection a bien été retirée de la liste des joueurs validés";
                 echo json_encode($userM->getPlayers($_SESSION['tournament_id']));
                 break;
             default:
@@ -54,8 +55,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // 1 er chargement de la page 'Player'
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
-    var_dump('PLAYER.PHP en GET');
-
+    // var_dump('PLAYER.PHP en GET');
+    $_SESSION['User'] = $userM->getUsers(1, $_SESSION['tournament_id']);
+    $_SESSION['Player'] = $userM->getPlayers($_SESSION['tournament_id']);
 }
 
 header('location: ../controller/layout.php?page=players');

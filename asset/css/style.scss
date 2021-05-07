@@ -28,41 +28,43 @@ a {
     // ******************         COLORIS     ************************
     // Theme Vert
     // --fontColor: #fff;
-    // --bgColor: rgba(15, 68, 15, 0.502);
+    // --bgColor: rgba(15, 68, 15, 0.5);
     // --hoverNav: yellowgreen;
     // --currentNav: rgb(219, 55, 55);
     // --textShadowNav: #000;
     // --textShadowH1: rgb(15, 68, 15);
     // --bgcolorDealerHover: rgb(219, 55, 55);
     // --boxShadow: #fff;
-    // --bgColorCaption: rgba(255, 255, 255, 0.8);
+    // --bgColorCaption: rgba(255, 255, 255, .8);
     // --fontColorCaption: rgb(15, 68, 15);
-    // --bgColorArray: rgba(15, 110, 15, 0.8);
+    // --bgColorArray: rgba(15, 110, 15, .8);
     // --bgHeadbandLeft: #fff;
-    // --bgHeadbandRight: rgba(15, 68, 15, 0.5);
+    // --bgHeadbandRight: rgba(15, 68, 15, .5);
     // --border: #000;
-    // --bgColorInfo: rgb(15, 68, 15);
-    // --bgColorAlert: rgb(161, 96, 20);
-    // --bgColorDanger: rgb(201, 40, 40);
+    // --bgColorSuccess: rgba(15, 110, 15, .8);
+    // --bgColorInfo: rgba(15, 68, 15, .8);
+    // --bgColorAlert: rgba(161, 96, 20,.8);
+    // --bgColorDanger: rgba(201, 40, 40,.5);
     //-------------------------------
     // Theme Bleu
     --fontColor: #fff;
-    --bgColor: rgba(31, 48, 133, 0.5);
+    --bgColor: rgba(31, 48, 133, .5);
     --hoverNav: rgb(49, 156, 228);
     --currentNav: rgb(219, 55, 55);
     --textShadowNav: #000;
     --textShadowH1: rgb(31, 48, 133);
     --bgcolorDealerHover: rgb(49, 156, 228);
     --boxShadow: #fff;
-    --bgColorCaption: rgba(255, 255, 255, 0.8);
+    --bgColorCaption: rgba(255, 255, 255, .8);
     --fontColorCaption: rgb(31, 48, 133);
-    --bgColorArray: rgba(31, 48, 133, 0.8);
+    --bgColorArray: rgba(31, 48, 133, .8);
     --bgHeadbandLeft: #fff;
-    --bgHeadbandRight: rgba(31, 48, 133, 0.8);
+    --bgHeadbandRight: rgba(31, 48, 133, .8);
     --border: #000;
-    --bgColorInfo: rgb(31, 48, 133);
-    --bgColorAlert: rgb(161, 96, 20);
-    --bgColorDanger: rgb(201, 40, 40);
+    --bgColorSuccess: rgba(15, 110, 15, .8);
+    --bgColorInfo: rgba(31, 48, 133, .8);
+    --bgColorAlert: rgba(161, 96, 20, .8);
+    --bgColorDanger: rgba(201, 40, 40, .8);
     // ******************         FONT     ************************
 }
 
@@ -128,6 +130,7 @@ h1 {
     // left: calc(50% - 240px);
 }
 
+// ******************            HOME         ************************
 .fond-Table {
     width: 90%;
     // min-height: 70%;
@@ -178,11 +181,67 @@ h1 {
     }
 }
 
+// ******************            PLAYERS         ************************
+.array-border {
+    width: 33rem;
+    height: 24rem;
+    overflow: auto;
+    //// A RETIRER
+    border: 1px solid black;
+}
+
+.array {
+    table-layout: fixed;
+    width: 32rem;
+    background-color: var(--bgColorArray);
+    border-collapse: collapse;
+    & caption {
+        color: var(--fontColorCaption);
+        font-size: 1.5rem;
+        font-weight: bold;
+        padding-top: .5rem;
+        padding-bottom: .5rem;
+        background-color: var(--bgColorCaption);
+        border: 1px solid var(--border);
+        border-collapse: collapse;
+    }
+    & th,
+    td {
+        width: 4.5rem;
+        padding: 0 .5rem;
+        border: 1px solid var(--border);
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    & th {
+        font-weight: bold;
+        background-color: var(--bgColorArray);
+    }
+    & td {
+        text-align: left;
+    }
+    & td:first-child,
+    th:first-child {
+        text-align: center;
+        width: .3rem;
+        padding-top: .5rem;
+        padding-bottom: .5rem;
+    }
+    & td:nth-child(5),
+    th:nth-child(5) {
+        text-align: center;
+        width: 1.4em;
+    }
+    & td img {
+        max-height: 1.5rem;
+    }
+}
+
 // *******************************************************************
 // ******************          FOOTER         ************************
 // *******************************************************************
 footer section {
-    width: 25%;
+    width: 20%;
 }
 
 footer img {
@@ -239,61 +298,6 @@ footer img {
     padding-left: 1rem;
 }
 
-.array-border {
-    width: 33rem;
-    height: 24rem;
-    overflow: auto;
-    //// A RETIRER
-    border: 1px solid black;
-}
-
-.array {
-    table-layout: fixed;
-    width: 32rem;
-    background-color: var(--bgColorArray);
-    border-collapse: collapse;
-    & caption {
-        color: var(--fontColorCaption);
-        font-size: 1.5rem;
-        font-weight: bold;
-        padding-top: .5rem;
-        padding-bottom: .5rem;
-        background-color: var(--bgColorCaption);
-        border: 1px solid var(--border);
-        border-collapse: collapse;
-    }
-    & th,
-    td {
-        width: 4.5rem;
-        padding: 0 .5rem;
-        border: 1px solid var(--border);
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-    & th {
-        font-weight: bold;
-        background-color: var(--bgColorArray);
-    }
-    & td {
-        text-align: left;
-    }
-    & td:first-child,
-    th:first-child {
-        text-align: center;
-        width: .3rem;
-        padding-top: .5rem;
-        padding-bottom: .5rem;
-    }
-    & td:nth-child(5),
-    th:nth-child(5) {
-        text-align: center;
-        width: 1.4em;
-    }
-    & td img {
-        max-height: 1.5rem;
-    }
-}
-
 .btn {
     color: var(--fontColor);
     padding: 0.5rem;
@@ -311,5 +315,30 @@ footer img {
 }
 
 .btn-danger {
+    background-color: var(--bgColorDanger);
+}
+
+.message {
+    position: absolute;
+    // top: 185px;
+    bottom: 165px;
+    left: 5vw;
+}
+
+.alert {
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    padding: 0.8rem;
+}
+
+.alert-success {
+    background-color: var(--bgColorSuccess);
+}
+
+.alert-alert {
+    background-color: var(--bgColorAlert);
+}
+
+.alert-danger {
     background-color: var(--bgColorDanger);
 }

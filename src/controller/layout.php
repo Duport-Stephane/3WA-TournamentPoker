@@ -1,3 +1,9 @@
+<?php
+// Mise à disposition de la session
+require_once '../services/session.php';
+// if(isset($_SESSION['info'])) {
+//     var_dump($_SESSION['info']);}
+?>
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -14,6 +20,9 @@
 
     <main class='container'>
         <?php require '../views/' . $_GET['page'] . '.phtml' ?>
+        <div class="message">
+            <?php require_once '../views/partials/message.phtml'; ?>
+        </div>
     </main>
 
     <footer class='headband'>

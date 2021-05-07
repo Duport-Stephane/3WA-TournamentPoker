@@ -21,20 +21,98 @@ function currentNav() {
     });
 }
 
-
-
-
-
 /**
- * vérifier si le input de ALL est coché ou non
- * au click (dans un premier temps)
- * @TODO gérer la coche avec le clavier : TAB + ESPACE
+ * vérifier si la checkbox de ALL est coché ou non
+ * et fait de même pour tous les check dessous
  */
 
-function checkInputAll() {
-
+function checkInputAll(isChecked, type) {
+    const checkboxes = document.querySelectorAll('.tab' + type + 'List input');
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = isChecked;
+    });
 }
 
+/**
+ * 
+ * @param message a tester pour savoir si :
+ * Danger : le message commence par Danger
+ * Alert : le message commence par Attention
+ * Success : tous les autres cas 
+ */
+
+function testMessageBeforeDisplay(message) {
+    let indexOfFirst;
+    if (indexOfFirst = message.indexOf("Danger") != -1) {
+        displayDanger(message.slice(8));
+    } else if (indexOfFirst = message.indexOf("Attention") != -1) {
+        displayAlert(message.slice(11));
+    } else {
+        displaySuccess(message);
+    }
+}
+
+/**
+ * 
+ * @param message de SUCCESS à afficher
+ */
+function displaySuccess(message) {
+
+    // console.log(message);
+
+    const $messages = document.querySelector('.message');
+    const $balise = document.createElement('div')
+    $balise.setAttribute('class', 'alert alert-success');
+    $messages.append($balise);
+    $balise.append(message);
+
+    removeMessage();
+}
+
+/**
+ * 
+ * @param message d'ALERTE à afficher
+ */
+function displayAlert(message) {
+
+    // console.log(message);
+
+    const $messages = document.querySelector('.message');
+    const $balise = document.createElement('div')
+    $balise.setAttribute('class', 'alert alert-alert');
+    $messages.append($balise);
+    $balise.append(message);
+
+    removeMessage();
+}
+
+/**
+ * 
+ * @param message de DANGER à afficher
+ */
+function displayDanger(message) {
+
+    // console.log(message);
+
+    const $messages = document.querySelector('.message');
+    const $balise = document.createElement('div')
+    $balise.setAttribute('class', 'alert alert-danger');
+    $messages.append($balise);
+    $balise.append(message);
+
+    removeMessage();
+}
+
+/**
+ * Gestion du temps d'affichage des messages
+ */
+function removeMessage() {
+    // console.log("REMOVE INFOS")
+
+    // const mess = document.querySelector('.alert');
+    // mess.delay(2500).fadeOut(600);
+    $('.alert').delay(2500).fadeOut(600);
+}
 
 
 //////////////////// CANVAS pour BONUS
@@ -113,4 +191,4 @@ function addImage(src, posX, posY, ctx) {
 }
 
 
-export { currentNav, checkInputAll, animCanvas, stopCanvas }
+export { currentNav, checkInputAll, testMessageBeforeDisplay, animCanvas, stopCanvas }

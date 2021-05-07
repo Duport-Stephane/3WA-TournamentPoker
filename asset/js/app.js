@@ -4,6 +4,13 @@
 import * as callback from './callBack.js';
 import * as ajaxCallback from './ajaxCallBack.js';
 
+///////////////////////////////// JS DESACTIVé ////////////////////////////////////
+/*
+Si on désactive JS, les formulaires peuvent être remplis et soumis, les erreurs gérées :
+- Player ; refresh / addlayer / delplayer....
+Eventuellement, mettre des action= et des method= dans les form
+*/
+
 // Ecoute global (chargement)
 document.addEventListener('DOMContentLoaded', function() {
 
@@ -19,52 +26,47 @@ document.addEventListener('DOMContentLoaded', function() {
     const pageAct = address.slice(address.lastIndexOf('=') + 1);
     if (pageAct === 'players') {
 
-        console.log('Appel REFRESH');
+        // Ecoute le click sur la chackbox ALL des 2 tableaux Users et Players 
+        // Si coché alors il faut cocher TOUS les checkboxes
+        // Si décoché, alors décocher TOUS les checkboxes
+        const $allCheckboxes = document.querySelectorAll("input[name='checkboxall[]']");
 
-        // Refresh la page PLAYER, pour afficher les 2 tableaux
-        ajaxCallback.refresh();
+        // console.log('APPEL DE ALL INPUTS : ' + $allCheckboxes);
 
-        // Ecoute le click l'input ALL des 2 tableaux Users et Players 
-        // Si coché alors il faut cocher TOUS les inputs
-        // Si décoché, alors décocher TOUS les inputs
-        // @TODO : envisager l'activation de la coche par la TAB du clavier et la barre espace...
-
-        console.log('APPEL DE ALL INPUTS');
-        // callback.checkInputAll();  --> name='checkboxall[]'
+        $allCheckboxes.forEach($checkbox => {
+            $checkbox.addEventListener('change', e => {
+                // console.log(e)
+                callback.checkInputAll(e.target.checked, e.target.value);
+            })
+        });
 
 
-        console.log('APPEL DE addplayer et delPlayer');
+        // console.log('APPEL DE addplayer et delPlayer');
         // Ecoute des boutons Ajouter un player et Retirer un player
-        // document.querySelector('.addPlayerList, .delPlayerList').addEventListener('submit', e => {
-        $('.addPlayerList, .delPlayerList').on('submit', e => {
-            // Block form auto refresh
-            e.preventDefault();
-            // console.log(e)
-            // Get action to do (from input hidden)
-            const action = e.target.className;
-            // console.log(action);
-            // form datas
-            const form = new FormData(e.target);
-            // console.log(form);
-
-            // Empty form, for next fill
-            e.target.reset();
-            // Request
-            switch (action) {
-                case 'addPlayerList':
-                    // Ecoute le bouton new-player : récupère les inputs cochés dans le tableau des users pour ajouter ce(s) users à la table des players (et donc les supprime du tableau users, ce qui se fait tout seul grace à la requête de remplissage du tableau)
-                    ajaxCallback.addPlayerList(form);
-                    break;
-                case 'delPlayerList':
-                    // console.log('CASE DELPLAYERLIST')
-                    // Ecoute le bouton del-player : récupère les inputs cochés dans le tableau players pour les supprimer de ce tableau (et donc les remettre dans l'autre, ce qui se fait tout seul grace à la requête de remplissage du tableau)
-                    ajaxCallback.delPlayerList(form);
-                    break;
-                default:
-                    ////////////////// FAIRE QUELQUE CHOSE DE MIEUX !!!!!!
-                    console.log('Rien trouvé !');
-                    break;
-            }
+        const $checkboxes = document.querySelectorAll('.addPlayerList, .delPlayerList')
+            // pour utiliser le vanilla, il faut boucler sur le tableau résultant du selectAll et faire un eventListener sur chaque element
+            // Si non voici en JQuery : $('.addPlayerList, .delPlayerList').on('submit', e => {
+        $checkboxes.forEach($checkbox => {
+            $checkbox.addEventListener('submit', e => {
+                e.preventDefault();
+                const action = e.target.className;
+                const form = new FormData(e.target);
+                e.target.reset();
+                switch (action) {
+                    case 'addPlayerList':
+                        // Ecoute le bouton new-player : récupère les checkboxes cochés dans le tableau des users pour ajouter ce(s) users à la table des players (et donc les supprime du tableau users, ce qui se fait tout seul grace à la requête de remplissage du tableau)
+                        ajaxCallback.addPlayerList(form);
+                        break;
+                    case 'delPlayerList':
+                        // console.log('CASE DELPLAYERLIST')
+                        // Ecoute le bouton del-player : récupère les checkboxes cochés dans le tableau players pour les supprimer de ce tableau (et donc les remettre dans l'autre, ce qui se fait tout seul grace à la requête de remplissage du tableau)
+                        ajaxCallback.delPlayerList(form);
+                        break;
+                    default:
+                        ////////////////// FAIRE QUELQUE CHOSE DE MIEUX !!!!!!
+                        console.log('Rien trouvé !');
+                }
+            });
         });
     }
 
