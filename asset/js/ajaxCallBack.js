@@ -1,6 +1,6 @@
 /* Ici, les fonctions AJAX de Callback appelées par les écouteurs de app.js */
 
-// Import util
+// Appels de dépendances
 import * as callback from './callBack.js';
 
 // page PLAYER
@@ -12,13 +12,13 @@ function refresh() {
     fetch('../../src/services/ajaxPlayers.php?action=refresh&type=User')
         .then(response => response.json())
         .then(users => {
-            callback.displayTabUser(users, 'User');
+            callback.displayTabUser(users, 'users');
         });
 
     fetch('../../src/services/ajaxPlayers.php?action=refresh&type=Player')
         .then(response => response.json())
         .then(users => {
-            callback.displayTabUser(users, 'Player');
+            callback.displayTabUser(users, 'players');
         });
 }
 

@@ -2,7 +2,6 @@
 // Importer le nécessaire
 // Appel de la classe User
 require_once '../models/User.php';
-require_once '../services/session.php';
 
 $userM = new User;
 
@@ -30,7 +29,7 @@ if (isset($_POST) && !empty($_POST)) {
                 }
 
 
-                    echo json_encode($userM->insert());
+                    // echo json_encode($userM->insert());
             }
         } catch (DomainException | PDOException $e) {
             echo $e->getMessage();

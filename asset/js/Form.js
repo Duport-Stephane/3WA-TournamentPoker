@@ -1,5 +1,6 @@
 'use strict'
-// Dépendances
+
+// Appels de dépendances
 import ManagerLS from './ManagerLS.js'
 import ErrorCustom from './ErrorCustom.js' // Gestion des erreurs s'il y en a
 import * as ajaxCallBack from './ajaxCallback.js'
@@ -97,7 +98,7 @@ class Form {
                 this._errors.push({
                     field: 'email',
                     type: 'format',
-                    message: `Veuillez vérifier l'adresse mail ou/et le mot de passe !`
+                    message: `Vos identifiants sont incorrects. Merci de réessayer.`
                 });
                 this.customError.messages = this._errors;
                 return this.isValid = false;

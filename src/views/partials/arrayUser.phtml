@@ -1,6 +1,4 @@
 <!-- Page PLAYER : Affiche le tableau avec le bon titre en fonction de l'appel : User ou Player -->
-<!-- Mise à disposition de la session -->
-<?php //require_once '../services/session.php'; ?>
 
 <table class='array'> 
     <caption><?= $title ?></caption>
@@ -15,7 +13,7 @@
 <div class='array-border tab<?= $type ?>List'>
     <!-- Emplacement du tableau des users / players -->
     <table class='array <?= $type ?>'>
-        <?php foreach ($_SESSION[$type] as $user) : ?>
+        <?php foreach (${$type} as $user) : ?>
             <tr>
                 <td><input type='checkbox' name='checkboxuser[]' value=<?= $user['id'] ?>></td>
                 <td><?= $user['nickName'] ?></td>

@@ -1,11 +1,11 @@
 'use strict';
 
-// Import Dépendances
+// Appels de dépendances
 import * as callback from './callBack.js';
 import * as ajaxCallback from './ajaxCallBack.js';
-import * as canvas from './canvas.js';
 import Form from './Form.js';
 import ManagerLS from './ManagerLS.js'
+import * as canvas from './canvas.js';
 
 ///////////////////////////////// JS DESACTIVé ////////////////////////////////////
 /*
@@ -21,6 +21,9 @@ document.addEventListener('DOMContentLoaded', function() {
     //*******************************************************************
     // A chaque changement de page, met en évidence le bon menu de la nav du header etcelui de A propos
     callback.currentNav();
+
+    // jQuery - Affichage de la notif pendant 2 sec 
+    $('#notif').delay(2000).fadeOut()
 
     // connaitre la page actuelle
     const address = window.location.href
@@ -97,6 +100,11 @@ document.addEventListener('DOMContentLoaded', function() {
         //     //     form.customError.displayMessages();
         //     // }
         // });
+    }
+
+    // page INSCRIPTION
+    //*******************************************************************
+    if (pageAct === 'inscription') {
 
         document.querySelector('#createUser').addEventListener('submit', e => {
             e.preventDefault;
@@ -126,52 +134,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // https://stackoverflow.com/questions/56300132/how-to-override-css-prefers-color-scheme-setting
 
-    //determines if the user has a set theme
-    function detectColorScheme() {
-        var theme = "light"; //default to light
-
-        //local storage is used to override OS theme settings
-        if (localStorage.getItem("theme")) {
-            if (localStorage.getItem("theme") == "dark") {
-                var theme = "dark";
-            }
-        } else if (!window.matchMedia) {
-            //matchMedia method not supported
-            return false;
-        } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-            //OS theme setting detected as dark
-            var theme = "dark";
-        }
-
-        //dark theme preferred, set document with a `data-theme` attribute
-        if (theme == "dark") {
-            document.documentElement.setAttribute("data-theme", "dark");
-        }
-    }
-    detectColorScheme();
-
+    callback.detectColorScheme();
 
     //identify the toggle switch HTML element
     const toggleSwitch = document.querySelector('#theme-switch input[type="checkbox"]');
 
-    //function that changes the theme, and sets a localStorage variable to track the theme between page loads
-    function switchTheme(e) {
-        if (e.target.checked) {
-            localStorage.setItem('theme', 'dark');
-            document.documentElement.setAttribute('data-theme', 'dark');
-            toggleSwitch.checked = true;
-        } else {
-            localStorage.setItem('theme', 'light');
-            document.documentElement.setAttribute('data-theme', 'light');
-            toggleSwitch.checked = false;
-        }
-    }
-
     //listener for changing themes
-    toggleSwitch.addEventListener('change', switchTheme, false);
+    toggleSwitch.addEventListener('change', callback.switchTheme, false);
 
-    //pre-check the dark-theme checkbox if dark-theme is set
-    if (document.documentElement.getAttribute("data-theme") == "dark") {
+    //pre-check the green-theme checkbox if green-theme is set
+    if (document.documentElement.getAttribute("data-theme") == "green") {
         toggleSwitch.checked = true;
     }
 });

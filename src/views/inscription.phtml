@@ -1,0 +1,41 @@
+
+<h1>Inscription</h1>
+
+<!-- <section>
+    <img src="./asset/images/Token-70.png" alt="table" width="800px">
+</section> -->
+
+<section class="flex-column">
+    <h2 class="from-left">Prêt à vous inscrire ?</h2>
+    <span class="errors"></span>
+    <button type="text">Déjà inscrit sur Poker Hold'hem Tournament Poker ?<a href="./index.php?page=login" class="btn btn-alert">Connexion</a></button>
+    <!-- <form class="card-body" action='./src/services/ajaxLog.php' method="POST" id="createUser"> -->
+    <form class="card-body" id="createUser">
+        <input type="hidden" name="action" value="insert">
+        <div class="card-text">
+            <span class="card-puce"><i class="fab fa-napster"></i></span>
+            <input type="text" class="card-input" name="nickname" placeholder="Pseudonyme" required autofocus>
+        </div>
+        <div class="card-text">
+            <span class="card-puce"><i class="fas fa-user"></i></span>
+            <input type="text" class="card-input" name="lastname" placeholder="Nom">
+        </div>
+        <div class="card-text">
+            <span class="card-puce"><i class="fas fa-user"></i></span>
+            <input type="text" class="card-input" name="firstname" placeholder="Prénom">
+        </div>
+        <div class="card-text">
+            <span class="card-puce"><i class="fas fa-at"></i></span>
+            <input type="text" class="card-input" name="email" placeholder="Adresse mail" required>
+        </div>
+        <div class="card-text">
+            <span class="card-puce"><i class="fas fa-key"></i></span>
+            <input type="text" class="card-input" name="password" placeholder="Mot de passe" required>
+        </div>
+        <div class="card-text">
+            <span class="card-puce"><i class="fas fa-camera"></i></span>
+            <input type="text" class="card-input" name="avatar" placeholder="Avatar">
+        </div>
+        <button type="submit" class="btn btn-info">Valider la création de compte</button>
+    </form>
+</section>

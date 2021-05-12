@@ -8,24 +8,14 @@ error_reporting(E_ALL);
 /////////////////////////////////// FIN SUPPRESSION //////////////////////////////////
 
 
-// Appels de dépendances
-// require './src/services/utils.php';
-
 // Mise à disposition de la session
-require './src/services/session.php';
+require_once './src/services/Session.php';
+Session::init();
 
-// $_SESSION = [];
-session_destroy();
-unset($_SESSION);
-// var_dump($_SESSION);
-// die;
+if(array_key_exists('page',$_GET) && !empty($_GET['page']) && $_GET['page'] !== "") {
+    $page = $_GET['page'];
+}else {
+    $page = 'home';
+};
 
-//////////////////////////////////// A MODIFIER ///////////////////////////////////
-// il faudra gérer le numéro du tournoi
-// pour l'instant je ne prends que le Num 1
-$_SESSION['tournament_id'] = 1;
-// A modifier lors du LOG IN
-/////////////////////////////////// FIN MODIFIER //////////////////////////////////
-
-$_SESSION['page'] = 'home';
-header('location: ./src/controller/layout.php?page=home');
+require_once './src/controller/layout.php';

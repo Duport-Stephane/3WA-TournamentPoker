@@ -5,20 +5,10 @@ let ctx;
 const carte = {
     largeur: 75,
     hauteur: 100,
-    domObject: null,
-    picture: '../images/bonus/Card75x100.png'
+    picture: './asset/images/bonus/Card75x100.png'
 }
-const pos = new Array();
-pos[0] = [0, 0];
-pos[1] = [0, 0];
-pos[2] = [0, 0];
-pos[3] = [0, 0];
-pos[4] = [0, 0];
-pos[5] = [0, 0];
-pos[6] = [0, 0];
-pos[7] = [0, 0];
-pos[8] = [0, 0];
-pos[9] = [0, 0];
+const nbCard = 20;
+const pos = new Array(); // pos[i] = [ x , y ]
 
 function animCanvas() {
     console.log('ANIME CANVAS')
@@ -27,9 +17,15 @@ function animCanvas() {
     ctx = $canvas.getContext('2d');
 
     // ctx.strokeStyle = "black";
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < nbCard; i++) {
+        // pos[i][0].push(Math.floor(Math.random() * (canvas.width - carte.largeur)));
+        // pos[i][1].push(-(Math.random() * (600 - 50) + 50));
+
+        // pos[i] = [ x , y ]
+        pos[i] = [0, 0];
         pos[i][0] = Math.floor(Math.random() * (canvas.width - carte.largeur));
-        pos[i][1] = -carte.hauteur;
+        pos[i][1] = -(Math.random() * 600 + 50);
+        // pos[i][1] = -carte.hauteur;
         // console.log("i = " + i + " - " + pos[i][0] + ' / ' + pos[i][1]);
     }
     timeoutId = window.setTimeout(updateTime($canvas), 1);
@@ -39,11 +35,11 @@ function animCanvas() {
 function updateTime($canvas) {
     onClear();
     // ctx.strokeRect(pos.coordX, pos.coordY, carte.largeur, carte.hauteur);
-    for (let i = 0; i < 5; i++) {
-        addImage('../../asset/images/carte-R-50x70.jpg', pos[i][0], pos[i][1], ctx);
-        pos[i][1] += 2;
+    for (let i = 0; i < nbCard; i++) {
+        addImage('./asset/images/carte-R-50x70.jpg', pos[i][0], pos[i][1], ctx);
+        pos[i][1] += 1;
         if (pos[i][1] > canvas.height) {
-            pos[i][1] = -carte.hauteur;
+            pos[i][1] = -(Math.random() * 400 + 100);
             pos[i][0] = Math.floor(Math.random() * (canvas.width - carte.largeur));
         }
         // console.log("i = " + i + " - " + pos[i][0] + ' / ' + pos[i][1]);

@@ -3,7 +3,6 @@
 // Appel de la classe User
 require_once '../models/User.php';
 require_once '../models/Player.php';
-require_once '../services/session.php';
 
 $userM = new User;
 $playerM = new Player;
@@ -24,7 +23,7 @@ if (isset($_POST) && !empty($_POST)) {
                 // Renvoyer un message s'il n'y pas d'id dans la checkbox
                 throw new DomainException("Attention, Vous n'avez sélectionné aucune ligne !");
             } else {
-                $tournament_id = $_SESSION['tournament_id'];
+                $tournament_id = 1;
 
                 // Déterminer l'action à mener
                 switch ($action) {
@@ -103,12 +102,14 @@ if (isset($_GET) && !empty($_GET)) {
         extract($_GET);
         try {
             // en fonction du contenu de TYPE, remplir le tableau des USERS ou celui des PLAYERS
+            $tournament = 1;
+
             switch ($type) {
                 case 'User':
-                    echo json_encode($userM->getUsers(1, $_SESSION['tournament_id']));
+                    echo json_encode($userM->getUsers(1, $tournament));
                     break;
                 case 'Player':
-                    echo json_encode($userM->getPlayers($_SESSION['tournament_id']));
+                    echo json_encode($userM->getPlayers($tournament));
                     break;
                 default:
                     throw new DomainException('Danger, Je ne sais pas comment on en est là !');

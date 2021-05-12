@@ -4,7 +4,6 @@
 
 
 
-
 /**
  * Met en évidence le menu courant dans la navbar du header.
  * Arrivée sur une page soit par la navbar soit par le click sur la carte de Home
@@ -12,18 +11,25 @@
 
 function currentNav() {
     const address = window.location.href
-    const pageAct = address.slice(address.lastIndexOf('=') + 1);
+    const compt = address.lastIndexOf('=')
+        // console.log(window.location);
+    const pageAct = address.slice(compt + 1);
 
-    // liste des balises 'a' du menu
-    const listA = document.querySelectorAll('.navHeader a, .about a')
-    listA.forEach(e => {
+    // cas particulier de la page HOME lors du premier chargement
+    // il n'y a pas de parametre "page=" dans le root
+    if (compt === -1) {
+        document.querySelector('.navHeader a.home').classList.add('current');
+    } else {
+        // liste des balises 'a' du menu
+        const listA = document.querySelectorAll('.navHeader a, footer section:last-child a')
+        listA.forEach(e => {
 
-        // console.log(pageAct + " / " + e)
-
-        if (e.classList.contains(pageAct)) {
-            e.classList.toggle('current');
-        }
-    });
+            // console.log(pageAct + " \\+/ " + compt + " \\+/ " + e)
+            if (e.classList.contains(pageAct)) {
+                e.classList.toggle('current');
+            }
+        });
+    }
 }
 
 
@@ -108,6 +114,12 @@ function displayTabUser(users, typeUser) {
 
 // page LOGIN
 //*******************************************************************
+
+
+
+// page INSCRIPTION
+//*******************************************************************
+
 
 
 
@@ -196,4 +208,49 @@ function removeMessage() {
 }
 
 
-export { currentNav, checkInputAll, displayTabUser, testMessageBeforeDisplay }
+// changement de thème
+//*******************************************************************
+
+// https://stackoverflow.com/questions/56300132/how-to-override-css-prefers-color-scheme-setting
+
+//determines if the user has a set theme
+function detectColorScheme() {
+    var theme = "blue"; //default to blue
+
+    //local storage is used to override OS theme settings
+    if (localStorage.getItem("theme")) {
+        if (localStorage.getItem("theme") == "green") {
+            var theme = "green";
+        }
+    } else if (!window.matchMedia) {
+        //matchMedia method not supported
+        return false;
+    } else if (window.matchMedia("(prefers-color-scheme: green)").matches) {
+        //OS theme setting detected as green
+        var theme = "green";
+    }
+
+    //green theme preferred, set document with a `data-theme` attribute
+    if (theme == "green") {
+        document.documentElement.setAttribute("data-theme", "green");
+    }
+}
+
+//identify the toggle switch HTML element
+const toggleSwitch = document.querySelector('#theme-switch input[type="checkbox"]');
+
+//function that changes the theme, and sets a localStorage variable to track the theme between page loads
+function switchTheme(e) {
+    if (e.target.checked) {
+        localStorage.setItem('theme', 'green');
+        document.documentElement.setAttribute('data-theme', 'green');
+        toggleSwitch.checked = true;
+    } else {
+        localStorage.setItem('theme', 'blue');
+        document.documentElement.setAttribute('data-theme', 'blue');
+        toggleSwitch.checked = false;
+    }
+}
+
+
+export { currentNav, checkInputAll, displayTabUser, testMessageBeforeDisplay, detectColorScheme, switchTheme }

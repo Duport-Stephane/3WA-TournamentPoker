@@ -1,11 +1,5 @@
 <?php
 
-// Appels de dépendances
-// require_once '../services/utils.php';
-
-// Mise à disposition de la session
-require_once '../services/session.php';
-
 // var_dump($_GET);
 // var_dump($_SERVER);
 // var_dump($_SESSION);
@@ -17,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     var_dump('TABLE.PHP en POST');
 
     // Si pas de param, je repars à l'accueil
-    header('Location: ../index.php');
+    header('Location: ./index.php?page=home');
     exit;
 }
 
@@ -28,4 +22,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
 }
 
-header('location: ../controller/layout.php?page=tables');
+header('location: ./index.php?page=tables');

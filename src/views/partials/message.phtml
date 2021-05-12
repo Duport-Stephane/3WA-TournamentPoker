@@ -1,4 +1,4 @@
-<?php if (isset($_SESSION['error']) && !empty($_SESSION['errors'])) : ?>
+<?php if (isset($_SESSION) && isset($_SESSION['error']) && !empty($_SESSION['errors'])) : ?>
     <div class="alert alert-danger">
         <?php foreach ($_SESSION['errors'] as $value) : ?>
             <p><?= $value ?></p>
@@ -6,7 +6,7 @@
     </div>
 <?php endif; ?>
 
-<?php if (isset($_SESSION['info']) && !empty($_SESSION['info'])) : ?>
+<?php if (isset($_SESSION) && isset($_SESSION['info']) && !empty($_SESSION['info'])) : ?>
     <div class="alert alert-success">
         <p><?= $_SESSION['info'] ?></p>
     </div>

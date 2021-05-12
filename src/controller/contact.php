@@ -1,15 +1,12 @@
 <?php
 
-// Mise à disposition de la session
-require_once '../services/session.php';
-
 // Actions : Traitement (POST)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     var_dump('contact.PHP en POST');
 
     // Si pas de param, je repars à l'accueil
-    header('Location: ../index.php');
+    header('Location: ../../index.php?page=home');
     exit;
 }
 
@@ -20,4 +17,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
 }
 
-header('location: ../controller/layout.php?page=contact');
+header('location: ../../index.php?page=contact');

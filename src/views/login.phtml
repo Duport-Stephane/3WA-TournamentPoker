@@ -1,13 +1,14 @@
+
 <h1>Login</h1>
 
 <!-- <section>
-    <img src="../../asset/images/Token-70.png" alt="table" width="800px">
+    <img src="./asset/images/Token-70.png" alt="table" width="800px">
 </section> -->
 
 <section class="flex-column">
-    <h2 class="from-left">Vous avez déjà un compte</h2>
+    <h2 class="from-left">Connectez-vous</h2>
     <span class="errors"></span>
-    <!-- <form class="card-body" action='../../src/services/ajaxLog.php' method="POST" id="auth"> -->
+    <!-- <form class="card-body" action='./src/services/ajaxLog.php' method="POST" id="auth"> -->
     <form class="card-body" id="auth">
         <input type="hidden" name="action" value="auth">
         <div class="card-text">
@@ -18,40 +19,15 @@
             <span class="card-puce"><i class="fas fa-key"></i></span>
             <input type="text" class="card-input" name="password" placeholder="Mot de passe" required>
         </div>
-        <button type="submit" class="btn btn-info">Valider la connexion</button>
+        <button type="submit" class="btn btn-info">Connexion</button>
     </form>
 </section>
-
-<section class="flex-column">
-    <h2 class="from-left">Vous souhaitez créer un compte</h2>
-    <span class="errors"></span>
-    <!-- <form class="card-body" action='../../src/services/ajaxLog.php' method="POST" id="createUser"> -->
-    <form class="card-body" id="createUser">
-        <input type="hidden" name="action" value="insert">
-        <div class="card-text">
-            <span class="card-puce"><i class="fab fa-napster"></i></span>
-            <input type="text" class="card-input" name="nickname" placeholder="Pseudonyme" required>
-        </div>
-        <div class="card-text">
-            <span class="card-puce"><i class="fas fa-user"></i></span>
-            <input type="text" class="card-input" name="lastname" placeholder="Nom">
-        </div>
-        <div class="card-text">
-            <span class="card-puce"><i class="fas fa-user"></i></span>
-            <input type="text" class="card-input" name="firstname" placeholder="Prénom">
-        </div>
-        <div class="card-text">
-            <span class="card-puce"><i class="fas fa-at"></i></span>
-            <input type="text" class="card-input" name="email" placeholder="Adresse mail" required>
-        </div>
-        <div class="card-text">
-            <span class="card-puce"><i class="fas fa-key"></i></span>
-            <input type="text" class="card-input" name="password" placeholder="Mot de passe" required>
-        </div>
-        <div class="card-text">
-            <span class="card-puce"><i class="fas fa-camera"></i></span>
-            <input type="text" class="card-input" name="avatar" placeholder="Avatar">
-        </div>
-        <button type="submit" class="btn btn-info">Valider la création de compte</button>
-    </form>
+<section>
+    <button type="text" class="btn btn-alert">
+        <bold>Mot de passe oublié ?</bold>
+    </button>
+    <fieldset>
+        <p>Vous ne possédez pas encore de compte sur Poker Hold'hem Tournament Poker ?</p>
+        <button type="text" class="btn btn-info"><a href="./index.php?page=inscription">Inscription</a></button>
+    </fieldset>
 </section>

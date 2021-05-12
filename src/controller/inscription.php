@@ -8,14 +8,11 @@
 // Actions : Traitement (POST)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    var_dump('LOGIN.PHP en POST');
+    var_dump('INSCRIPTION.PHP en POST');
     die;
 
     // tester l'action, récupérer les paramètres EMAIL et PASSAWORD et les comparer avec la BDD avant de LOG le user
 
-    extract($_POST);
-
-    // Session::login($email);
 
     
     // Si pas de param, je repars à l'accueil
@@ -26,11 +23,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // 1 er chargement de la page 'login'
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
-    var_dump('LOGIN.PHP en GET');
+    var_dump('INSCRIPTION.PHP en GET');
 
     // vérifier la présence d'un adresse mail dans le localstorage
     // le cas échéant, afficher cette adresse dans le champ Email
 
 }
 
-header('location: ./index.php?page=login');
+header('location: ./index.php?page=inscription');
