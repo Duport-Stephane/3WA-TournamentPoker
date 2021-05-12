@@ -1,24 +1,22 @@
-<!-- Mise à disposition de la session -->
-<?php require_once '../services/session.php'; ?>
 
 <h1>Player List</h1>
 
 <div class='flex-between'>
 
-    <form class='addPlayerList' action='../../src/services/ajax.php' method="POST">
+    <form class='addPlayerList' action='../../src/services/ajaxPlayers.php' method="POST">
         <input type='hidden' name='action' value='addPlayerList'>
         <?php $type = 'User'; ?>
         <?php $title = 'Liste des joueurs inscrits'; ?>
         <div>
             <?php require '../views/partials/arrayUser.phtml'; ?>
         </div>
-        <button type='submit' class='btn btn-info'>Valider le(s) joueur(s) selectionnée(s)</button>
+        <button type='submit' class='btn btn-info'>Valider le(s) joueur(s) selectionné(s)</button>
     </form>
 
-    <form class='delPlayerList' action='../../src/services/ajax.php?action=delPlayerList' method="POST">
+    <form class='delPlayerList' action='../../src/services/ajaxPlayers.php' method="POST">
         <input type='hidden' name='action' value='delPlayerList'>
         <?php $type = 'Player'; ?>
-        <?php $title = 'Liste des joueurs validés'; ?>
+        <?php $title = 'Joueurs validés pour ce tournoi'; ?>
         <div>
             <?php require '../views/partials/arrayUser.phtml'; ?>
         </div>

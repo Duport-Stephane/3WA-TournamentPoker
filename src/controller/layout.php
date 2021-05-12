@@ -10,9 +10,14 @@ require_once '../services/session.php';
 
 <head>
     <?php require_once '../views/partials/head.phtml'; ?>
+
+    <label id="theme-switch" class="theme-switch" for="checkbox_theme">
+        <input type="checkbox" id="checkbox_theme">
+    </label>
+    
 </head>
 
-<body class='fond-Page'>
+<body>
 
     <header>
         <?php require_once '../views/partials/header.phtml'; ?>

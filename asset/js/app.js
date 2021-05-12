@@ -1,8 +1,11 @@
 'use strict';
 
-// Import util
+// Import Dépendances
 import * as callback from './callBack.js';
 import * as ajaxCallback from './ajaxCallBack.js';
+import * as canvas from './canvas.js';
+import Form from './Form.js';
+import ManagerLS from './ManagerLS.js'
 
 ///////////////////////////////// JS DESACTIVé ////////////////////////////////////
 /*
@@ -16,17 +19,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // ENSEMBLE DES PAGES
     //*******************************************************************
-    // A chaque changement de page, met en évidence le bon menu de la nav du header
+    // A chaque changement de page, met en évidence le bon menu de la nav du header etcelui de A propos
     callback.currentNav();
+
+    // connaitre la page actuelle
+    const address = window.location.href
+    const pageAct = address.slice(address.lastIndexOf('=') + 1);
 
     // page PLAYER
     //*******************************************************************
     // Refresh la page PLAYER, pour afficher les 2 tableaux
-    const address = window.location.href
-    const pageAct = address.slice(address.lastIndexOf('=') + 1);
     if (pageAct === 'players') {
 
-        // Ecoute le click sur la chackbox ALL des 2 tableaux Users et Players 
+        // Ecoute le click sur la checkbox ALL des 2 tableaux Users et Players 
         // Si coché alors il faut cocher TOUS les checkboxes
         // Si décoché, alors décocher TOUS les checkboxes
         const $allCheckboxes = document.querySelectorAll("input[name='checkboxall[]']");
@@ -43,43 +48,130 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // console.log('APPEL DE addplayer et delPlayer');
         // Ecoute des boutons Ajouter un player et Retirer un player
-        const $checkboxes = document.querySelectorAll('.addPlayerList, .delPlayerList')
-            // pour utiliser le vanilla, il faut boucler sur le tableau résultant du selectAll et faire un eventListener sur chaque element
-            // Si non voici en JQuery : $('.addPlayerList, .delPlayerList').on('submit', e => {
-        $checkboxes.forEach($checkbox => {
-            $checkbox.addEventListener('submit', e => {
+        const $buttonValidUsers = document.querySelectorAll('.addPlayerList, .delPlayerList')
+            // Ecoute le click sur les boutons et passe les checkboses cochées au travers du form
+        $buttonValidUsers.forEach($button => {
+            $button.addEventListener('submit', e => {
                 e.preventDefault();
-                const action = e.target.className;
                 const form = new FormData(e.target);
                 e.target.reset();
-                switch (action) {
-                    case 'addPlayerList':
-                        // Ecoute le bouton new-player : récupère les checkboxes cochés dans le tableau des users pour ajouter ce(s) users à la table des players (et donc les supprime du tableau users, ce qui se fait tout seul grace à la requête de remplissage du tableau)
-                        ajaxCallback.addPlayerList(form);
-                        break;
-                    case 'delPlayerList':
-                        // console.log('CASE DELPLAYERLIST')
-                        // Ecoute le bouton del-player : récupère les checkboxes cochés dans le tableau players pour les supprimer de ce tableau (et donc les remettre dans l'autre, ce qui se fait tout seul grace à la requête de remplissage du tableau)
-                        ajaxCallback.delPlayerList(form);
-                        break;
-                    default:
-                        ////////////////// FAIRE QUELQUE CHOSE DE MIEUX !!!!!!
-                        console.log('Rien trouvé !');
-                }
+
+                ajaxCallback.modifPlayerList(form);
             });
         });
     }
 
-    // page TABLES
+    // page LOGIN
     //*******************************************************************
-    if (pageAct === 'canvas') {
-        document.querySelector('.canvasOn').addEventListener('click', e => {
+    if (pageAct === 'login') {
+        // Si exist : affiche le mail du LocalStorage dans l'input Mail du log
+        const manager = new ManagerLS;
+        const user_email = manager.getDatasByKey('user');
+
+        if (user_email != "" && user_email != null) {
+
+            console.log(user_email);
+
+            ajaxCallback.userKnown(user_email);
+        };
+
+        // document.querySelector('#auth').addEventListener('click', e => {
+        //     e.preventDefault;
+
+        //     console.log(e);
+
+        //     // const champsAControler = ['email', 'password'];
+        //     // const inputs = this.querySelectorAll('input');
+        //     // const form = new Form(inputs, champsAControler);
+
+        //     // if (form.logValidate()) {
+        //     //     console.log("TOUT EST OK pour le LOG")
+        //     //         // true => on efface le formulaire
+        //     //     this.reset();
+        //     //     // on log le user
+        //     //     // form.login();
+        //     //     // On va à l'accueil ??????????????????????????
+
+        //     // } else {
+        //     //     // false => on reste sur le form et on affiche les erreurs détectées
+        //     //     form.customError.displayMessages();
+        //     // }
+        // });
+
+        document.querySelector('#createUser').addEventListener('submit', e => {
             e.preventDefault;
-            callback.animCanvas();
+            const form = new FormData(e.currentTarget)
+            e.currentTarget.reset();
+            ajaxCallback.insert(form);
         });
-        document.querySelector('.canvasOff').addEventListener('click', e => {
+    }
+
+
+    // page BONUS
+    //*******************************************************************
+    if (pageAct === 'bonus') {
+        document.getElementById('canvasOn').addEventListener('click', e => {
             e.preventDefault;
-            callback.stopCanvas();
+            canvas.animCanvas();
         });
+        document.getElementById('canvasOff').addEventListener('click', e => {
+            e.preventDefault;
+            canvas.stopCanvas();
+        });
+    };
+
+
+    // changement de thème
+    //*******************************************************************
+
+    // https://stackoverflow.com/questions/56300132/how-to-override-css-prefers-color-scheme-setting
+
+    //determines if the user has a set theme
+    function detectColorScheme() {
+        var theme = "light"; //default to light
+
+        //local storage is used to override OS theme settings
+        if (localStorage.getItem("theme")) {
+            if (localStorage.getItem("theme") == "dark") {
+                var theme = "dark";
+            }
+        } else if (!window.matchMedia) {
+            //matchMedia method not supported
+            return false;
+        } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+            //OS theme setting detected as dark
+            var theme = "dark";
+        }
+
+        //dark theme preferred, set document with a `data-theme` attribute
+        if (theme == "dark") {
+            document.documentElement.setAttribute("data-theme", "dark");
+        }
+    }
+    detectColorScheme();
+
+
+    //identify the toggle switch HTML element
+    const toggleSwitch = document.querySelector('#theme-switch input[type="checkbox"]');
+
+    //function that changes the theme, and sets a localStorage variable to track the theme between page loads
+    function switchTheme(e) {
+        if (e.target.checked) {
+            localStorage.setItem('theme', 'dark');
+            document.documentElement.setAttribute('data-theme', 'dark');
+            toggleSwitch.checked = true;
+        } else {
+            localStorage.setItem('theme', 'light');
+            document.documentElement.setAttribute('data-theme', 'light');
+            toggleSwitch.checked = false;
+        }
+    }
+
+    //listener for changing themes
+    toggleSwitch.addEventListener('change', switchTheme, false);
+
+    //pre-check the dark-theme checkbox if dark-theme is set
+    if (document.documentElement.getAttribute("data-theme") == "dark") {
+        toggleSwitch.checked = true;
     }
 });

@@ -15,13 +15,6 @@ class User extends Database
     protected string $avatar;
     protected int $role_id;
     protected int $dependUser_id;
-    // protected PDO $_instance;
-
-    // public function __construct()
-    // {
-    //     $_instance = new Database;
-    // }
-
 
     /**
      * Test if id exist in table
@@ -75,20 +68,16 @@ class User extends Database
             echo $e->getMessage();
             die;
         }
-
         return $users ?? [];
     }
 
 
     /**
-     * Get Players
+     * Retourne l'ensemble des joueurs VALIDES dans la table PLAYER pour CE tournoi $_SESSION['tournament']
      * @param integer tournament_id
      *
      * @return array
      */
-    // pour retourner l'ensemble des joueurs VALIDES dans la table PLAYER
-    // pour CE tournoi $_SESSION['tournament']
-
     public function getPlayers(int $tournament_id): array
     {
         try {
@@ -108,6 +97,57 @@ class User extends Database
         }
 
         return $players ?? [];
+    }
+
+
+    /**
+     * pour retourner le nom du user passé en parametre
+     * @param integer user_id
+     *
+     * @return string Name of the user
+     */ 
+    public function getNicknameById(int $user_id): string
+    {
+        try {
+            $sql = 'SELECT user.id, nickName
+                FROM user
+                INNER JOIN player ON user.id = :user_id';
+            $param = [
+                ':user_id' => $user_id
+            ];
+
+            $nickName = $this->findOne($sql, $param);
+        } catch (DomainException $e) {
+            echo $e->getMessage();
+            die;
+        }
+
+        return $nickName['nickName'];
+    }
+
+    /**
+     * pour retourner les infos du user à partir de son email (unique)
+     * @param string user_mail
+     *
+     * @return string Name of the user
+     */
+    public function getUserByMail(string $user_email): array
+    {
+        try {
+            $sql = 'SELECT id, nickName, firstName, lastName, email, password, avatar, role_id, dependUser_id, created_at
+            FROM user 
+            WHERE email = :user_email';
+            $param = [
+                ':user_email' => $user_email
+            ];
+
+            $user = $this->findOne($sql, $param);
+        } catch (DomainException $e) {
+            echo $e->getMessage();
+            die;
+        }
+        // var_dump($user);
+        return $user ?? [];
     }
 
 }

@@ -1,11 +1,3 @@
-body {
-  margin: 0 auto;
-  text-align: center;
-  max-width: 1280px;
-  width: 100vw;
-  font-family: "Zilla Slab", serif;
-}
-
 a {
   text-decoration: none;
   color: var(--fontColor);
@@ -17,8 +9,10 @@ a:hover {
 
 :root {
   --fontColor: #fff;
+  --fontInput: rgb(31, 48, 133);
   --bgColor: rgba(31, 48, 133, .5);
   --hoverNav: rgb(49, 156, 228);
+  --hoverBtn: rgb(168, 218, 251);
   --currentNav: rgb(219, 55, 55);
   --textShadowNav: #000;
   --textShadowH1: rgb(31, 48, 133);
@@ -36,9 +30,37 @@ a:hover {
   --bgColorDanger: rgba(201, 40, 40, .8);
 }
 
-.fond-Page {
+[data-theme=dark] {
+  --fontColor: #fff;
+  --fontInput: rgb(15, 68, 15);
+  --bgColor: rgba(15, 68, 15, 0.5);
+  --hoverNav: yellowgreen;
+  --hoverBtn: rgb(178, 253, 178);
+  --currentNav: rgb(219, 55, 55);
+  --textShadowNav: #000;
+  --textShadowH1: rgb(15, 68, 15);
+  --bgcolorDealerHover: rgb(219, 55, 55);
+  --boxShadow: #fff;
+  --bgColorCaption: rgba(255, 255, 255, .8);
+  --fontColorCaption: rgb(15, 68, 15);
+  --bgColorArray: rgba(15, 110, 15, .8);
+  --bgHeadbandLeft: #fff;
+  --bgHeadbandRight: rgba(15, 68, 15, .5);
+  --border: #000;
+  --bgColorSuccess: rgba(15, 110, 15, .8);
+  --bgColorInfo: rgba(15, 68, 15, .8);
+  --bgColorAlert: rgba(161, 96, 20, .8);
+  --bgColorDanger: rgba(201, 40, 40, .5);
+}
+
+body {
+  margin: 0 auto;
+  text-align: center;
+  max-width: 1280px;
+  width: 100vw;
+  font-family: "Zilla Slab", serif;
   background-position: center;
-  background-image: url("../../asset/images/Background-1.png");
+  background-image: url("../../asset/images/Background-0.png");
   background-size: 1280px;
   background-repeat: no-repeat;
   background-color: var(--bgColor);
@@ -57,12 +79,15 @@ a:hover {
   margin: 0 0 0 5%;
   padding-left: 0;
 }
-.navHeader nav li {
+.navHeader nav ul li {
   list-style: none;
+  transition: opacity 0.1s ease, text-shadow 0.1s ease, color 0.1s ease, transform 0.1s ease;
 }
-.navHeader nav .current {
-  color: var(--currentNav);
-  text-shadow: 2px 2px 4px var(--textShadowNav);
+.navHeader nav ul li:hover {
+  opacity: 0.9;
+  text-shadow: 2px 2px 4px var(--textShadowNav), -2px -2px 4px var(--textShadowNav);
+  color: var(--hoverBtn);
+  transform: scale(0.95);
 }
 
 h1 {
@@ -71,6 +96,10 @@ h1 {
   font-family: "Merienda", cursive;
   font-size: 2.5rem;
   text-shadow: 4px 2px var(--textShadowH1);
+}
+
+.from-left {
+  position: relative;
 }
 
 .container {
@@ -117,11 +146,14 @@ h1 {
 
 .dealer {
   width: 7rem;
+  border-radius: 3.5rem;
+  transition: background-color 0.1s ease;
+  transition: box-shadow 0.1s ease, transform 0.1s ease;
 }
 .dealer:hover {
   background-color: var(--bgcolorDealerHover);
-  border-radius: 3.5rem;
-  box-shadow: 4px 4px 8px var(--boxShadow), -4px -4px 8px var(--boxShadow), 4px -4px 8px var(--boxShadow), -4px 4px 8px var(--boxShadow);
+  box-shadow: 2px 2px 4px var(--boxShadow), -2px -2px 4px var(--boxShadow), 2px -2px 4px var(--boxShadow), -2px 2px 4px var(--boxShadow);
+  transform: scale(0.95);
 }
 
 .array-border {
@@ -181,10 +213,26 @@ h1 {
 footer section {
   width: 20%;
 }
-
 footer img {
   width: 1rem;
   padding-right: 0.7rem;
+}
+footer ul {
+  margin: 0 0 0 5%;
+  padding-left: 0;
+}
+footer ul li {
+  list-style: none;
+  transition: opacity 0.1s ease, text-shadow 0.1s ease, color 0.1s ease, transform 0.1s ease;
+}
+footer ul li a {
+  transition: opacity 0.1s ease, text-shadow 0.1s ease, color 0.1s ease, transform 0.1s ease;
+}
+footer ul li a:hover {
+  opacity: 0.9;
+  text-shadow: 1px 1px 2px var(--textShadowNav), -1px -1px 2px var(--textShadowNav);
+  color: var(--hoverBtn);
+  transform: scale(0.95);
 }
 
 .hide {
@@ -193,6 +241,11 @@ footer img {
 
 .small {
   font-size: 0.8rem;
+}
+
+.current {
+  color: var(--currentNav);
+  text-shadow: 2px 2px 4px var(--textShadowNav);
 }
 
 .flex-between {
@@ -229,12 +282,46 @@ footer img {
   padding-left: 1rem;
 }
 
+.card-body {
+  width: 30rem;
+}
+
+.card-text {
+  padding: 0.2rem;
+  font-size: 1.2rem;
+  color: var(--fontColorCaption);
+}
+
+.card-puce {
+  padding: 0.3rem;
+  margin-right: 0;
+  background-color: var(--bgColorCaption);
+}
+
+.card-input {
+  width: 25rem;
+  padding: 0.3rem;
+  margin-left: 0;
+  color: var(--fontInput);
+}
+
 .btn {
+  cursor: pointer;
   color: var(--fontColor);
   padding: 0.5rem;
   margin: 0.5rem;
+  line-height: 1em;
+  text-align: center;
   border: 1px solid var(--border);
-  border-radius: 1rem;
+  border-radius: 0.5rem;
+  transition: opacity 0.1s ease, color 0.1s ease, box-shadow 0.1s ease, transform 0.1s ease;
+}
+
+.btn:hover {
+  opacity: 0.9;
+  box-shadow: 2px 2px 4px var(--boxShadow), -2px -2px 4px var(--boxShadow);
+  color: var(--hoverBtn);
+  transform: scale(0.95);
 }
 
 .btn-info {
@@ -271,4 +358,13 @@ footer img {
 
 .alert-danger {
   background-color: var(--bgColorDanger);
+}
+
+span.errors.form-error {
+  display: block;
+  background-color: var(--bgColorAlert);
+  color: #fff;
+  padding: 1em;
+  border: 5px;
+  width: 90%;
 }/*# sourceMappingURL=style.css.map */

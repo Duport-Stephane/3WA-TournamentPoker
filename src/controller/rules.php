@@ -20,4 +20,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
 }
 
-header('location: ../controller/layout.php?page=regles');
+header('location: ../controller/layout.php?page=rules');

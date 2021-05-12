@@ -103,15 +103,15 @@ class Player extends Database
 
     /**
      * Test if user_id exist in table Player for this Tournament_id
-     * @param int user_id
-     * @param int tournament_id
+     * @param {int} user_id
+     * @param {int} tournament_id
      */
     public function isPlayerExistForTournament(int $user_id, int $tournament_id)
     {
-        $query ='SELECT user_id, tournament_id 
+        $query ="SELECT user_id, tournament_id 
                 FROM player 
                 WHERE user_id = :user_id
-                AND tournament_id = :tournament_id';
+                AND tournament_id = :tournament_id";
         $param = [
             ':user_id'          => $user_id,
             ':tournament_id'    => $tournament_id
@@ -125,8 +125,8 @@ class Player extends Database
      * @param int tournament_id
      */
     public function insertPlayer (int $user_id, int $tournament_id){
-        $query = 'INSERT INTO player (user_id, tournament_id) 
-                    VALUES (:user_id, :tournament_id)';
+        $query = "INSERT INTO player (user_id, tournament_id) 
+                    VALUES (:user_id, :tournament_id)";
         $param = [
             ':user_id'          => $user_id,
             ':tournament_id'    => $tournament_id
@@ -141,9 +141,9 @@ class Player extends Database
      */
     public function deletePlayer(int $user_id, int $tournament_id)
     {
-        $query = 'DELETE FROM player
+        $query = "DELETE FROM player 
                     WHERE user_id = :user_id
-                    AND tournament_id = :tournament_id';
+                    AND tournament_id = :tournament_id";
         $param = [
             ':user_id'          => $user_id,
             ':tournament_id'    => $tournament_id
