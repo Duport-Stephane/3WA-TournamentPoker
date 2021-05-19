@@ -50,41 +50,56 @@ function modifPlayerList(form) {
 
 function userKnown(user_email) {
 
-    console.log(user_email);
+    // console.log(user_email);
 
     // pour savoir si l'utilisateur est déjà connu
-    fetch('../../src/services/ajaxLog.php?email=' + user_email)
-        .then(response => response.json())
-
-    .then(response => console.log(response))
-
-    .then(user => {
-        document.querySelector('#auth input[name="email"]').value = user.email;
-    })
-}
-
-function controlPassword(user) {
-    // envoyer un fetch pour checker le password
-    fetch('../../src/services/ajaxLog.php', {
-            method: 'POST',
-            body: form
-        })
-        .then(response => console.log(response))
-        .then(response => {
-            if ($_SESSION['info'] != "") {
-                callback.testMessageBeforeDisplay($_SESSION['info']);
+    fetch('./src/services/ajaxLog.php?email=' + user_email)
+        .then(response => response.text())
+        .then(user => {
+            if (user !== "") {
+                document.querySelector('#auth input[name="email"]').value = user_email;
+                document.querySelector('#auth input[name="password"]').focus();
             }
-            return true;
         })
 }
 
-function insert(form) {
-    fetch('../../src/services/ajaxLog.php', {
+/**
+ * Compare password
+ * @param {formData} form
+ * @param {string} email 
+ * @returns {boolean}
+ */
+function comparePassword(form, email) {
+    // on compare les 2 password    
+    fetch('./src/services/ajaxLog.php?email' + email, {
             method: 'post',
             body: form
         })
-        .then(response => console.log(response));
-
+        .then(response => response.text())
+        // .then(response => console.log(response))
+        .then(response => {
+            if (response.length > 3) {
+                return false;
+            }
+        })
 }
 
-export { modifPlayerList, userKnown, controlPassword, insert }
+
+// page INSCRIPTION
+//*******************************************************************
+
+/**
+ * Persist User in database
+ * @param {formData} form 
+ */
+function persistUser(form) {
+    fetch('./src/services/ajaxLog.php', {
+            method: 'post',
+            body: form
+        })
+        // .then(response => response.text())
+        // .then(response => console.log(response))
+}
+
+
+export { modifPlayerList, userKnown, persistUser, comparePassword }

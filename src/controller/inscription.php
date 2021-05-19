@@ -9,10 +9,7 @@
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     var_dump('INSCRIPTION.PHP en POST');
-    die;
-
-    // tester l'action, récupérer les paramètres EMAIL et PASSAWORD et les comparer avec la BDD avant de LOG le user
-
+    // die;
 
     
     // Si pas de param, je repars à l'accueil
@@ -24,9 +21,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     var_dump('INSCRIPTION.PHP en GET');
-
-    // vérifier la présence d'un adresse mail dans le localstorage
-    // le cas échéant, afficher cette adresse dans le champ Email
 
 }
 

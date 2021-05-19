@@ -10,13 +10,13 @@ declare(strict_types=1);
  */
 abstract class Database
 {
-    protected static $_instance;
+    protected PDO $_instance;
     
     public function __construct()
     {
         //	Connexion à la base de données
         try {
-            self::$_instance = new PDO(
+            $this->_instance = new PDO(
                 // 'mysql:host=localhost;dbname=tournamentpoker;charset=UTF8',
                 // 'root',
                 // '',
@@ -28,9 +28,9 @@ abstract class Database
                     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
                     ]
                 );
-                self::$_instance->exec('SET NAMES utf8mb4 COLLATE utf8mb4_general_ci');
+                $this->_instance->exec('SET NAMES utf8mb4 COLLATE utf8mb4_general_ci');
                 
-                if (self::$_instance === null) {
+                if ($this->_instance === null) {
                 throw new PDOException("La connexion a échouée", 1);
             }
         } catch (PDOException $e) {
@@ -40,21 +40,21 @@ abstract class Database
 
     public function executeSql($sql, array $values = array())
     {
-        $query = self::$_instance->prepare($sql);
+        $query = $this->_instance->prepare($sql);
         $query->execute($values);
-        return self::$_instance->lastInsertId();
+        return $this->_instance->lastInsertId();
     }
 
     public function findAll($sql, array $criteria = array()): array
     {
-        $query = self::$_instance->prepare($sql);
+        $query = $this->_instance->prepare($sql);
         $query->execute($criteria);
         return $query->fetchAll();
     }
 
     public function findOne($sql, array $criteria = array())
     {
-        $query = self::$_instance->prepare($sql);
+        $query = $this->_instance->prepare($sql);
         $query->execute($criteria);
         return $query->fetch();
     }

@@ -101,7 +101,7 @@ class User extends Database
 
 
     /**
-     * pour retourner le nom du user passé en parametre
+     * pour retourner le nom du user passé en paramètre
      * @param integer user_id
      *
      * @return string Name of the user
@@ -127,12 +127,15 @@ class User extends Database
 
     /**
      * pour retourner les infos du user à partir de son email (unique)
-     * @param string user_mail
+     * @param {string} user_mail
      *
-     * @return string Name of the user
+     * @return {string} Name of the user
      */
-    public function getUserByMail(string $user_email): array
+    public function getUserByMail(string $user_email)
     {
+        
+        // var_dump($user_email);
+
         try {
             $sql = 'SELECT id, nickName, firstName, lastName, email, password, avatar, role_id, dependUser_id, created_at
             FROM user 
@@ -147,7 +150,42 @@ class User extends Database
             die;
         }
         // var_dump($user);
-        return $user ?? [];
+        return $user;
     }
 
+
+    /**
+     * Pour créer un user dans la BDD
+     * @param {string} $nickname
+     * @param {string} $lastname
+     * @param {string} $firstname
+     * @param {string} $email
+     * @param {string} $pwd
+     * @param {string} $avatar
+     *  
+     * @return string | null
+     */
+    public function setUser(string $nickname, string $lastname, string $firstname, string $email, string $password, string $avatar = "") : string
+    {
+        var_dump("insert into USER");
+
+        try {
+            $sql = 'INSERT INTO user(nickName, lastName, firstName, email, password, avatar, role_id) 
+            VALUES (:nickname, :lastname, :firstname, :email, :password, :avatar, :role_id)';
+            $param = [
+                ':nickname'     => $nickname,
+                ':lastname'     => $lastname,
+                ':firstname'    => $firstname,
+                ':email'        => $email,
+                ':password'     => $password,
+                ':avatar'       => $avatar,
+                ':role_id'      => 1,
+            ];
+            $this->executeSql($sql, $param);
+        } catch (DomainException $e) {
+            echo $e->getMessage();
+            die;
+        }
+        return $this->_instance->lastInsertId();
+    }
 }

@@ -3,8 +3,8 @@
 // Appels de dépendances
 import * as callback from './callBack.js';
 import * as ajaxCallback from './ajaxCallBack.js';
-import Form from './Form.js';
-import ManagerLS from './ManagerLS.js'
+import ErrorCustom from './ErrorCustom.js' // Gestion des erreurs s'i
+// import Form from './Form.js';
 import * as canvas from './canvas.js';
 
 ///////////////////////////////// JS DESACTIVé ////////////////////////////////////
@@ -67,53 +67,79 @@ document.addEventListener('DOMContentLoaded', function() {
     // page LOGIN
     //*******************************************************************
     if (pageAct === 'login') {
+
+        console.log("Page LOGIN");
+
+        const _customError = new ErrorCustom // Référencer et afficher les erreurs
+        const user_email = callback.getUserInfoLS('user');
+
         // Si exist : affiche le mail du LocalStorage dans l'input Mail du log
-        const manager = new ManagerLS;
-        const user_email = manager.getDatasByKey('user');
-
         if (user_email != "" && user_email != null) {
-
-            console.log(user_email);
-
+            // console.log(user_email);
             ajaxCallback.userKnown(user_email);
         };
 
-        // document.querySelector('#auth').addEventListener('click', e => {
-        //     e.preventDefault;
+        document.querySelector('#auth').addEventListener('submit', e => {
+            e.preventDefault();
+            // console.log(e);
+            const action = e.currentTarget.id
 
-        //     console.log(e);
+            console.log(action);
 
-        //     // const champsAControler = ['email', 'password'];
-        //     // const inputs = this.querySelectorAll('input');
-        //     // const form = new Form(inputs, champsAControler);
+            // form datas
+            const form = new FormData(e.currentTarget)
+                // console.log(form);
 
-        //     // if (form.logValidate()) {
-        //     //     console.log("TOUT EST OK pour le LOG")
-        //     //         // true => on efface le formulaire
-        //     //     this.reset();
-        //     //     // on log le user
-        //     //     // form.login();
-        //     //     // On va à l'accueil ??????????????????????????
-
-        //     // } else {
-        //     //     // false => on reste sur le form et on affiche les erreurs détectées
-        //     //     form.customError.displayMessages();
-        //     // }
-        // });
+            if (callback.logValidate(form)) {
+                console.log("TOUT EST OK pour l'authentification")
+                    // true => on efface le formulaire
+                e.currentTarget.reset();
+            } else {
+                console.log("PERDU PAS d'authentification")
+                    // false => on reste sur le form et on affiche les erreurs détectées
+                _customError.displayMessages();
+            }
+        });
     }
 
     // page INSCRIPTION
     //*******************************************************************
     if (pageAct === 'inscription') {
 
-        document.querySelector('#createUser').addEventListener('submit', e => {
-            e.preventDefault;
+        console.log('PAGE inscription');
+        // return;
+
+        document.getElementById('createUser').addEventListener('submit', e => {
+            // $('#createUser').on('submit', e => {
+            e.preventDefault();
+
+            // console.log(e);
+
+            // const champsAControler = ['nickname', 'lastname', 'firstname', 'email', 'password', 'avatar'];
+            // const inputs = document.querySelectorAll('input');
+            // const form = new Form(inputs, champsAControler);
+
+            // Get action to do (from input hidden)
+            const action = e.currentTarget.id
+
+            console.log(action);
+
+            // form datas
             const form = new FormData(e.currentTarget)
-            e.currentTarget.reset();
-            ajaxCallback.insert(form);
+
+            // console.log(form);
+
+            if (callback.addValidate(form)) {
+                console.log("TOUT EST OK pour la création du USER")
+                    // true => on efface le formulaire
+                e.currentTarget.reset();
+            } else {
+                console.log("PERDU PAS de création")
+                    // false => on reste sur le form et on affiche les erreurs détectées
+                form.customError.displayMessages();
+            }
         });
     }
-
 
     // page BONUS
     //*******************************************************************

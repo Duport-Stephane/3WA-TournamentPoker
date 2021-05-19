@@ -1,10 +1,5 @@
 <?php
 
-// var_dump($_GET);
-// var_dump($_SERVER);
-// var_dump($_SESSION);
-// die;
-
 // Actions : Traitement (POST)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -27,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     var_dump('LOGIN.PHP en GET');
+    // die;
 
     // vérifier la présence d'un adresse mail dans le localstorage
     // le cas échéant, afficher cette adresse dans le champ Email

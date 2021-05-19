@@ -54,10 +54,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     try {
         if(SESSION::isConnected()){
 
-            // $tournament_id = 1;
+            $tournament_id = 1;
             
-            // $users      = $userM->getUsers($_SESSION['user']['id'], $tournament_id);
-            // $players    = $userM->getPlayers($tournament_id);
+            $users      = $userM->getUsers($_SESSION['user']['id'], $tournament_id);
+            $players    = $userM->getPlayers($tournament_id);
 
         } else {
 
