@@ -1,4 +1,5 @@
 <?php
+// var_dump(\appDS\Session::getOffset('user'));
 
 // Actions : Traitement (POST)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -9,8 +10,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // tester l'action, récupérer les paramètres EMAIL et PASSAWORD et les comparer avec la BDD avant de LOG le user
 
     extract($_POST);
-
-    // Session::login($email);
 
     
     // Si pas de param, je repars à l'accueil
@@ -29,4 +28,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
 }
 
-header('location: ./index.php?page=login');
+require_once './src/views/login.phtml';

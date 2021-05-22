@@ -90,7 +90,7 @@ body {
   transform: scale(0.95);
 }
 .navHeader nav:last-child {
-  max-width: 10%;
+  max-width: 15%;
   margin: 0 1.5rem;
 }
 
@@ -348,6 +348,11 @@ footer ul li a:hover {
   transform: scale(0.95);
 }
 
+.btn-success {
+  color: var(--fontColor);
+  background-color: var(--bgColorSuccess);
+}
+
 .btn-info {
   color: var(--fontColor);
   background-color: var(--bgColorInfo);
@@ -399,7 +404,8 @@ span.errors.form-error {
   display: block;
   background-color: var(--bgColorAlert);
   color: #fff;
-  padding: 1em;
-  border: 5px solid var(--border);
+  padding: 0.5em;
+  border: 2px solid var(--border);
+  border-radius: 0.5rem;
   width: 90%;
 }/*# sourceMappingURL=style.css.map */

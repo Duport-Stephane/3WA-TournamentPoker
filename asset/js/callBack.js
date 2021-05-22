@@ -137,16 +137,22 @@ function logValidate(form) {
     const inputs = document.querySelectorAll('input');
     inputs.forEach(input => {
 
-        console.log(input)
+        // console.log("TEST de ", input)
 
         // Si les champs obligatoires sont vides => ERROR
         if (input.value === "") {
+
+            console.log("invalid VIDE ", input)
+
             this._errors.push({
                 field: input.name,
                 type: 'empty',
                 message: `Merci de remplir le champ ${input.placeholder}`
             })
         } else if (input.name === 'email' && !isMailValid(input.value)) {
+
+            console.log("invalid EMAIL ", input)
+
             // Création de l'erreur de format du mail
             _errors.push({
                 field: input.name,
@@ -154,13 +160,19 @@ function logValidate(form) {
                 message: `Merci de remplir le champ ${input.placeholder} avec un email correctement formaté`
             })
         } else if (input.name === 'password' && !isPasswordValid(input.value)) {
+
+            console.log("invalid PWD ", input)
+
             // Création de l'erreur de format du password
             _errors.push({
-                field: input.name,
+                field: input.placeholder,
                 type: 'format',
                 message: `Le mot de passe doit contenir au moins 8 caractères dont un chiffre, une majuscule et un caractère spécial`
             })
         } else {
+
+            // console.log("save l'input ", input.name)
+
             switch (input.name) {
                 case 'email':
                     _user.email = input.value
@@ -174,28 +186,35 @@ function logValidate(form) {
 
     if (_errors.length > 0) {
 
-        console.log("Il y a des errors !!!!!!!!!!!")
+        console.log(_errors);
 
         // On enregistre les errors de notre form dans la class ErrorCustom,
         _customError.messages = _errors
             // afin de bénéficier des fonctionnalités de celui-ci pour les affichées par la suite
+
+        _customError.displayMessages();
+
         return false
     } else {
 
-        const isPwdOK = ajaxCallBack.comparePassword(form, _user.email)
+        const Rep = ajaxCallBack.isSamePassword(form, _user.email);
+        console.log(Rep);
 
-        if (isPwdOK) {
+        if (ajaxCallBack.isSamePassword(form, _user.email)) {
+
+            console.log("Les mots de passe coïncident")
+
             // si OK, actualise le mail dans le LocalStorage
             updateUserInfoLS(_key, _user.email)
 
-            // on modifie l'affichage : affiche le token LOGOUT et masque inscription
-            displayTokenLog();
-
-            // Vider les erreurs
-            const errorSpan = document.querySelector('.errors')
-            errorSpan.classList.remove('form-error')
-            errorSpan.innerHTML = ''
-            errorSpan.innerText = ''
+            _errors.push({
+                field: 'email',
+                type: 'format',
+                message: 'Bienvenue ' + _user.email
+            });
+            _customError.messages = _errors;
+            _customError.displayMessages();
+            _customError.viderError();
 
             return true;
         } else {
@@ -205,12 +224,24 @@ function logValidate(form) {
                 message: `Vos identifiants sont incorrects. Merci de réessayer.`
             });
             _customError.messages = _errors;
+            _customError.displayMessages();
+            document.querySelector('#auth input[name=password]').value = "";
+            document.querySelector('#auth input[name=password]').focus();
 
             return false;
         }
     }
 }
 
+/**
+ * Get the value for this key
+ * @param {string} key 
+ * @returns {string} LocalStorage's value for this key
+ */
+function getUserInfoLS(key) {
+    const _manager = new ManagerLS;
+    return _manager.getDatasByKey(key);
+}
 
 // page INSCRIPTION
 //*******************************************************************
@@ -321,24 +352,16 @@ function addValidate(form) {
         displayTokenLog();
 
 
-        // Vider les erreurs
-        const errorSpan = document.querySelector('.errors')
-        errorSpan.classList.remove('form-error')
-        errorSpan.innerHTML = ''
-        errorSpan.innerText = ''
+        _customError.viderError();
+
+        // // Vider les erreurs
+        // const errorSpan = document.querySelector('.errors')
+        // errorSpan.classList.remove('form-error')
+        // errorSpan.innerHTML = ''
+        // errorSpan.innerText = ''
 
         return true
     }
-}
-
-/**
- * Get the value for this key
- * @param {string} key 
- * @returns {string} LocalStorage's value for this key
- */
-function getUserInfoLS(key) {
-    const _manager = new ManagerLS;
-    return _manager.getDatasByKey(key);
 }
 
 /**
@@ -350,6 +373,9 @@ function updateUserInfoLS(key, value) {
     const _manager = new ManagerLS // Enregistrer ou mettre à jour le mail du user dans le LocalStorage
     _manager.setDatas(key, value)
 }
+
+// COMMUN page LOGIN & INSCRIPTION
+//*******************************************************************
 
 /**
  * Test email
@@ -385,12 +411,12 @@ function isPasswordValid(pwd) {
 /**
  * Display Token on navbar
  */
-function displayTokenLog() {
-    const $tokens = document.querySelectorAll('.navHeader.log li');
-    $tokens.forEach($token => {
-        $token.classList.toggle('hide');
-    });
-}
+// function displayTokenLog() {
+//     const $tokens = document.querySelectorAll('.navHeader.log li');
+//     $tokens.forEach($token => {
+//         $token.classList.toggle('hide');
+//     });
+// }
 
 
 // Gestion de l'affichage des MESSAGES

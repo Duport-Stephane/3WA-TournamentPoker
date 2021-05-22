@@ -23,7 +23,8 @@ document.addEventListener('DOMContentLoaded', function() {
     callback.currentNav();
 
     // jQuery - Affichage de la notif pendant 2 sec 
-    $('#notif').delay(2000).fadeOut()
+    // $('#notif').delay(2000).fadeOut()
+    $('.message').delay(5000).fadeOut()
 
     // connaitre la page actuelle
     const address = window.location.href
@@ -98,6 +99,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log("PERDU PAS d'authentification")
                     // false => on reste sur le form et on affiche les erreurs détectées
                 _customError.displayMessages();
+                document.querySelector('#auth input[name=password]').value = "";
+                document.querySelector('#auth input[name=password]').focus();
             }
         });
     }
@@ -136,10 +139,11 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 console.log("PERDU PAS de création")
                     // false => on reste sur le form et on affiche les erreurs détectées
-                form.customError.displayMessages();
+                _customError.displayMessages();
             }
         });
     }
+
 
     // page BONUS
     //*******************************************************************

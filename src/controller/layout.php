@@ -9,17 +9,34 @@
 
     <header>
         <?php require_once './src/views/partials/header.phtml'; ?>
+
+        <!-- <?= var_dump($page); ?> -->
+        <!-- <?= var_dump(\appDS\models\Session::getAllSession()) ?> -->
+
+        <?php if (\appDS\models\Session::isOffsetExists('user')) : { ?>
+                <?= var_dump(\appDS\models\Session::getOffset('user')); ?>
+        <?php }
+        endif; ?>
+
     </header>
 
     <main class='container'>
 
-        <?php require_once './src/views/' . $page . '.phtml' ?>
+        <?php //require_once './src/views/' . $page . '.phtml' ?>
+        <?php require_once './src/controller/' . $page . '.php' ?>
 
-        <?php if (Session::isOffsetExists('info') && !empty(Session::getOffset('info'))) : ?>
+        <div class="message"></div>
+        <!-- <?php if (\appDS\models\Session::isOffsetExists('info') && !empty(\appDS\models\Session::getOffset('info'))) : ?>
             <div id="notif" class="message alert alert-info">
-                <p><?= Session::getOffset('info') ?></p>
+                <p><?= \appDS\models\Session::getOffset('info') ?></p>
             </div>
         <?php endif; ?>
+
+        <?php if (\appDS\models\Session::isOffsetExists('alert') && !empty(\appDS\models\Session::getOffset('alert'))) : ?>
+            <div class="message alert alert-alert">
+                <p><?= \appDS\models\Session::getOffset('alert') ?></p>
+            </div>
+        <?php endif; ?> -->
 
     </main>
 

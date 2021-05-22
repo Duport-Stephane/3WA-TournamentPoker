@@ -17,4 +17,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
 }
 
-header('location: ../../index.php?page=rules');
+require_once './src/views/rules.phtml';

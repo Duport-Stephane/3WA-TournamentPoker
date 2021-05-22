@@ -24,4 +24,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
 }
 
-header('location: ./index.php?page=inscription');
+require_once './src/views/inscription.phtml';

@@ -3,22 +3,22 @@
 
 <div class='flex-between'>
 
-    <form class='addPlayerList' action='../../src/services/ajaxPlayers.php' method="POST">
+    <form class='addPlayerList' action='./src/services/ajaxPlayers.php' method="POST">
         <input type='hidden' name='action' value='addPlayerList'>
         <?php $type = 'users'; ?>
         <?php $title = 'Liste des joueurs inscrits'; ?>
         <div>
-            <?php require_once './src/views/partials/arrayUser.phtml'; ?>
+            <?php require './src/views/partials/arrayUser.phtml'; ?>
         </div>
         <button type='submit' class='btn btn-info'>Valider le(s) joueur(s) selectionné(s)</button>
     </form>
 
-    <form class='delPlayerList' action='../../src/services/ajaxPlayers.php' method="POST">
+    <form class='delPlayerList' action='./src/services/ajaxPlayers.php' method="POST">
         <input type='hidden' name='action' value='delPlayerList'>
         <?php $type = 'players'; ?>
         <?php $title = 'Joueurs validés pour ce tournoi'; ?>
         <div>
-            <?php require_once './src/views/partials/arrayUser.phtml'; ?>
+            <?php require './src/views/partials/arrayUser.phtml'; ?>
         </div>
         <button type='submit' class='btn btn-alert'>Retirer le(s) joueur(s) de ce tournoi</button>
     </form>

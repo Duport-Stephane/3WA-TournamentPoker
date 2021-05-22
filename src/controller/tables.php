@@ -22,4 +22,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
 }
 
-header('location: ./index.php?page=tables');
+require_once './src/views/tables.phtml';

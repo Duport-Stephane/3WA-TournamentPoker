@@ -1,9 +1,10 @@
 <?php
-
 declare(strict_types=1);
 
+namespace appDS\models;
+
 // Appel de la connexion à la bdd
-require_once '../services/database.php';
+// require './src/models/Database.php';
 
 class User extends Database
 {
@@ -15,6 +16,10 @@ class User extends Database
     protected string $avatar;
     protected int $role_id;
     protected int $dependUser_id;
+
+    // public function __construct(){
+    //     parent::__construct();
+    // }
 
     /**
      * Test if id exist in table
@@ -42,29 +47,30 @@ class User extends Database
     // pour retourner l'ensemble des joueurs USER ou USER/ADMIN (mais pas admin seul)
     // La sous requête dans le NOT EXISTS permet de ne pas prendre les joueurs DEJA validés pour le tournoi actuel
 
-    public function getUsers(int $dependUser_id, int $tournament_id): array
+    public function getUsers(): array
+    // public function getUsers(int $dependUser_id, int $tournament_id): array
     {
         try {
-            $query = 'SELECT user.id, nickName, firstName, lastName, avatar, role_id, dependUser_id 
+            $query = 'SELECT user.id, nickName, firstName, lastName, avatar, role_id
                 FROM user
                 WHERE role_id != :role_id
-                AND dependUser_id = :dependUser_id
-                AND NOT EXISTS 
-                    (
-                    SELECT user_id, tournament_id 
-                    FROM player
-                    WHERE user_id = user.id 
-                    AND tournament_id = :tournament_id
-                    )
+                -- AND dependUser_id = :dependUser_id
+                -- AND NOT EXISTS 
+                --     (
+                --     SELECT user_id, tournament_id 
+                --     FROM player
+                --     WHERE user_id = user.id 
+                --     AND tournament_id = :tournament_id
+                --     )
                 ORDER BY nickName';
             $param = [
-                ':role_id'          => 1,
-                ':dependUser_id'    => $dependUser_id,
-                ':tournament_id'    => $tournament_id
+                ':role_id'          => 1,       // Admin
+                // ':dependUser_id'    => $dependUser_id,
+                // ':tournament_id'    => $tournament_id
             ];
 
             $users = $this->findAll($query, $param);
-        } catch (DomainException $e) {
+        } catch (\DomainException $e) {
             echo $e->getMessage();
             die;
         }
@@ -91,7 +97,7 @@ class User extends Database
             ];
 
             $players = $this->findAll($sql, $param);
-        } catch (DomainException $e) {
+        } catch (\DomainException $e) {
             echo $e->getMessage();
             die;
         }
@@ -117,7 +123,7 @@ class User extends Database
             ];
 
             $nickName = $this->findOne($sql, $param);
-        } catch (DomainException $e) {
+        } catch (\DomainException $e) {
             echo $e->getMessage();
             die;
         }
@@ -145,7 +151,7 @@ class User extends Database
             ];
 
             $user = $this->findOne($sql, $param);
-        } catch (DomainException $e) {
+        } catch (\DomainException $e) {
             echo $e->getMessage();
             die;
         }
@@ -179,10 +185,10 @@ class User extends Database
                 ':email'        => $email,
                 ':password'     => $password,
                 ':avatar'       => $avatar,
-                ':role_id'      => 1,
+                ':role_id'      => 1
             ];
             $this->executeSql($sql, $param);
-        } catch (DomainException $e) {
+        } catch (\DomainException $e) {
             echo $e->getMessage();
             die;
         }

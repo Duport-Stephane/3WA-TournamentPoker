@@ -1,6 +1,7 @@
 <?php
-
 declare(strict_types=1);
+
+namespace appDS\models;
 
 // // Init Session
 // if (session_status() === PHP_SESSION_NONE) {
@@ -19,10 +20,18 @@ class Session
         // }
     }
 
-    public static function login(string $email, $role_id): void
+    public static function login(int $id, string $pseudo, string $prenom, string $nom, string $email, string $avatar, int $role_id): void
     {
-        $_SESSION['user']['email']   = $email;
-        $_SESSION['user']['role_id'] = $role_id;
+        $_SESSION['user'] = [
+            'id'        => $id,
+            'pseudo'    => $pseudo,
+            'prenom'    => $prenom,
+            'nom'       => $nom,
+            'email'     => $email,
+            'avatar'    => $avatar,
+            'role_id'   => $role_id
+        ];
+        // var_dump($_SESSION['user']['email']);
     }
 
     public static function logout(): void
@@ -40,7 +49,7 @@ class Session
 
     public static function getOffset($offset): string
     {
-        return implode($_SESSION[$offset]);
+        return implode(',' , $_SESSION[$offset]);
     }
 
     public static function setOffset($offset, $value)
@@ -59,4 +68,10 @@ class Session
             unset($_SESSION[$offset]);
         }
     }
+
+    public static function getAllSession()
+    {
+        return $_SESSION;
+    }
+
 }

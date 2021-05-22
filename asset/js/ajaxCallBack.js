@@ -2,6 +2,7 @@
 
 // Appels de dépendances
 import * as callback from './callBack.js';
+import ErrorCustom from './ErrorCustom.js' // Gestion des erreurs s'il y en a
 
 // page PLAYER
 //*******************************************************************
@@ -9,13 +10,13 @@ import * as callback from './callBack.js';
  * Refresh Tab User, Players
  */
 function refresh() {
-    fetch('../../src/services/ajaxPlayers.php?action=refresh&type=User')
+    fetch('./src/services/ajaxPlayers.php?action=refresh&type=User')
         .then(response => response.json())
         .then(users => {
             callback.displayTabUser(users, 'users');
         });
 
-    fetch('../../src/services/ajaxPlayers.php?action=refresh&type=Player')
+    fetch('./src/services/ajaxPlayers.php?action=refresh&type=Player')
         .then(response => response.json())
         .then(users => {
             callback.displayTabUser(users, 'players');
@@ -32,7 +33,7 @@ function modifPlayerList(form) {
     // console.log('FETCH MODIF-PLAYER')
     // Fetch pour actualiser la table Player
 
-    fetch('../../src/services/ajaxPlayers.php', {
+    fetch('./src/services/ajaxPlayers.php', {
             method: 'POST',
             body: form
         })
@@ -69,17 +70,25 @@ function userKnown(user_email) {
  * @param {string} email 
  * @returns {boolean}
  */
-function comparePassword(form, email) {
+function isSamePassword(form, email) {
+
+    // console.log(form);
+    console.log(email);
+
     // on compare les 2 password    
-    fetch('./src/services/ajaxLog.php?email' + email, {
+    return fetch('./src/services/ajaxLog.php?email' + email, {
             method: 'post',
             body: form
         })
         .then(response => response.text())
-        // .then(response => console.log(response))
+        // .then(response => console.log("Retour ajax : " + response))
         .then(response => {
-            if (response.length > 3) {
+            if (response === "Le mot de passe n'est pas correct") {
+                console.log("Retour ajax FALSE : " + response)
                 return false;
+            } else {
+                console.log("Retour ajax TRUE : " + response)
+                return true;
             }
         })
 }
@@ -102,4 +111,4 @@ function persistUser(form) {
 }
 
 
-export { modifPlayerList, userKnown, persistUser, comparePassword }
+export { modifPlayerList, userKnown, persistUser, isSamePassword }

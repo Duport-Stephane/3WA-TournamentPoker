@@ -1,9 +1,10 @@
 <?php
-
 declare(strict_types=1);
 
+namespace appDS\models;
+
 // Appel de la connexion à la bdd
-require_once '../services/database.php';
+// require './src/models/Database.php';
 
 class Player extends Database
 {
@@ -12,6 +13,12 @@ class Player extends Database
     protected int $seat_id;
     protected int $table_id;
     protected int $tournament_id;
+
+
+    // public function __construct()
+    // {
+    //     parent::__construct();
+    // }
 
     /**
      * Get the value of id

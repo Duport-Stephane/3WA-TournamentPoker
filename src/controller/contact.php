@@ -17,4 +17,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
 }
 
-header('location: ../../index.php?page=contact');
+require_once './src/views/contact.phtml';
