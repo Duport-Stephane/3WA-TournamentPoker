@@ -29,7 +29,7 @@ class ErrorCustom {
 
     // Affichage des erreurs s'il y en a
     displayMessages() {
-        const $errorSpan = document.querySelector('.errors');
+        const $errorSpan = document.querySelector('.message');
         // $errorSpan.innerHTML = '';
         $errorSpan.classList.add('form-error');
         // Fill
@@ -43,18 +43,19 @@ class ErrorCustom {
         })
 
         //     setInterval(this.removeMessages(), 5000);
-        //     this.viderError();
+        this.viderError();
     }
 
     removeMessages() {
-        const $errorSpan = document.querySelector('.errors');
+        const $errorSpan = document.querySelector('.message');
         $errorSpan.classList.remove('form-error');
     }
 
     viderError() {
         // Vider les erreurs
-        const $errorSpan = document.querySelector('.errors')
+        const $errorSpan = document.querySelector('.message')
         $errorSpan.classList.remove('form-error')
+            // const $errorP = $errorSpan.querySelector('p')
         $errorSpan.innerHTML = ''
         $errorSpan.innerText = ''
     }

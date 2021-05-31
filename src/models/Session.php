@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace appDS\models;
+namespace Models;
 
 // // Init Session
 // if (session_status() === PHP_SESSION_NONE) {
@@ -24,11 +24,11 @@ class Session
     {
         $_SESSION['user'] = [
             'id'        => $id,
-            'pseudo'    => $pseudo,
-            'prenom'    => $prenom,
-            'nom'       => $nom,
-            'email'     => $email,
-            'avatar'    => $avatar,
+            'pseudo'    => htmlentities($pseudo),
+            'prenom'    => htmlentities($prenom),
+            'nom'       => htmlentities($nom),
+            'email'     => htmlentities($email),
+            'avatar'    => htmlentities($avatar),
             'role_id'   => $role_id
         ];
         // var_dump($_SESSION['user']['email']);
@@ -47,13 +47,19 @@ class Session
         return !empty($_SESSION['user']['email']) ? true : false;
     }
 
-    public static function getOffset($offset): string
+    public static function getOffset($offset)
     {
-        return implode(',' , $_SESSION[$offset]);
+        return isset($_SESSION[$offset]) ? $_SESSION[$offset] : null;
+    }
+
+    public static function getUserEmail(): ?string
+    {
+        return isset($_SESSION['user']['email']) ? $_SESSION['user']['email'] : "";
     }
 
     public static function setOffset($offset, $value)
     {
+        // $_SESSION[$offset] = htmlentities($value);
         $_SESSION[$offset] = $value;
     }
 

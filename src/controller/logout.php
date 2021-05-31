@@ -1,12 +1,12 @@
 <?php
 
-var_dump($_GET);
-var_dump($_POST);
+// var_dump($_GET);
+// var_dump($_POST);
 
 // session_start();
 // var_dump($_SESSION);
 
-\appDS\models\Session::logout();
+\Models\Session::logout();
 
 // var_dump($_SESSION);
 // die;

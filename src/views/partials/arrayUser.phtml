@@ -18,17 +18,17 @@
         } else {
             $list = $players;
         } ?>
-        <?php foreach($list as $user) : ?>
+        <?php foreach($list as $user) : {?>
             <tr>
                 <td><input type='checkbox' name='checkboxuser[]' value=<?= $user['id'] ?>></td>
                 <td><?= $user['nickName'] ?></td>
                 <td><?= $user['firstName'] ?></td>
                 <td><?= $user['lastName'] ?></td>
-                <td><?php if ($user['avatar'] && $user['avatar'] != "") : ?>
+                <td><?php if ($user['avatar'] && $user['avatar'] != "") : {?>
                         <img src=<?= $user['avatar'] ?> alt='avatar'>
-                    <?php endif; ?>
+                    <?php } endif; ?>
                 </td>
             </tr>
-        <?php endforeach; ?>
+        <?php } endforeach; ?>
     </table>
 </div>

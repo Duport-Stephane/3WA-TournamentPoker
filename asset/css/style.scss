@@ -17,7 +17,7 @@ a {
 // *******************************************************************
 // ******************         COLORIS     ************************
 // Theme Bleu
- :root {
+:root {
     --fontColor: #fff;
     --fontInput: rgb(31, 48, 133);
     --bgColor: rgba(31, 48, 133, .5);
@@ -81,12 +81,13 @@ body {
     width: 100vw;
     // max-height: 1024px;
     font-family: 'Zilla Slab', serif;
-    background-position: center;
+    color: var(--fontColor);
+    // background-position: center;
     background-image: url('../../asset/images/Background-0.png');
     background-size: 1280px;
-    background-repeat: no-repeat;
+    background-repeat: repeat;
     background-color: var(--bgColor);
-    color: var(--fontColor);
+    overflow-y: scroll;
 }
 
 // *******************************************************************
@@ -265,6 +266,156 @@ fieldset div label {
 // ******************            LOGIN         ************************
 fieldset {
     width: 30rem;
+}
+
+// ******************            GAME         ************************
+.grid {
+    display: grid;
+}
+
+.inline-grid {
+    display: inline-grid;
+}
+
+.item {
+    border: 1px solid black;
+    min-width: 100px;
+    min-height: 50px;
+}
+
+.bleu {
+    background-color: #28B;
+}
+
+.vert {
+    background-color: #2B8;
+}
+
+.jaune {
+    background-color: #BB2;
+}
+
+.rouge {
+    background-color: #D48;
+}
+
+.c1 {
+    grid-template-columns: 200px auto 300px;
+    grid-template-rows: 200px 100px;
+}
+
+.c2 {
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-rows: auto;
+}
+
+.c3 {
+    grid-template-columns: 1fr 50% 2fr;
+    grid-template-rows: 1fr 1fr;
+}
+
+// ******************            FLIP         ************************
+.clock {
+    display: flex;
+}
+
+.flip {
+    position: relative;
+    width: 60px;
+    height: 100px;
+    margin: 2px;
+    font-size: 66px;
+    line-height: 100px;
+    text-align: center;
+    border: 1px solid black;
+    border-radius: 10px;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
+}
+
+.digital::before,
+.digital::after {
+    position: absolute;
+    content: attr(data-number);
+    left: 0;
+    right: 0;
+    color: white;
+    background: black;
+    overflow: hidden;
+    perspective: 160px;
+}
+
+.digital::before {
+    top: 0;
+    bottom: 50%;
+    border-bottom: 1px solid #666;
+    border-radius: 10px 10px 0 0;
+}
+
+.digital::after {
+    top: 50%;
+    bottom: 0;
+    line-height: 0;
+    border-radius: 0 0 10px 10px;
+}
+
+.digital.front::after,
+.digital.back::before {
+    z-index: 1;
+}
+
+.digital.back::after {
+    transform-origin: top center;
+    transform: rotateX(0.5turn);
+    z-index: 2;
+}
+
+.digital.front::before {
+    z-index: 3;
+}
+
+.divider {
+    font-size: 66px;
+    line-height: 102px;
+    font-style: normal;
+}
+
+.flip.running .front::before {
+    transform-origin: center bottom;
+    animation: frontFlipDown 0.6s ease-in-out;
+    box-shadow: 0 -2px 6px rgba(255, 255, 255, 0.3);
+    backface-visibility: hidden;
+}
+
+.flip.running .back::after {
+    animation: backFlipDown 0.6s ease-in-out;
+}
+
+@-webkit-keyframes frontFlipDown {
+    to {
+        /* -webkit-transform: rotateX(0.5turn); */
+        transform: rotateX(0.5turn);
+    }
+}
+
+@keyframes frontFlipDown {
+    to {
+        /* -webkit-transform: rotateX(0.5turn); */
+        transform: rotateX(0.5turn);
+    }
+}
+
+@-webkit-keyframes backFlipDown {
+    to {
+        /* -webkit-transform: rotateX(0); */
+        transform: rotateX(0);
+    }
+}
+
+@keyframes backFlipDown {
+    to {
+        /* -webkit-transform: rotateX(0); */
+        transform: rotateX(0);
+    }
 }
 
 // *******************************************************************
@@ -447,6 +598,11 @@ footer {
     background-color: var(--bgColorSuccess);
 }
 
+.alert-info {
+    color: var(--fontColor);
+    background-color: var(--bgColorInfo);
+}
+
 .alert-alert {
     color: var(--fontColor);
     background-color: var(--bgColorAlert);
@@ -457,7 +613,7 @@ footer {
     background-color: var(--bgColorDanger);
 }
 
-span.errors.form-error {
+.message.form-error {
     display: block;
     background-color: var(--bgColorAlert);
     color: #fff;

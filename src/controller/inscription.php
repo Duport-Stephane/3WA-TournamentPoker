@@ -13,8 +13,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     
     // Si pas de param, je repars à l'accueil
-    header('Location: ./index.php?page=home');
-    exit;
+    // header('Location: ./index.php?page=home');
+    // exit;
 }
 
 // 1 er chargement de la page 'login'

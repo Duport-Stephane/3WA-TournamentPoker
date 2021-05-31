@@ -14,13 +14,21 @@ import ErrorCustom from './ErrorCustom.js' // Gestion des erreurs s'il y en a
  */
 function currentNav() {
     const address = window.location.href
-    const compt = address.lastIndexOf('=')
-        // console.log(window.location);
-    const pageAct = address.slice(compt + 1);
+        // console.log(address);
+    let beginPage = address.indexOf('=') + 1;
+    // console.log(beginPage);
+    let endPage = address.indexOf('&', beginPage);
+    // console.log(endPage);
+    if (endPage === -1) {
+        endPage = address.length;
+    }
+    // console.log(endPage);
+    const pageAct = address.slice(beginPage, endPage);
+    // console.log(pageAct);
 
     // cas particulier de la page HOME lors du premier chargement
     // il n'y a pas de parametre "page=" dans le root
-    if (compt === -1) {
+    if (beginPage === 0) {
         document.querySelector('.navHeader a.home').classList.add('current');
     } else {
         // liste des balises 'a' du menu
@@ -33,6 +41,22 @@ function currentNav() {
             }
         });
     }
+    return pageAct;
+}
+
+
+// Remplacement de caractères interdits lors des saisies
+function htmlEntities(str) {
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/#/g, '&#35;')
+        .replace(/{/g, '&laquo;')
+        .replace(/}/g, '&raquo;')
+        .replace(/\n/g, '&#92;n')
+        .replace(/\r/g, '&#92;r');
 }
 
 
@@ -68,7 +92,7 @@ function displayTabUser(users, typeUser) {
     $userList.classList.add('array', typeUser);
     $tableauUser.append($userList);
     users.map(user => {
-        // Construction des lignes du tableau, 1 par user
+        // Construction des lignes du tableau, une par user
         const $tr = document.createElement('tr');
         $userList.append($tr);
         // un td pour chaque colonne
@@ -78,7 +102,7 @@ function displayTabUser(users, typeUser) {
         const $input = document.createElement('input');
         $input.type = 'checkbox';
         $input.name = 'checkboxuser[]';
-        $input.value = user['id'];
+        $input.value = htmlEntities(user['id']);
         $td.append($input);
         let value;
         let $add
@@ -86,13 +110,13 @@ function displayTabUser(users, typeUser) {
         for (let column = 2; column < 5; column++) {
             switch (column) {
                 case 2:
-                    value = user['nickName']
+                    value = htmlEntities(user['nickName'])
                     break;
                 case 3:
-                    value = user['firstName']
+                    value = htmlEntities(user['firstName'])
                     break;
                 case 4:
-                    value = user['lastName']
+                    value = htmlEntities(user['lastName'])
                     break;
                 default:
                     console.log('Désolé, il n\'y a plus de choix');
@@ -102,9 +126,9 @@ function displayTabUser(users, typeUser) {
             $add.append(value);
         }
         // et s'il y a un avatar... en dernière colonne
-        if (user['avatar'] && user['avatar'] != '') {
+        if (htmlEntities(user['avatar']) && htmlEntities(user['avatar']) != '') {
             const $avatar = document.createElement('img');
-            $avatar.src = user['avatar'];
+            $avatar.src = htmlEntities(user['avatar']);
             $avatar.alt = 'avatar';
             $add = document.createElement('td');
             $tr.append($add);
@@ -167,7 +191,7 @@ function logValidate(form) {
             _errors.push({
                 field: input.placeholder,
                 type: 'format',
-                message: `Le mot de passe doit contenir au moins 8 caractères dont un chiffre, une majuscule et un caractère spécial`
+                message: `Le mot de passe doit contenir au moins 8 caractères dont une minuscule, une majuscule, un chiffre et un caractère spécial`
             })
         } else {
 
@@ -175,10 +199,10 @@ function logValidate(form) {
 
             switch (input.name) {
                 case 'email':
-                    _user.email = input.value
+                    _user.email = htmlEntities(input.value)
                     break;
                 case 'password':
-                    _user.password = input.value
+                    _user.password = htmlEntities(input.value)
                     break;
             }
         }
@@ -196,25 +220,28 @@ function logValidate(form) {
 
         return false
     } else {
-
-        const Rep = ajaxCallBack.isSamePassword(form, _user.email);
+        // on compare le password saisi à celui qui est en BDD
+        const Rep = ajaxCallBack.isSamePassword(form);
         console.log(Rep);
 
-        if (ajaxCallBack.isSamePassword(form, _user.email)) {
+        if (ajaxCallBack.isSamePassword(form)) {
 
             console.log("Les mots de passe coïncident")
 
             // si OK, actualise le mail dans le LocalStorage
             updateUserInfoLS(_key, _user.email)
 
-            _errors.push({
-                field: 'email',
-                type: 'format',
-                message: 'Bienvenue ' + _user.email
-            });
-            _customError.messages = _errors;
-            _customError.displayMessages();
-            _customError.viderError();
+            // Login => persit in $_SESSION['user']
+            ajaxCallBack.loginUser(form);
+
+            // _errors.push({
+            //     field: 'email',
+            //     type: 'format',
+            //     message: 'Bienvenue ' + _user.email
+            // });
+            // _customError.messages = _errors;
+            // _customError.displayMessages();
+            // _customError.viderError();
 
             return true;
         } else {
@@ -225,8 +252,8 @@ function logValidate(form) {
             });
             _customError.messages = _errors;
             _customError.displayMessages();
-            document.querySelector('#auth input[name=password]').value = "";
-            document.querySelector('#auth input[name=password]').focus();
+            document.querySelector('.auth input[name=password]').value = "";
+            document.querySelector('.auth input[name=password]').focus();
 
             return false;
         }
@@ -288,7 +315,7 @@ function addValidate(form) {
             _errors.push({
                 field: input.name,
                 type: 'format',
-                message: `Le mot de passe doit contenir au moins 8 caractères dont un chiffre, une majuscule et un caractère spécial`
+                message: `Le mot de passe doit contenir au moins 8 caractères dont une minuscule, une majuscule, un chiffre et un caractère spécial`
             })
 
         } else {
@@ -303,28 +330,28 @@ function addValidate(form) {
 
             switch (input.name) {
                 case 'nickname':
-                    _user.nickname = input.value
+                    _user.nickname = htmlEntities(input.value)
                     break;
                 case 'lastname':
-                    if (_user.lastname != "") {
-                        _user.lastname = input.value
+                    if (_user.lastname !== "") {
+                        _user.lastname = htmlEntities(input.value)
                     }
                     break;
                 case 'firstname':
-                    if (_user.firstname != "") {
-                        _user.firstname = input.value
+                    if (_user.firstname !== "") {
+                        _user.firstname = htmlEntities(input.value)
                     }
                     break;
                 case 'email':
-                    _user.email = input.value
+                    _user.email = htmlEntities(input.value)
                         // console.log(_user.email)
                     break;
                 case 'password':
-                    _user.password = input.value
+                    _user.password = htmlEntities(input.value)
                     break;
                 case 'avatar':
-                    if (_user.avatar != "") {
-                        _user.avatar = input.value
+                    if (_user.avatar !== "") {
+                        _user.avatar = htmlEntities(input.value)
                     }
                     break;
             }
@@ -349,7 +376,7 @@ function addValidate(form) {
         updateUserInfoLS(_key, _user.email)
 
         // on modifie l'affichage : affiche le token LOGOUT et masque inscription
-        displayTokenLog();
+        // displayTokenLog();
 
 
         _customError.viderError();
@@ -432,63 +459,30 @@ function isPasswordValid(pwd) {
 function testMessageBeforeDisplay(message) {
     let indexOfFirst;
     if (indexOfFirst = message.indexOf("Danger") != -1) {
-        displayDanger(message.slice(8));
-    } else if (indexOfFirst = message.indexOf("Attention") != -1) {
-        displayAlert(message.slice(11));
+        displayMessage(message.slice(8), 'Danger');
+    } else if (indexOfFirst = message.indexOf("Warning") != -1) {
+        displayMessage(message.slice(9), 'Warning');
     } else {
-        displaySuccess(message);
+        displayMessage(message.slice(9), 'Success');
     }
 }
 
 /**
  * 
- * @param {string} message Message de SUCCESS à afficher
+ * @param {string} state criticité du message
+ * @param {string} message Message à afficher
  */
-function displaySuccess(message) {
+function displayMessage(state, message) {
 
     // console.log(message);
 
     const $messages = document.querySelector('.message');
     const $balise = document.createElement('div')
-    $balise.setAttribute('class', 'alert alert-success');
+    $balise.setAttribute('class', 'alert alert-' + state);
     $messages.append($balise);
     $balise.append(message);
 
-    removeMessage();
-}
-
-/**
- * 
- * @param {string} message Message d'ALERTE à afficher
- */
-function displayAlert(message) {
-
-    // console.log(message);
-
-    const $messages = document.querySelector('.message');
-    const $balise = document.createElement('div')
-    $balise.setAttribute('class', 'alert alert-alert');
-    $messages.append($balise);
-    $balise.append(message);
-
-    removeMessage();
-}
-
-/**
- * 
- * @param {string} message Message de DANGER à afficher
- */
-function displayDanger(message) {
-
-    // console.log(message);
-
-    const $messages = document.querySelector('.message');
-    const $balise = document.createElement('div')
-    $balise.setAttribute('class', 'alert alert-danger');
-    $messages.append($balise);
-    $balise.append(message);
-
-    removeMessage();
+    // removeMessage();
 }
 
 /**
@@ -499,9 +493,19 @@ function removeMessage() {
 
     // const mess = document.querySelector('.alert');
     // mess.delay(2500).fadeOut(600);
-    $('.alert').delay(5000).fadeOut(600);
-}
+    $('.message').delay(2000).fadeOut(600);
 
+
+    // @TODO Supprimer les anciens message, pour qu'il ne s'affichent plus en cas de refresh de la page
+    // voir a supprimer les P plutot que les DIV !!!!!!
+
+    const $messages = document.querySelector('.message');
+    // console.log($messages.childNodes);
+    if ($messages.hasChildNodes()) {
+        $messages.removeChild($messages.querySelector('.alert'))
+    };
+    // console.log($messages.childNodes);
+}
 
 // changement de thème
 //*******************************************************************
@@ -548,4 +552,4 @@ function switchTheme(e) {
 }
 
 
-export { currentNav, checkInputAll, displayTabUser, logValidate, addValidate, getUserInfoLS, updateUserInfoLS, testMessageBeforeDisplay, detectColorScheme, switchTheme }
+export { currentNav, htmlEntities, checkInputAll, displayTabUser, logValidate, addValidate, getUserInfoLS, updateUserInfoLS, testMessageBeforeDisplay, detectColorScheme, switchTheme }

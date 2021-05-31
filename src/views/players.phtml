@@ -3,7 +3,8 @@
 
 <div class='flex-between'>
 
-    <form class='addPlayerList' action='./src/services/ajaxPlayers.php' method="POST">
+    <!-- <form class='addPlayerList'> -->
+    <form class='addPlayerList' action='./index.php?page=players' method="POST">
         <input type='hidden' name='action' value='addPlayerList'>
         <?php $type = 'users'; ?>
         <?php $title = 'Liste des joueurs inscrits'; ?>
@@ -13,7 +14,8 @@
         <button type='submit' class='btn btn-info'>Valider le(s) joueur(s) selectionné(s)</button>
     </form>
 
-    <form class='delPlayerList' action='./src/services/ajaxPlayers.php' method="POST">
+    <!-- <form class='delPlayerList'> -->
+    <form class='delPlayerList' action='./index.php?page=players' method="POST">
         <input type='hidden' name='action' value='delPlayerList'>
         <?php $type = 'players'; ?>
         <?php $title = 'Joueurs validés pour ce tournoi'; ?>

@@ -1,12 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace appDS\models;
+namespace Models;
 
-// Appel de la connexion à la bdd
-// require './src/models/Database.php';
-
-class User extends Database
+class User extends \Database
 {
     protected string $nickName;
     protected string $firstName;
@@ -16,10 +13,6 @@ class User extends Database
     protected string $avatar;
     protected int $role_id;
     protected int $dependUser_id;
-
-    // public function __construct(){
-    //     parent::__construct();
-    // }
 
     /**
      * Test if id exist in table
@@ -47,26 +40,25 @@ class User extends Database
     // pour retourner l'ensemble des joueurs USER ou USER/ADMIN (mais pas admin seul)
     // La sous requête dans le NOT EXISTS permet de ne pas prendre les joueurs DEJA validés pour le tournoi actuel
 
-    public function getUsers(): array
-    // public function getUsers(int $dependUser_id, int $tournament_id): array
+    public function getUsers(int $tournament_id): array
     {
         try {
             $query = 'SELECT user.id, nickName, firstName, lastName, avatar, role_id
                 FROM user
                 WHERE role_id != :role_id
                 -- AND dependUser_id = :dependUser_id
-                -- AND NOT EXISTS 
-                --     (
-                --     SELECT user_id, tournament_id 
-                --     FROM player
-                --     WHERE user_id = user.id 
-                --     AND tournament_id = :tournament_id
-                --     )
+                AND NOT EXISTS 
+                    (
+                    SELECT user_id, tournament_id 
+                    FROM player
+                    WHERE user_id = user.id 
+                    AND tournament_id = :tournament_id
+                    )
                 ORDER BY nickName';
             $param = [
-                ':role_id'          => 1,       // Admin
+                ':role_id'          => 1,                   // Admin
                 // ':dependUser_id'    => $dependUser_id,
-                // ':tournament_id'    => $tournament_id
+                ':tournament_id'    => $tournament_id
             ];
 
             $users = $this->findAll($query, $param);
@@ -75,34 +67,6 @@ class User extends Database
             die;
         }
         return $users ?? [];
-    }
-
-
-    /**
-     * Retourne l'ensemble des joueurs VALIDES dans la table PLAYER pour CE tournoi $_SESSION['tournament']
-     * @param integer tournament_id
-     *
-     * @return array
-     */
-    public function getPlayers(int $tournament_id): array
-    {
-        try {
-            $sql = 'SELECT user.id, nickName, firstName, lastName, user.avatar 
-                FROM user
-                INNER JOIN player ON user_id = user.id
-                INNER JOIN tournament ON tournament_id = :tournament_id
-                ORDER BY nickName';
-            $param = [
-                ':tournament_id' => $tournament_id
-            ];
-
-            $players = $this->findAll($sql, $param);
-        } catch (\DomainException $e) {
-            echo $e->getMessage();
-            die;
-        }
-
-        return $players ?? [];
     }
 
 
@@ -135,7 +99,7 @@ class User extends Database
      * pour retourner les infos du user à partir de son email (unique)
      * @param {string} user_mail
      *
-     * @return {string} Name of the user
+     * @return {array} info of the user
      */
     public function getUserByMail(string $user_email)
     {
@@ -155,7 +119,9 @@ class User extends Database
             echo $e->getMessage();
             die;
         }
+
         // var_dump($user);
+
         return $user;
     }
 
@@ -185,7 +151,7 @@ class User extends Database
                 ':email'        => $email,
                 ':password'     => $password,
                 ':avatar'       => $avatar,
-                ':role_id'      => 1
+                ':role_id'      => 2            // user
             ];
             $this->executeSql($sql, $param);
         } catch (\DomainException $e) {

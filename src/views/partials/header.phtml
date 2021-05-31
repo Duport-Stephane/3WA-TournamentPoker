@@ -2,13 +2,13 @@
     <nav>
         <ul class="flex-around">
             <li><a href="./index.php?page=home" class='home'>Accueil</a></li>
-            <li><a href="./index.php?page=players" class='players'>Joueurs</a></li>
+            <li><a href="./index.php?page=players&action=display" class='players'>Joueurs</a></li>
             <li><a href="./index.php?page=tables" class='tables'>Tables</a></li>
         </ul>
     </nav>
     <nav class="log">
         <ul class="flex-around">
-            <?php if (\appDS\models\Session::isOffsetExists('user') && \appDS\models\Session::isConnected()) : ?>
+            <?php if (\Models\Session::isOffsetExists('user') && \Models\Session::isConnected()) : ?>
                 <li><a href="./index.php?page=logout" class="logout flex-column">
                         <img src="./asset/images/token/red.png" alt="logout" class="token">
                         <div class="small">Déconnexion</div>
@@ -27,6 +27,6 @@
     </nav>
 </section>
 
-<h1 class="flex-center-items">
+<h1 class="flex-center-items headband">
     <img src="./asset/images/logo.png" alt="logo" class="token">Poker Hold'hem Tournament Poker
 </h1>

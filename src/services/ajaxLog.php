@@ -1,12 +1,10 @@
 <?php
 // Importer le nécessaire
-// Appel de la classe User
-// require_once '../models/User.php';
 
-$userM = new \appDS\models\User;
+var_dump($_POST);
+var_dump($_GET);
 
-// var_dump($_GET);
-// var_dump($_POST);
+$userM = new \Models\User;
 
 // test POST
 if (isset($_POST) && !empty($_POST) && isset($_POST['action']) && !empty($_POST['action'])) {
@@ -24,17 +22,17 @@ if (isset($_POST) && !empty($_POST) && isset($_POST['action']) && !empty($_POST[
             if (empty($input) && $key !== 'lastname' && $key !== 'firstname' && $key !== 'avatar') {
                 throw new DomainException("Attention, Le champ $key est vide.");
             } else if (strlen($input) > 30 && $key !== 'avatar') {
-                throw new DomainException("Attention, Le texte saisi est trop long.");
+                throw new DomainException("Attention, Le texte saisi dépasse les 30 caractères autorisés.");
             } else {
                 switch ($key) {
                     case 'nickname':
-                        $nickname = htmlspecialchars($input);
+                        $nickname = htmlentities($input);
                         break;
                     case 'lastname':
-                        $lastname = htmlspecialchars($input);
+                        $lastname = htmlentities($input);
                         break;
                     case 'firstname':
-                        $firstname = htmlspecialchars($input);
+                        $firstname = htmlentities($input);
                         break;
                     case 'email':
                         $mailPattern = '/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/';
@@ -46,72 +44,85 @@ if (isset($_POST) && !empty($_POST) && isset($_POST['action']) && !empty($_POST[
                     case 'password':
                         $passwordPattern = '/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,20}$/';
                         if (preg_match($passwordPattern, $input) !== 1) {
-                            throw new DomainException("Le mot de passe doit contenir au moins 8 caractères dont un chiffre, une majuscule et un caractère spécial");
+                            throw new DomainException("Le mot de passe doit contenir au moins 8 caractères dont une minuscule, une majuscule, un chiffre et un caractère spécial");
                         }
-                        $password = $input;
+                        $password = htmlentities($input);
                         break;
                 };
             }
         }
 
-        if ($action === 'insert') {
-            // on commence par checker le mail qui doit être UNIQUE 
-            if ($userM->getUserByMail($email)) {
-                throw new DomainException("Attention, L'utilisateur existe déjà !");
-            } else {
-                // Donc on peut sauvegarder le USER
-                // Gestion du fichier AVATAR 
-                if (array_key_exists('avatar', $_FILES) && !empty($_FILES['avatar']['name'])) {
+        $user = $userM->getUserByMail($email);
 
-                    // On définit le chemin de destination
-                    $uploaddir = '../../asset/images/user/';
-                    // On construit le chemin avec un nom UNIQUE de fichier : MD5(microtime + mail)
-                    $avatar = $uploaddir . md5(microtime() . $email) . "." . substr($_FILES['avatar']['type'], 6);
+        switch ($action) {
+            case 'persist':
+                // on commence par checker le mail qui doit être UNIQUE 
+                if ($user) {
+                    throw new DomainException("Attention, L'utilisateur existe déjà !");
+                } else {
+                    // Donc on peut sauvegarder le USER
+                    // Gestion du fichier AVATAR 
+                    if (array_key_exists('avatar', $_FILES) && !empty($_FILES['avatar']['name'])) {
 
-                    // move_uploaded_file retourne true si ok => false si KO
-                    if (!move_uploaded_file($_FILES['avatar']['tmp_name'], $avatar)) {
-                        throw new DomainException("Une erreur est survenue lors du téléchargement de votre photo");
+                        // On définit le chemin de destination
+                        $uploaddir = '../../asset/images/users/';
+                        // On construit le chemin avec un nom UNIQUE de fichier : MD5(microtime + mail)
+                        $avatar = $uploaddir . md5(microtime() . $email) . "." . substr($_FILES['avatar']['type'], 6);
+
+                        // move_uploaded_file retourne true si ok => false si KO
+                        if (!move_uploaded_file($_FILES['avatar']['tmp_name'], $avatar)) {
+                            throw new DomainException("Une erreur est survenue lors du téléchargement de votre photo");
+                        }
+                    }
+                    // Enregistrement du nouvel user
+                    // avec AVATAR
+                    if (isset($avatar) && !empty($avatar)) {
+
+                        // var_dump($avatar);
+
+                        $password = password_hash($password, PASSWORD_BCRYPT);
+
+                        echo $userM->setUser($nickname, $lastname, $firstname, $email, $password, $avatar);
+                    } else {
+                        // sans AVATAR
+
+                        // var_dump("Sans AVATAR");
+
+                        echo $userM->setUser($nickname, $lastname, $firstname, $email, $password);
+                    }
+                    \Models\Session::setOffset('info', `{$nickname} fait maintenant parti de la liste des utilisateurs.`);
+                    echo `{$nickname} fait maintenant parti de la liste des utilisateurs.`;
+                }
+                break;
+
+            case 'comparePWD':
+                // on commence par checker le mail pour savoir s'il existe en BDD
+                if (!($user)) {
+                    throw new DomainException("Attention, Cette adresse mail n'est pas reconnue, veuillez la modifier ou vous inscrire.");
+                } else {
+                    // considère uniquement le password Hashé
+                    // compare le $user['password'] hashé avec celui lu dans le champ input $password du form
+                    if (!password_verify($password, $user['password'])) {
+                        // var_dump("MdP incorrect");
+
+                        throw new DomainException("Le mot de passe n'est pas correct");
                     }
                 }
-                // Enregistrement du nouvel user
-                // avec AVATAR
-                if (isset($avatar) && !empty($avatar)) {
+                break;
 
-                    // var_dump($avatar);
+            case 'auth':
+                \Models\Session::login($user['id'], $user['nickName'], $user['firstName'], $user['lastName'], $user['email'], $user['avatar'], $user['role_id']);
 
-                    $password = password_hash($password, PASSWORD_BCRYPT);
+                \Models\Session::setOffset('info', `Vous êtes connecté. Bienvenue, {$user['nickName']} !`);
 
-                    echo $userM->setUser($nickname, $lastname, $firstname, $email, $password, $avatar);
-                } else {
-                    // sans AVATAR
+                // var_dump(\Models\Session::getUserEmail());
 
-                    // var_dump("Sans AVATAR");
-
-                    echo $userM->setUser($nickname, $lastname, $firstname, $email, $password);
-                }
-                // echo "La création du USER s'est bien pasée !";
-            }
+                // echo 'OK';
+                echo \Models\Session::isConnected();
+                break;
         }
-
-        if ($action === 'auth') {
-            // récupère les infos du user en BDD à partir de son adresse mail
-            $user = $userM->getUserByMail($email);
-            // considère uniquement le password Hashé
-            // compare ce password hashé avec celui lu dans le champ input $password du form
-            if (!password_verify($password, $user['password'])) {
-                // var_dump("MdP incorrect");
-
-                throw new DomainException("Le mot de passe n'est pas correct");
-            } else {
-                    // Session::login($user['id'], $user['nickName'], $user['firstName'], $user['lastName'], $user['email'], $user['avatar'], $user['role_id']);
-
-                    // var_dump(Session::getOffset('user'));
-                echo 'OK';
-                // echo Session::isConnected();
-            };
-        };
     } catch (DomainException $e) {
-        \appDS\models\Session::setOffset('alert', $e->getMessage());
+        \Models\Session::setOffset('alert', $e->getMessage());
         echo $e->getMessage();
         die;
     }
@@ -126,14 +137,18 @@ if (isset($_GET) && !empty($_GET)) {
 
     extract($_GET);
 
-    if (isset($email) && !empty($email)) {
-        try {
-            // echo "GET AJAX LOG : $email";
-            echo $userM->getUserByMail($email)['email'];
-        } catch (DomainException $e) {
-            \appDS\models\Session::setOffset('alert', $e->getMessage());
-            echo $e->getMessage();
-            die;
+    try {
+        if (isset($action) && !empty($action)) {
+            \Models\Session::logout();
+
+            echo \Models\Session::isConnected();
         }
+    } catch (DomainException $e) {
+        \Models\Session::setOffset('alert', $e->getMessage());
+        echo $e->getMessage();
+
+        header('Location: ./index.php?page=login');
+
+        die;
     }
 }

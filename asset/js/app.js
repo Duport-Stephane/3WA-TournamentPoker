@@ -6,6 +6,7 @@ import * as ajaxCallback from './ajaxCallBack.js';
 import ErrorCustom from './ErrorCustom.js' // Gestion des erreurs s'i
 // import Form from './Form.js';
 import * as canvas from './canvas.js';
+import ManagerLS from './ManagerLS.js';
 
 ///////////////////////////////// JS DESACTIVé ////////////////////////////////////
 /*
@@ -19,16 +20,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // ENSEMBLE DES PAGES
     //*******************************************************************
-    // A chaque changement de page, met en évidence le bon menu de la nav du header etcelui de A propos
-    callback.currentNav();
+
+    // A chaque changement de page, met en évidence le bon menu de la nav du header et celui de A propos
+    const pageAct = callback.currentNav();
 
     // jQuery - Affichage de la notif pendant 2 sec 
     // $('#notif').delay(2000).fadeOut()
-    $('.message').delay(5000).fadeOut()
+    $('.message').delay(2000).fadeOut()
+        // $('.message').remove();
 
-    // connaitre la page actuelle
-    const address = window.location.href
-    const pageAct = address.slice(address.lastIndexOf('=') + 1);
 
     // page PLAYER
     //*******************************************************************
@@ -60,6 +60,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 const form = new FormData(e.target);
                 e.target.reset();
 
+                console.log("Button Valider");
+
                 ajaxCallback.modifPlayerList(form);
             });
         });
@@ -75,32 +77,38 @@ document.addEventListener('DOMContentLoaded', function() {
         const user_email = callback.getUserInfoLS('user');
 
         // Si exist : affiche le mail du LocalStorage dans l'input Mail du log
-        if (user_email != "" && user_email != null) {
+        if (user_email !== "" && user_email !== null) {
             // console.log(user_email);
-            ajaxCallback.userKnown(user_email);
+            document.querySelector('.auth input[name="email"]').value = user_email;
+            document.querySelector('.auth input[name="password"]').value = "";
+            document.querySelector('.auth input[name="password"]').focus();
         };
 
-        document.querySelector('#auth').addEventListener('submit', e => {
+        document.querySelector('.auth').addEventListener('submit', e => {
             e.preventDefault();
             // console.log(e);
-            const action = e.currentTarget.id
+            // const action = e.currentTarget.id
 
-            console.log(action);
+            // console.log(action);
 
             // form datas
             const form = new FormData(e.currentTarget)
                 // console.log(form);
 
             if (callback.logValidate(form)) {
+
                 console.log("TOUT EST OK pour l'authentification")
-                    // true => on efface le formulaire
+
+                ajaxCallback.loginUser(form);
+
+                // true => on efface le formulaire
                 e.currentTarget.reset();
             } else {
                 console.log("PERDU PAS d'authentification")
                     // false => on reste sur le form et on affiche les erreurs détectées
                 _customError.displayMessages();
-                document.querySelector('#auth input[name=password]').value = "";
-                document.querySelector('#auth input[name=password]').focus();
+                document.querySelector('.auth input[name=password]').value = "";
+                document.querySelector('.auth input[name=password]').focus();
             }
         });
     }
@@ -112,10 +120,8 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('PAGE inscription');
         // return;
 
-        document.getElementById('createUser').addEventListener('submit', e => {
-            // $('#createUser').on('submit', e => {
+        document.querySelector('.createUser').addEventListener('submit', e => {
             e.preventDefault();
-
             // console.log(e);
 
             // const champsAControler = ['nickname', 'lastname', 'firstname', 'email', 'password', 'avatar'];
@@ -144,6 +150,81 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // page LOGOUT
+    //*******************************************************************
+    if (pageAct === 'logout') {
+        // @TODO : vider le localStorage
+        ajaxCallback.logoutUser();
+        callback.updateUserInfoLS('user', null);
+
+        console.log('LOGOUT !');
+    }
+
+    // page GAME
+    //*******************************************************************
+
+    if (pageAct === 'game') {
+        const Flipper = function() {
+            function Flipper(node, currentTime, nextTime) {
+                this.isFlipping = false;
+                this.duration = 600;
+                this.flipNode = node;
+                this.frontNode = node.querySelector(".front");
+                this.backNode = node.querySelector(".back");
+                this.setFrontTime(currentTime);
+                this.setBackTime(nextTime);
+            }
+            Flipper.prototype.setFrontTime = function(time) {
+                this.frontNode.dataset.number = time;
+            };
+            Flipper.prototype.setBackTime = function(time) {
+                this.backNode.dataset.number = time;
+            };
+            Flipper.prototype.flipDown = function(currentTime, nextTime) {
+                const _this = this;
+
+                if (this.isFlipping) {
+                    return false;
+                }
+
+                this.isFlipping = true;
+                this.setFrontTime(currentTime);
+                this.setBackTime(nextTime);
+                this.flipNode.classList.add("running");
+                setTimeout(function() {
+                    _this.flipNode.classList.remove("running");
+                    _this.isFlipping = false;
+                    _this.setFrontTime(nextTime);
+                }, this.duration);
+            };
+            return Flipper;
+        }();
+
+        const getTimeFromDate = function(date) {
+            return date.toTimeString().slice(0, 8).split(":").join("");
+        };
+
+        const flips = document.querySelectorAll(".flip");
+        const now = new Date();
+        const nowTimeStr = getTimeFromDate(new Date(now.getTime() - 1000));
+        const nextTimeStr = getTimeFromDate(now);
+        const Flippers = Array.from(flips).map(function(flip, i) {
+            return new Flipper(flip, nowTimeStr[i], nextTimeStr[i]);
+        });
+
+        setInterval(function() {
+            const now = new Date();
+            const nowTimeStr = getTimeFromDate(new Date(now.getTime() - 1000));
+            const nextTimeStr = getTimeFromDate(now);
+
+            for (let i = 0; i < Flippers.length; i++) {
+                if (nowTimeStr[i] === nextTimeStr[i]) {
+                    continue;
+                }
+                Flippers[i].flipDown(nowTimeStr[i], nextTimeStr[i]);
+            }
+        }, 1000);
+    };
 
     // page BONUS
     //*******************************************************************

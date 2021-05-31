@@ -6,14 +6,15 @@
 
 <section class="flex-column">
     <h2 class="from-left">Prêt à vous inscrire ?</h2>
-    <button type="text">Déjà inscrit sur Poker Hold'hem Tournament Poker ?<a href="./index.php?page=login" class="btn btn-alert">Connexion</a></button>
-    <!-- <form class="card-body" action='./src/services/ajaxLog.php' method="POST" id="createUser"> -->
-    <form class="card-body" id="createUser">
-        <!-- <form class="card-body" id="createUser" method="post" enctype="multipart/form-data"> -->
+    <article class = "btn btn-success">
+        <button type="text">Déjà inscrit sur Poker Hold'hem Tournament Poker ?<a href="./index.php?page=login" class="btn btn-alert">Connexion</a></button>
+    </article>
+
+    <form class="createUser card-body" action='./index.php?page=inscription' method="POST" enctype="multipart/form-data">
+        <!-- <form class="card-body" id="createUser"> -->
         <fieldset>
             <div>
-                <input type="hidden" name="action" value="insert">
-                <span class="errors"></span>
+                <input type="hidden" name="action" value="persist">
                 <label for="nickname" class="btn-info">Pseudonyme *</label>
                 <div class="card-text">
                     <span class="card-puce"><i class="fab fa-napster"></i></span>
@@ -46,7 +47,7 @@
                 <div class="card-text">
                     <span class="card-puce"><i class="fas fa-key"></i></span>
                     <input type="text" class="card-input" name="password" placeholder="Mot de passe" required>
-                    <span class="small btn-info-inv">Minimum 8 caractères dont 1 majuscule, 1 chiffre et 1 caractère spécial</span>
+                    <span class="small btn-info-inv">Minimum 8 caract dont 1 minuscule, 1 majuscule, 1 chiffre et 1 caract spécial</span>
                 </div>
             </div>
             <div>
@@ -56,7 +57,7 @@
                     <input type="file" accept=".jpg, .jpeg, .png, .bmp" class="card-input btn-info-inv" name="avatar" aria-describedby="fileHelp">
                 </div>
             </div>
-            <button type="submit" class="btn btn-info">Valider la création de compte</button>
+            <button type="submit" class="btn btn-info">Valider la création du compte</button>
         </fieldset>
     </form>
 </section>

@@ -1,24 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace appDS\models;
+namespace Models;
 
-// Appel de la connexion à la bdd
-// require './src/models/Database.php';
-
-class Player extends Database
+class Player extends \Database
 {
     protected int $id;
     protected int $user_id;
     protected int $seat_id;
     protected int $table_id;
     protected int $tournament_id;
-
-
-    // public function __construct()
-    // {
-    //     parent::__construct();
-    // }
 
     /**
      * Get the value of id
@@ -108,12 +99,40 @@ class Player extends Database
         return $this;
     }
 
+
+    /**
+     * Retourne l'ensemble des joueurs VALIDES dans la table PLAYER pour CE tournoi $_SESSION['tournament']
+     * @param integer tournament_id
+     *
+     * @return array
+     */
+    public function getPlayers(int $tournament_id): array
+    {
+        try {
+            $sql = 'SELECT user.id, nickName, firstName, lastName, user.avatar 
+                FROM user
+                INNER JOIN player ON user_id = user.id
+                INNER JOIN tournament ON tournament_id = :tournament_id
+                ORDER BY nickName';
+            $param = [
+                ':tournament_id' => $tournament_id
+            ];
+
+            $players = $this->findAll($sql, $param);
+        } catch (\DomainException $e) {
+            echo $e->getMessage();
+            die;
+        }
+
+        return $players ?? [];
+    }
+
     /**
      * Test if user_id exist in table Player for this Tournament_id
      * @param {int} user_id
      * @param {int} tournament_id
      */
-    public function isPlayerExistForTournament(int $user_id, int $tournament_id)
+    public function isPlayerExistTournament(int $user_id, int $tournament_id)
     {
         $query ="SELECT user_id, tournament_id 
                 FROM player 

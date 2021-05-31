@@ -1,15 +1,18 @@
 <?php
-// var_dump(\appDS\Session::getOffset('user'));
+
+// var_dump($_SESSION);
+// var_dump(\Models\Session::isConnected());
+var_dump(\Models\Session::getUserEmail());
 
 // Actions : Traitement (POST)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     var_dump('LOGIN.PHP en POST');
-    die;
+    // die;
 
     // tester l'action, récupérer les paramètres EMAIL et PASSAWORD et les comparer avec la BDD avant de LOG le user
 
-    extract($_POST);
+    // extract($_POST);
 
     
     // Si pas de param, je repars à l'accueil

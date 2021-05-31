@@ -10,17 +10,25 @@ import ErrorCustom from './ErrorCustom.js' // Gestion des erreurs s'il y en a
  * Refresh Tab User, Players
  */
 function refresh() {
-    fetch('./src/services/ajaxPlayers.php?action=refresh&type=User')
-        .then(response => response.json())
-        .then(users => {
-            callback.displayTabUser(users, 'users');
-        });
+    fetch('./index.php?page=players&action=display')
 
-    fetch('./src/services/ajaxPlayers.php?action=refresh&type=Player')
-        .then(response => response.json())
-        .then(users => {
-            callback.displayTabUser(users, 'players');
-        });
+    // fetch('./index.php?action=refresh&type=user')
+    //     .then(response => response.json())
+    //     .then(users => {
+
+    //         console.log("Refresh USERS");
+
+    // callback.displayTabUser(users, 'users');
+    //     });
+
+    // fetch('./index.php?action=refresh&type=player')
+    //     .then(response => response.json())
+    //     .then(players => {
+
+    //         console.log("Refresh PLAYERS");
+
+    // callback.displayTabUser(players, 'players');
+    //     });
 }
 
 /** 
@@ -30,17 +38,19 @@ function refresh() {
  */
 function modifPlayerList(form) {
 
-    // console.log('FETCH MODIF-PLAYER')
-    // Fetch pour actualiser la table Player
+    console.log('FETCH MODIF-PLAYER')
+        // Fetch pour actualiser la table Player
 
-    fetch('./src/services/ajaxPlayers.php', {
+    fetch('./index.php', {
             method: 'POST',
             body: form
         })
         .then(response => response.text())
         // .then(response => console.log("response : " + response))
         .then(response => {
+            // console.log(response);
             callback.testMessageBeforeDisplay(response);
+            // window.location.reload();
             refresh()
         });
 }
@@ -49,50 +59,45 @@ function modifPlayerList(form) {
 // page LOGIN
 //*******************************************************************
 
-function userKnown(user_email) {
-
-    // console.log(user_email);
-
-    // pour savoir si l'utilisateur est déjà connu
-    fetch('./src/services/ajaxLog.php?email=' + user_email)
-        .then(response => response.text())
-        .then(user => {
-            if (user !== "") {
-                document.querySelector('#auth input[name="email"]').value = user_email;
-                document.querySelector('#auth input[name="password"]').focus();
-            }
-        })
-}
-
 /**
  * Compare password
  * @param {formData} form
- * @param {string} email 
  * @returns {boolean}
  */
-function isSamePassword(form, email) {
+function isSamePassword(form) {
 
     // console.log(form);
-    console.log(email);
 
     // on compare les 2 password    
-    return fetch('./src/services/ajaxLog.php?email' + email, {
-            method: 'post',
+    return fetch('./index.php?action=comparePWD', {
+            method: 'POST',
             body: form
         })
         .then(response => response.text())
-        // .then(response => console.log("Retour ajax : " + response))
-        .then(response => {
-            if (response === "Le mot de passe n'est pas correct") {
-                console.log("Retour ajax FALSE : " + response)
-                return false;
-            } else {
-                console.log("Retour ajax TRUE : " + response)
-                return true;
-            }
-        })
+        .then(response => console.log("Retour ajax : " + response))
+        // .then(response => {
+        //     if (response === "Le mot de passe n'est pas correct") {
+        //         console.log("Retour ajax FALSE : ")
+        //         return false;
+        //     } else {
+        //         console.log("Retour ajax TRUE : ")
+        //         return true;
+        //     }
+        // })
 }
 
+/**
+ * Login user
+ * @param {formData} form 
+ */
+function loginUser(form) {
+    fetch('./index.php?action=auth', {
+            method: 'post',
+            body: form
+        })
+        // .then(response => response.text())
+        // .then(response => console.log(response))
+}
 
 // page INSCRIPTION
 //*******************************************************************
@@ -102,7 +107,7 @@ function isSamePassword(form, email) {
  * @param {formData} form 
  */
 function persistUser(form) {
-    fetch('./src/services/ajaxLog.php', {
+    fetch('./index.php?action=persist', {
             method: 'post',
             body: form
         })
@@ -110,5 +115,15 @@ function persistUser(form) {
         // .then(response => console.log(response))
 }
 
+/**
+ * Logout user
+ * 
+ */
+function logoutUser() {
+    fetch('./index.php?action=logout')
+        .then(response => console.log(response))
+}
 
-export { modifPlayerList, userKnown, persistUser, isSamePassword }
+
+
+export { modifPlayerList, isSamePassword, loginUser, persistUser, logoutUser }

@@ -6,10 +6,9 @@
 
 <section class="flex-column">
     <h2 class="from-left">Connectez-vous</h2>
-    <span class="errors"></span>
 
-    <form class="card-body" action='./src/services/ajaxLog.php' method="POST" id="auth">
-    <!-- <form class="card-body" id="auth"> -->
+    <form class="auth card-body" action='./index.php?page=login' method="POST">
+        <!-- <form class="card-body" id="auth"> -->
         <input type="hidden" name="action" value="auth">
         <div class="card-text">
             <span class="card-puce"><i class="fas fa-at"></i></span>
@@ -22,11 +21,11 @@
         <button type="submit" class="btn btn-info">Connexion</button>
     </form>
 </section>
-<section>
+<section class="flex-column">
     <!-- <button type="text" class="btn btn-alert">
         <bold>Mot de passe oublié ?</bold>
     </button> -->
-    <fieldset>
+    <fieldset class="alert-alert">
         <p>Vous ne possédez pas encore de compte sur Poker Hold'hem Tournament Poker ?</p>
         <button type="text" class="btn btn-info"><a href="./index.php?page=inscription">Inscription</a></button>
     </fieldset>

@@ -4,91 +4,27 @@
 // var_dump($_POST);
 // var_dump($_GET);
 
-// test POST
-if (isset($_POST) && !empty($_POST)) {
+$userM = new \Models\User;
+$playerM = new \Models\Player;
 
-    // Appel de la classe User
-    // require '../models/User.php';
-    // require '../models/Player.php';
+if (isset($_POST) && !empty($_POST) && array_key_exists('action', $_POST)) {
+    // on arrive ici lors de l'appui sur un des 2 boutons de la page Players, depuis modifPlayerList (via index / POST)
 
-    $userM = new \appDS\models\User;
-    $playerM = new \appDS\models\Player;
-
-    // Extraction des paramètres passés dans le POST
     extract($_POST);
 
-    // Test INPUTS of addPlayerList, delPlayerList
-    // pour savoir si au moins un de coché, et ensuite, les ajouter/enlever de la table PLAYER
-    if (isset($_POST['checkboxuser'])) {
-        try {
-            if (empty($_POST['checkboxuser'])) {
-                // Renvoyer un message s'il n'y pas d'id dans la checkbox
-                throw new DomainException("Attention, Vous n'avez sélectionné aucune ligne !");
-            } else {
-                $tournament_id = 1;
+    try {
 
-                $chkUsers = $_POST['checkboxuser'];
-                foreach ($chkUsers as $chkUser => $value) {
+        modifUser($action, $userM, $playerM);
 
-                    // ---> Si l'id est bien un entier
-                    if (!is_int(intval($value))) {
-                        throw new DomainException('Danger, Les informations de ce joueur ne sont pas correctes ! L\'identifiant n\'est pas un entier.');
-                    }
-                    // Déterminer l'action à mener
-                    switch ($action) {
-                        case 'addPlayerList':
-                            // on controle différents points avant d'ajouter dans la table Player : 
-                            // ---> si l'id est bien dans la table User
-                            if (!($userM->isIdExist(intval($value)))) {
-                                throw new DomainException('Danger, Ce joueur n\'existe pas ! L\'identifiant n\'est pas reconnu.');
-                            }
+    } catch (DomainException $e) {
+        \Models\Session::setOffset('alert', $e->getMessage());
 
-                            // ---> et si l'id n'est pas déjà présent dans la table Player pour ce tournoi
-                            if ($playerM->isPlayerExistForTournament(intval($value), intval($tournament_id))) {
-                                throw new DomainException('Danger, Ce joueur est déjà validé pour ce tournoi !');
-                            }
+        // var_dump(\Models\Session::getOffset('alert'));
 
-                            // créer une nouvelle entrée dans la table PLAYER avec l'id du User et le numéro du tournoi $_SESSION['tournament_id'] )
-                            // si on est arrivé là, c'est OK, on l'ajoute à la table Player
-                            $playerM->insertPlayer(intval($value), intval($tournament_id));
+        echo $e->getMessage();
 
-                            // $_SESSION['User'] = $userM->getUsers(intval(1), intval($tournament_id));
-                            // $_SESSION['Player'] = $userM->getPlayers(intval($tournament_id));
-                            echo "La sélection fait maintenant partie des joueurs validés";
-                            // header('location: ../controller/layout.php?page=players');
-                            break;
+        // header('Location: ./index.php?page=players&action=display');
 
-                        case 'delPlayerList':
-                            //controle avant la suppression : ID bien présent pour ce tournoi ?
-
-                            // if($playerM->isPlayerExistForTournament(intval($value), intval($_SESSION['tournament_id']))) {
-                            $playerM->deletePlayer(intval($value), intval($tournament_id));
-                            // }else {
-                            //     throw new DomainException('Danger, Ce joueur n\'est pas inscrit à ce tournoi !');
-
-                            // };
-
-                            // $_SESSION['User'] = $userM->getUsers(intval(1), intval($tournament_id));
-                            // $_SESSION['Player'] = $userM->getPlayers(intval($tournament_id));
-                            echo "La sélection a bien été retirée de la liste des joueurs validés";
-                            // header('location: ../controller/layout.php?page=players');
-                            break;
-
-                        default:
-                            // code...
-                            throw new DomainException('Danger, Je ne sais pas comment on en est là !');
-                            break;
-                    }
-                }
-                // usage du multiple Exception
-            }
-        } catch (DomainException $e) {
-            \appDS\models\Session::setOffset('alert', $e->getMessage());
-            echo $e->getMessage();
-            die;
-        }
-    } else {
-        echo 'Attention, Vous n\'avez sélectionné aucune ligne !';
         die;
     }
     // Fin POST
@@ -96,29 +32,110 @@ if (isset($_POST) && !empty($_POST)) {
 
 
 // test GET
-if (isset($_GET) && !empty($_GET)) {
+if (isset($_GET) && !empty($_GET) && isset($_GET['action'])) {
 
-    if (isset($_GET['action']) && !empty($_GET['action']) && isset($_GET['type']) && !empty($_GET['type'])) {
-        extract($_GET);
-        try {
-            // en fonction du contenu de TYPE, remplir le tableau des USERS ou celui des PLAYERS
-            $tournament = 1;
+    extract($_GET);
 
-            switch ($type) {
-                case 'user':
-                    echo json_encode($userM->getUsers());
-                    break;
-                case 'player':
-                    echo json_encode($userM->getPlayers($tournament));
-                    break;
-                default:
-                    throw new DomainException('Danger, Je ne sais pas comment on en est là !');
-                    break;
-            }
-        } catch (DomainException $e) {
-            \appDS\models\Session::setOffset('alert', $e->getMessage());
-            echo $e->getMessage();
-            die;
+    $tournament_id = 1;
+
+    try {
+
+        switch ($action) {
+            case 'display':
+                $users      = $userM->getUsers($tournament_id);
+                $players    = $playerM->getPlayers($tournament_id);
+                break;
+            case 'refresh':
+                // en fonction du contenu de action, remplir le tableau des USERS ou celui des PLAYERS
+
+                switch ($type) {
+                    case 'user':
+                        echo json_encode($userM->getUsers($tournament_id));
+                        break;
+                    case 'player':
+                        echo json_encode($playerM->getPlayers($tournament_id));
+                        break;
+                    default:
+                        throw new DomainException('Danger, Je ne sais pas comment on en est là !');
+                }
         }
+    } catch (DomainException $e) {
+        \Models\Session::setOffset('alert', $e->getMessage());
+        echo $e->getMessage();
+
+        header('Location: ./index.php?page=players&action=display');
+
+        die;
+    }
+};
+
+
+function modifUser($action, $userM, $playerM)
+{
+
+    var_dump($_POST);
+    // die;
+
+    // Test INPUTS of addPlayerList, delPlayerList
+    // pour savoir si au moins un de coché, et ensuite, les ajouter/enlever de la table PLAYER
+    if (isset($_POST['checkboxuser']) && !empty($_POST['checkboxuser'])) {
+
+        $chkUsers = $_POST['checkboxuser'];
+
+        $tournament_id = 1;
+
+        foreach ($chkUsers as $value) {
+
+            // ---> Si l'id est bien un entier
+            if (!is_int(intval($value))) {
+                throw new DomainException('Danger, L\'identifiant de ce joueur n\'est pas un entier.');
+            }
+
+
+            // Déterminer l'action à mener
+            switch ($action) {
+                case 'addPlayerList':
+                    // on controle différents points avant d'ajouter dans la table Player : 
+                    // ---> si l'id est bien dans la table User
+                    if (!($userM->isIdExist(intval($value)))) {
+                        throw new DomainException('Danger, Ce joueur n\'existe pas ! L\'identifiant n\'est pas reconnu.');
+                    }
+
+                    // ---> et si l'id n'est pas déjà présent dans la table Player pour ce tournoi
+                    if (!empty($playerM->isPlayerExistTournament(intval($value), intval($tournament_id)))) {
+                        throw new DomainException('Danger, Ce joueur est déjà validé pour ce tournoi !');
+                    }
+
+                    // créer une nouvelle entrée dans la table PLAYER avec l'id du User et le numéro du tournoi
+                    $playerM->insertPlayer(intval($value), intval($tournament_id));
+
+                    \Models\Session::setOffset('info', "Success, La sélection fait maintenant partie des joueurs validés");
+                    echo "Success, La sélection fait maintenant partie des joueurs validés";
+
+                    break;
+
+
+                case 'delPlayerList':
+                    //controle avant la suppression : ID bien présent pour ce tournoi ?
+
+                    if (!empty($playerM->isPlayerExistTournament(intval($value), intval($tournament_id)))) {
+                        throw new DomainException('Danger, Ce joueur n\'est pas inscrit à ce tournoi !');
+                    } else {
+                        $playerM->deletePlayer(intval($value), intval($tournament_id));
+                    };
+
+                    \Models\Session::setOffset('info', "Success, La sélection a bien été retirée de la liste des joueurs validés");
+                    echo "Success, La sélection a bien été retirée de la liste des joueurs validés";
+
+                    break;
+
+                default:
+                    // code...
+                    throw new DomainException('Danger, Je ne sais pas comment on en est là !');
+            }
+        }
+    } else {
+        // Renvoyer un message s'il n'y pas de checkbox cochée
+        throw new DomainException("Warning, Vous n'avez sélectionné aucune ligne dans cette liste !");
     }
 }
