@@ -76,7 +76,7 @@ class User extends \Database
      *
      * @return string Name of the user
      */ 
-    public function getNicknameById(int $user_id): string
+    public function getNickNameById(int $user_id): string
     {
         try {
             $sql = 'SELECT user.id, nickName
@@ -128,26 +128,26 @@ class User extends \Database
 
     /**
      * Pour créer un user dans la BDD
-     * @param {string} $nickname
-     * @param {string} $lastname
-     * @param {string} $firstname
+     * @param {string} $nickName
+     * @param {string} $lastName
+     * @param {string} $firstName
      * @param {string} $email
      * @param {string} $pwd
      * @param {string} $avatar
      *  
      * @return string | null
      */
-    public function setUser(string $nickname, string $lastname, string $firstname, string $email, string $password, string $avatar = "") : string
+    public function setUser(string $nickName, string $lastName, string $firstName, string $email, string $password, string $avatar = "") : string
     {
         var_dump("insert into USER");
 
         try {
             $sql = 'INSERT INTO user(nickName, lastName, firstName, email, password, avatar, role_id) 
-            VALUES (:nickname, :lastname, :firstname, :email, :password, :avatar, :role_id)';
+            VALUES (:nickName, :lastName, :firstName, :email, :password, :avatar, :role_id)';
             $param = [
-                ':nickname'     => $nickname,
-                ':lastname'     => $lastname,
-                ':firstname'    => $firstname,
+                ':nickName'     => $nickName,
+                ':lastName'     => $lastName,
+                ':firstName'    => $firstName,
                 ':email'        => $email,
                 ':password'     => $password,
                 ':avatar'       => $avatar,
@@ -159,5 +159,36 @@ class User extends \Database
             die;
         }
         return $this->_instance->lastInsertId();
+    }
+
+
+    /**
+     * Pour mettre à jour un user dans la BDD
+     * @param {string} $nickName
+     * @param {string} $lastName
+     * @param {string} $firstName
+     * @param {string} $avatar
+     *  
+     * @return string
+     */
+    public function updateUser(int $user_id, string $nickName, string $lastName, string $firstName, string $avatar = "") : void
+    {
+        try {
+            $sql = 'UPDATE user SET nickName = :nickName, lastName = :lastName, firstName = :firstName, avatar = :avatar, role_id = :role_id
+            WHERE id = :user_id';
+
+            $param = [
+                ':user_id'      => $user_id,
+                ':nickName'     => $nickName,
+                ':lastName'     => $lastName,
+                ':firstName'    => $firstName,
+                ':avatar'       => $avatar,
+                ':role_id'      => 2            // user
+            ];
+            $this->executeSql($sql, $param);
+        } catch (\DomainException $e) {
+            echo $e->getMessage();
+            die;
+        }
     }
 }

@@ -24,7 +24,7 @@ function currentNav() {
     }
     // console.log(endPage);
     const pageAct = address.slice(beginPage, endPage);
-    // console.log(pageAct);
+    console.log(pageAct);
 
     // cas particulier de la page HOME lors du premier chargement
     // il n'y a pas de parametre "page=" dans le root
@@ -35,8 +35,9 @@ function currentNav() {
         const listA = document.querySelectorAll('.navHeader a, footer section:last-child a')
         listA.forEach(e => {
 
-            // console.log(pageAct + " \\+/ " + compt + " \\+/ " + e)
+            // console.log(pageAct + " \\+/ " + beginPage + " \\+/ " + e)
             if (e.classList.contains(pageAct)) {
+                // console.log(pageAct + " \\+/ " + e)
                 e.classList.toggle('current');
             }
         });
@@ -221,27 +222,15 @@ function logValidate(form) {
         return false
     } else {
         // on compare le password saisi à celui qui est en BDD
-        const Rep = ajaxCallBack.isSamePassword(form);
-        console.log(Rep);
+        // const Rep = ajaxCallBack.isSamePassword(form);
+        // console.log(Rep);
 
         if (ajaxCallBack.isSamePassword(form)) {
 
-            console.log("Les mots de passe coïncident")
+            // console.log("Les mots de passe coïncident : LOGIN ok !")
 
             // si OK, actualise le mail dans le LocalStorage
             updateUserInfoLS(_key, _user.email)
-
-            // Login => persit in $_SESSION['user']
-            ajaxCallBack.loginUser(form);
-
-            // _errors.push({
-            //     field: 'email',
-            //     type: 'format',
-            //     message: 'Bienvenue ' + _user.email
-            // });
-            // _customError.messages = _errors;
-            // _customError.displayMessages();
-            // _customError.viderError();
 
             return true;
         } else {
@@ -278,7 +267,7 @@ function getUserInfoLS(key) {
  * @param {formData} form
  * @returns {boolean}
  */
-function addValidate(form) {
+function addValidate(form, action) {
 
     const _key = 'user' // Clé d'accès au stockage du LocalStorage
     const _errors = [] // Référencer les erreurs trouvées dans le form lors du validate
@@ -292,7 +281,7 @@ function addValidate(form) {
             avatar: ''
         } // Stocker les infos du user
 
-    // console.log(form)
+    console.log(form)
 
     const inputs = document.querySelectorAll('input');
     inputs.forEach(input => {
@@ -369,15 +358,16 @@ function addValidate(form) {
         return false
     } else {
 
-        // console.log(form)
+        console.log(action)
 
-        ajaxCallBack.persistUser(form);
+        if (action === 'persist') {
+            ajaxCallBack.persistUser(form);
 
-        updateUserInfoLS(_key, _user.email)
+            updateUserInfoLS(_key, _user.email)
 
-        // on modifie l'affichage : affiche le token LOGOUT et masque inscription
-        // displayTokenLog();
-
+        } else if (action === 'update') {
+            ajaxCallBack.updateUser(form);
+        }
 
         _customError.viderError();
 
@@ -434,17 +424,6 @@ function isPasswordValid(pwd) {
         return false;
     }
 }
-
-/**
- * Display Token on navbar
- */
-// function displayTokenLog() {
-//     const $tokens = document.querySelectorAll('.navHeader.log li');
-//     $tokens.forEach($token => {
-//         $token.classList.toggle('hide');
-//     });
-// }
-
 
 // Gestion de l'affichage des MESSAGES
 //*******************************************************************

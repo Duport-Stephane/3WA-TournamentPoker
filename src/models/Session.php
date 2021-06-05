@@ -24,9 +24,9 @@ class Session
     {
         $_SESSION['user'] = [
             'id'        => $id,
-            'pseudo'    => htmlentities($pseudo),
-            'prenom'    => htmlentities($prenom),
-            'nom'       => htmlentities($nom),
+            'nickName'  => htmlentities($pseudo),
+            'firstName' => htmlentities($prenom),
+            'lastName'  => htmlentities($nom),
             'email'     => htmlentities($email),
             'avatar'    => htmlentities($avatar),
             'role_id'   => $role_id
@@ -52,9 +52,10 @@ class Session
         return isset($_SESSION[$offset]) ? $_SESSION[$offset] : null;
     }
 
-    public static function getUserEmail(): ?string
+    public static function getOffset1_Offset2(string $offset1, string $offset2): ?string
     {
-        return isset($_SESSION['user']['email']) ? $_SESSION['user']['email'] : "";
+        // var_dump($_SESSION[$offset1][$offset2]);
+        return isset($_SESSION[$offset1][$offset2]) ? strval($_SESSION[$offset1][$offset2]) : "";
     }
 
     public static function setOffset($offset, $value)

@@ -2,7 +2,7 @@
 
 // var_dump($_SESSION);
 // var_dump(\Models\Session::isConnected());
-var_dump(\Models\Session::getUserEmail());
+// var_dump(\Models\Session::getOffset1_Offset2('user', 'email'));
 
 // Actions : Traitement (POST)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -14,16 +14,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // extract($_POST);
 
-    
     // Si pas de param, je repars à l'accueil
     header('Location: ./index.php?page=home');
-    exit;
+    die;
 }
 
 // 1 er chargement de la page 'login'
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
-    var_dump('LOGIN.PHP en GET');
+    // var_dump('LOGIN.PHP en GET');
     // die;
 
     // vérifier la présence d'un adresse mail dans le localstorage

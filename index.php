@@ -33,7 +33,7 @@ if (isset($_POST) && !empty($_POST)) {
     // die;
 
     if (array_key_exists('action', $_POST) && !empty($_POST['action'])) {
-        
+
         var_dump($_POST['action']);
         // die;
 
@@ -50,29 +50,32 @@ if (isset($_POST) && !empty($_POST)) {
                 $page = 'inscription';
                 require_once './src/services/ajaxLog.php';
                 break;
-            case 'comparePWD':
-                // call from compare Password with user_email
             case 'auth':
                 // Call from loginUser from login page
                 $page = 'login';
                 require_once './src/services/ajaxLog.php';
                 break;
+            case 'update':
+                // call from update from Dashboard
+                $page = 'dashboardUSer';
+                require_once './src/services/ajaxLog.php';
+                break;
             default:
                 header('location: ./index.php?page=home');
         }
-    } 
+    }
 
 
-// *************** GET ***************
+    // *************** GET ***************
 } else if (isset($_GET) && !empty($_GET)) {
 
     if (array_key_exists('page', $_GET) && !empty($_GET['page']) && array_key_exists('action', $_GET) && !empty($_GET['action'])) {
 
         ///////////////////////// ???????? et Refrech Tab User après avoir modiPlayerList
-        
+
         var_dump("GET Action");
         var_dump($_GET['action']);
-        
+
         switch ($_GET['action']) {
             case 'display':
                 //call from "Joueurs" page and action from Display Tab User  
@@ -84,16 +87,13 @@ if (isset($_POST) && !empty($_POST)) {
                 $page = 'logout';
                 require_once './src/services/ajaxLog.php';
                 break;
-
         }
-        
     } else if (array_key_exists('page', $_GET) && !empty($_GET['page'])) {
         // No specific treatment, Display requested page (except home)
 
         var_dump("GET Page");
 
         $page = $_GET['page'];
-
     }
 } else {
     // First call, Display Home page

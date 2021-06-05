@@ -1,0 +1,58 @@
+<fieldset>
+    <div>
+        <input type="hidden" name="action" value="update">
+        <label for="nickName" class="btn-info">Pseudonyme *</label>
+        <div class="card-text">
+            <span class="card-puce"><i class="fas fa-ghost"></i></span>
+            <input type="text" class="card-input" name="nickName" placeholder="Pseudonyme" required autofocus value=<?= \Models\Session::getOffset1_Offset2('user', 'nickName') ?>>
+        </div>
+    </div>
+    <div>
+        <label for="lastName" class="btn-info">Nom</label>
+        <div class="card-text">
+            <span class="card-puce"><i class="fas fa-users"></i></span>
+            <input type="text" class="card-input" name="lastName" placeholder="Nom" value=<?= \Models\Session::getOffset1_Offset2('user', 'lastName') ?>>
+        </div>
+    </div>
+    <div>
+        <label for="firstName" class="btn-info">Prénom</label>
+        <div class="card-text">
+            <span class="card-puce"><i class="fas fa-user"></i></span>
+            <input type="text" class="card-input" name="firstName" placeholder="Prénom" value=<?= \Models\Session::getOffset1_Offset2('user', 'firstName') ?>>
+        </div>
+    </div>
+    <div>
+        <label for="avatar" class="btn-info">Avatar</label>
+        <div class="card-text">
+            <span class="card-puce"><i class="fas fa-camera"></i></span>
+            <input type="file" accept=".jpg, .jpeg, .png, .bmp" class="card-input btn-info-inv" name="avatar" aria-describedby="fileHelp">
+        </div>
+    </div>
+    <div>
+        <?php if (\Models\Session::getOffset1_Offset2('user', 'avatar') !== "") : { ?>
+                <img class="bigImg" src=<?= \Models\Session::getOffset1_Offset2('user', 'avatar') ?> alt='avatar'>
+        <?php }
+        endif; ?>
+    </div>
+
+    <!-- TODO --------------------------------- -->
+    <!-- Visible uniquement par les ADMIN -->
+    <div>
+        <label for="role" class="btn-info">Rôle</label>
+        <div class="card-text">
+            <span class="card-puce"><i class="far fa-id-badge"></i></span>
+            <input type="text" class="card-input" name="role" placeholder="Joueur" value=<?= $roleName ?>>
+        </div>
+        <!-- <FORM>
+            <SELECT name="jour" size="1">
+                <OPTION>lundi
+                <OPTION>mardi
+                <OPTION>mercredi
+                <OPTION>jeudi
+                <OPTION>vendredi
+            </SELECT>
+        </FORM> -->
+    </div>
+    <button type="submit" class="btn btn-info">Modifier vos informations</button>
+    <button class="btn btn-alert"><a href="./index.php?page=dashboardUSer">Annuler les modifications</a></button>
+</fieldset>

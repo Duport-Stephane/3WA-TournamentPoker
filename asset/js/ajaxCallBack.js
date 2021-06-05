@@ -9,27 +9,27 @@ import ErrorCustom from './ErrorCustom.js' // Gestion des erreurs s'il y en a
 /**
  * Refresh Tab User, Players
  */
-function refresh() {
-    fetch('./index.php?page=players&action=display')
+// function refresh() {
+//     fetch('./index.php?page=players&action=display')
 
-    // fetch('./index.php?action=refresh&type=user')
-    //     .then(response => response.json())
-    //     .then(users => {
+// fetch('./index.php?action=refresh&type=user')
+//     .then(response => response.json())
+//     .then(users => {
 
-    //         console.log("Refresh USERS");
+//         console.log("Refresh USERS");
 
-    // callback.displayTabUser(users, 'users');
-    //     });
+// callback.displayTabUser(users, 'users');
+//     });
 
-    // fetch('./index.php?action=refresh&type=player')
-    //     .then(response => response.json())
-    //     .then(players => {
+// fetch('./index.php?action=refresh&type=player')
+//     .then(response => response.json())
+//     .then(players => {
 
-    //         console.log("Refresh PLAYERS");
+//         console.log("Refresh PLAYERS");
 
-    // callback.displayTabUser(players, 'players');
-    //     });
-}
+// callback.displayTabUser(players, 'players');
+//     });
+// }:
 
 /** 
  * récupère le(s) input(s) coché(s) dans le tableau des users pour déplacer ce(s) user(s) dans la table des players
@@ -50,8 +50,9 @@ function modifPlayerList(form) {
         .then(response => {
             // console.log(response);
             callback.testMessageBeforeDisplay(response);
+            window.location = './index.php?page=players&action=display';
             // window.location.reload();
-            refresh()
+            // refresh()
         });
 }
 
@@ -68,36 +69,37 @@ function isSamePassword(form) {
 
     // console.log(form);
 
-    // on compare les 2 password    
-    return fetch('./index.php?action=comparePWD', {
+    // on compare les 2 password
+    return fetch('./index.php', {
             method: 'POST',
             body: form
         })
         .then(response => response.text())
-        .then(response => console.log("Retour ajax : " + response))
+        // .then(response => console.log("Retour ajax : " + response))
         // .then(response => {
         //     if (response === "Le mot de passe n'est pas correct") {
         //         console.log("Retour ajax FALSE : ")
         //         return false;
         //     } else {
         //         console.log("Retour ajax TRUE : ")
-        //         return true;
-        //     }
-        // })
+
+    //         return true;
+    //     }
+    // })
 }
 
-/**
- * Login user
- * @param {formData} form 
- */
-function loginUser(form) {
-    fetch('./index.php?action=auth', {
-            method: 'post',
-            body: form
-        })
-        // .then(response => response.text())
-        // .then(response => console.log(response))
-}
+// /**
+//  * Login user
+//  * @param {formData} form 
+//  */
+// function loginUser(form) {
+//     fetch('./index.php', {
+//             method: 'post',
+//             body: form
+//         })
+//         // .then(response => response.text())
+//         // .then(response => console.log(response))
+// }
 
 // page INSCRIPTION
 //*******************************************************************
@@ -115,15 +117,29 @@ function persistUser(form) {
         // .then(response => console.log(response))
 }
 
+
+/**
+ * UPdate User in database
+ * @param {formData} form 
+ */
+function updateUser(form) {
+    fetch('./index.php?action=update', {
+            method: 'post',
+            body: form
+        })
+        // .then(response => response.text())
+        // .then(response => console.log(response))
+}
+
 /**
  * Logout user
  * 
  */
-function logoutUser() {
-    fetch('./index.php?action=logout')
-        .then(response => console.log(response))
-}
+// function logoutUser() {
+//     fetch('./index.php?action=logout')
+//         .then(response => console.log(response))
+// }
 
 
 
-export { modifPlayerList, isSamePassword, loginUser, persistUser, logoutUser }
+export { modifPlayerList, isSamePassword, persistUser, updateUser }

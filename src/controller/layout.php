@@ -10,11 +10,6 @@
     <header>
         <?php if ($page !== 'game') : { ?>
                 <?php require_once './src/views/partials/header.phtml'; ?>
-
-                <?php if (\Models\Session::isOffsetExists('user')) : { ?>
-                        <?= var_dump(\Models\Session::getUserEmail()); ?>
-                <?php }
-                endif; ?>
         <?php }
         endif; ?>
     </header>

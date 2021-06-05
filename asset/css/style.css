@@ -158,7 +158,6 @@ fieldset div label {
 
 .dealer {
   width: 7rem;
-  padding-bottom: 1rem;
   border-radius: 3.5rem;
   transition: background-color 0.1s ease;
   transition: box-shadow 0.1s ease, transform 0.1s ease;
@@ -194,7 +193,7 @@ fieldset div label {
 }
 .array th,
 .array td {
-  width: 4.5rem;
+  width: 4.3rem;
   padding: 0 0.5rem;
   border: 1px solid var(--border);
   overflow: hidden;
@@ -217,10 +216,17 @@ fieldset div label {
 .array td:nth-child(5),
 .array th:nth-child(5) {
   text-align: center;
-  width: 1.4em;
+  width: 1.5em;
 }
 .array td img {
   max-height: 1.5rem;
+}
+.array td img:hover {
+  transform: scale(1.5);
+}
+.array .selectUser:hover {
+  cursor: pointer;
+  color: var(--hoverNav);
 }
 
 fieldset {
@@ -378,7 +384,6 @@ footer section {
   width: 25%;
 }
 footer img {
-  width: 1rem;
   padding-right: 0.7rem;
 }
 footer ul {
@@ -560,4 +565,19 @@ footer ul li a:hover {
   border: 2px solid var(--border);
   border-radius: 0.5rem;
   width: 90%;
+}
+
+.smallImg {
+  max-width: 1rem;
+  height: auto;
+}
+
+.middleImg {
+  max-width: 5rem;
+  height: auto;
+}
+
+.bigImg {
+  max-width: 15rem;
+  height: auto;
 }/*# sourceMappingURL=style.css.map */

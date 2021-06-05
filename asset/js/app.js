@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // jQuery - Affichage de la notif pendant 2 sec 
     // $('#notif').delay(2000).fadeOut()
-    $('.message').delay(2000).fadeOut()
+    $('.message').delay(4000).fadeOut()
         // $('.message').remove();
 
 
@@ -46,6 +46,19 @@ document.addEventListener('DOMContentLoaded', function() {
             $checkbox.addEventListener('change', e => {
                 // console.log(e)
                 callback.checkInputAll(e.target.checked, e.target.value);
+            })
+        });
+
+
+        // Ecoute le clic n'importe où sur une ligne du tableau pour cocher la checkbox
+        const $lineUser = document.querySelectorAll('.selectUSer');
+        $lineUser.forEach($line => {
+            $line.addEventListener('click', e => {
+
+                // console.log(e);
+
+                const $cell = document.querySelector("input[value='" + e.target.classList[1] + "']");
+                $cell.checked ? $cell.checked = false : $cell.checked = true;
             })
         });
 
@@ -71,13 +84,13 @@ document.addEventListener('DOMContentLoaded', function() {
     //*******************************************************************
     if (pageAct === 'login') {
 
-        console.log("Page LOGIN");
+        // console.log("Page LOGIN");
 
         const _customError = new ErrorCustom // Référencer et afficher les erreurs
         const user_email = callback.getUserInfoLS('user');
 
         // Si exist : affiche le mail du LocalStorage dans l'input Mail du log
-        if (user_email !== "" && user_email !== null) {
+        if (user_email.length !== 0) {
             // console.log(user_email);
             document.querySelector('.auth input[name="email"]').value = user_email;
             document.querySelector('.auth input[name="password"]').value = "";
@@ -97,12 +110,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (callback.logValidate(form)) {
 
-                console.log("TOUT EST OK pour l'authentification")
+                // console.log("TOUT EST OK pour l'authentification")
 
-                ajaxCallback.loginUser(form);
+                // ajaxCallback.loginUser(form);
 
                 // true => on efface le formulaire
                 e.currentTarget.reset();
+
+                window.location = './index.php?page=home';
+
+
             } else {
                 console.log("PERDU PAS d'authentification")
                     // false => on reste sur le form et on affiche les erreurs détectées
@@ -115,49 +132,59 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // page INSCRIPTION
     //*******************************************************************
-    if (pageAct === 'inscription') {
+    if (pageAct === 'inscription' || pageAct === 'dashboardUSer') {
 
-        console.log('PAGE inscription');
+        console.log('PAGE inscription / dashboard User');
         // return;
 
-        document.querySelector('.createUser').addEventListener('submit', e => {
-            e.preventDefault();
-            // console.log(e);
+        const $manipUsers = document.querySelectorAll('.createUser, .updateUser');
+        $manipUsers.forEach($manipUser => {
+            $manipUser.addEventListener('submit', e => {
+                e.preventDefault();
 
-            // const champsAControler = ['nickname', 'lastname', 'firstname', 'email', 'password', 'avatar'];
-            // const inputs = document.querySelectorAll('input');
-            // const form = new Form(inputs, champsAControler);
+                // console.log(e);
 
-            // Get action to do (from input hidden)
-            const action = e.currentTarget.id
+                // const champsAControler = ['nickname', 'lastname', 'firstname', 'email', 'password', 'avatar'];
+                // const inputs = document.querySelectorAll('input');
+                // const form = new Form(inputs, champsAControler);
 
-            console.log(action);
+                // Get action to do (from input hidden)
+                const action = e.target[1].value;
 
-            // form datas
-            const form = new FormData(e.currentTarget)
+                // console.log(action);
 
-            // console.log(form);
+                // form datas
+                const form = new FormData(e.currentTarget)
 
-            if (callback.addValidate(form)) {
-                console.log("TOUT EST OK pour la création du USER")
+                // console.log(form);
+
+                if (callback.addValidate(form, action)) {
+                    console.log("TOUT EST OK pour " + action + " le USER");
                     // true => on efface le formulaire
-                e.currentTarget.reset();
-            } else {
-                console.log("PERDU PAS de création")
-                    // false => on reste sur le form et on affiche les erreurs détectées
-                _customError.displayMessages();
-            }
-        });
+                    e.currentTarget.reset();
+
+                    // window.location.reload();
+
+                } else {
+                    console.log("PERDU PAS de création")
+                        // false => on reste sur le form et on affiche les erreurs détectées
+                    _customError.displayMessages();
+                }
+            });
+        })
     }
 
-    // page LOGOUT
+    // LOGOUT
     //*******************************************************************
-    if (pageAct === 'logout') {
-        // @TODO : vider le localStorage
-        ajaxCallback.logoutUser();
-        callback.updateUserInfoLS('user', null);
+    // console.log(callback.getUserInfoLS('user'))
+    if (callback.getUserInfoLS('user').length != 0) {
+        document.getElementById('logout').addEventListener('click', e => {
+            // document.addEventListener('click', '#logout', e => {
+            // Vider le localStorage
+            callback.updateUserInfoLS('user', '');
 
-        console.log('LOGOUT !');
+            // console.log('LOGOUT !');
+        })
     }
 
     // page GAME

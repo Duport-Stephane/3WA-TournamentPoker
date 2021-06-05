@@ -1,7 +1,12 @@
 <!-- Page PLAYER : Affiche le tableau avec le bon titre en fonction de l'appel : User ou Player -->
 
 <table class='array'>
-    <caption><?= $title ?></caption>
+        <?php if ($type === "users") {
+            $list = $users;
+        } else {
+            $list = $players;
+        } ?>
+    <caption><?= count($list).' : '.$title ?></caption>
     <tr> 
         <th>​<input type='checkbox' name='checkboxall[]' value=<?= $type ?>></th>
         <th>​Pseudo</th>
@@ -13,22 +18,19 @@
 <div class='array-border tab<?= $type ?>List'>
     <!-- Emplacement du tableau des users / players -->
     <table class='array <?= $type ?>'>
-        <?php if($type === "users") {
-            $list = $users;
-        } else {
-            $list = $players;
-        } ?>
-        <?php foreach($list as $user) : {?>
-            <tr>
-                <td><input type='checkbox' name='checkboxuser[]' value=<?= $user['id'] ?>></td>
-                <td><?= $user['nickName'] ?></td>
-                <td><?= $user['firstName'] ?></td>
-                <td><?= $user['lastName'] ?></td>
-                <td><?php if ($user['avatar'] && $user['avatar'] != "") : {?>
-                        <img src=<?= $user['avatar'] ?> alt='avatar'>
-                    <?php } endif; ?>
-                </td>
-            </tr>
-        <?php } endforeach; ?>
+        <?php foreach ($list as $user) : { ?>
+                <tr>
+                    <td><input type='checkbox' name='checkboxuser[]' value=<?= $user['id'] ?>></td>
+                    <td class="selectUser <?= $user['id'] ?>"><?= $user['nickName'] ?></td>
+                    <td class="selectUser <?= $user['id'] ?>"><?= $user['firstName'] ?></td>
+                    <td class="selectUser <?= $user['id'] ?>"><?= $user['lastName'] ?></td>
+                    <td><?php if ($user['avatar'] !== "") : { ?>
+                                <img src=<?= $user['avatar'] ?> alt='avatar'>
+                        <?php }
+                                                                endif; ?>
+                    </td>
+                </tr>
+        <?php }
+        endforeach; ?>
     </table>
 </div>

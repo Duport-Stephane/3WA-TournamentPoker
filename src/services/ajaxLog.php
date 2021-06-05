@@ -12,6 +12,7 @@ if (isset($_POST) && !empty($_POST) && isset($_POST['action']) && !empty($_POST[
     // Extraction des paramètres passés dans le POST
     // var_dump("POST AJAX LOG");
     extract($_POST);
+
     // var_dump($_POST);
 
     try {
@@ -19,20 +20,20 @@ if (isset($_POST) && !empty($_POST) && isset($_POST['action']) && !empty($_POST[
 
             // var_dump($key . " / " . $input);
 
-            if (empty($input) && $key !== 'lastname' && $key !== 'firstname' && $key !== 'avatar') {
+            if (empty($input) && $key !== 'lastName' && $key !== 'firstName' && $key !== 'avatar') {
                 throw new DomainException("Attention, Le champ $key est vide.");
             } else if (strlen($input) > 30 && $key !== 'avatar') {
                 throw new DomainException("Attention, Le texte saisi dépasse les 30 caractères autorisés.");
             } else {
                 switch ($key) {
-                    case 'nickname':
-                        $nickname = htmlentities($input);
+                    case 'nickName':
+                        $nickName = htmlentities($input);
                         break;
-                    case 'lastname':
-                        $lastname = htmlentities($input);
+                    case 'lastName':
+                        $lastName = htmlentities($input);
                         break;
-                    case 'firstname':
-                        $firstname = htmlentities($input);
+                    case 'firstName':
+                        $firstName = htmlentities($input);
                         break;
                     case 'email':
                         $mailPattern = '/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/';
@@ -52,12 +53,18 @@ if (isset($_POST) && !empty($_POST) && isset($_POST['action']) && !empty($_POST[
             }
         }
 
+        if ($action === 'update') {
+            $email = \Models\Session::getOffset1_Offset2('user', 'email');
+        }
         $user = $userM->getUserByMail($email);
+
+        // var_dump($user);
 
         switch ($action) {
             case 'persist':
-                // on commence par checker le mail qui doit être UNIQUE 
-                if ($user) {
+            case 'update':
+                // on commence par checker le mail qui doit être UNIQUE pour la création (mais pas pour l'update)
+                if ($user && $action !== 'update') {
                     throw new DomainException("Attention, L'utilisateur existe déjà !");
                 } else {
                     // Donc on peut sauvegarder le USER
@@ -65,7 +72,7 @@ if (isset($_POST) && !empty($_POST) && isset($_POST['action']) && !empty($_POST[
                     if (array_key_exists('avatar', $_FILES) && !empty($_FILES['avatar']['name'])) {
 
                         // On définit le chemin de destination
-                        $uploaddir = '../../asset/images/users/';
+                        $uploaddir = './asset/images/users/';
                         // On construit le chemin avec un nom UNIQUE de fichier : MD5(microtime + mail)
                         $avatar = $uploaddir . md5(microtime() . $email) . "." . substr($_FILES['avatar']['type'], 6);
 
@@ -73,29 +80,77 @@ if (isset($_POST) && !empty($_POST) && isset($_POST['action']) && !empty($_POST[
                         if (!move_uploaded_file($_FILES['avatar']['tmp_name'], $avatar)) {
                             throw new DomainException("Une erreur est survenue lors du téléchargement de votre photo");
                         }
+
+                        // ***********************************************
+                        // TODO : si UPDATE de AVATAR, il faut supprimer la photo existante
+                        // ***********************************************
+                        if (isset($avatar) && !empty($avatar)) {
+                            unlink($user['avatar']);
+                        }
+
                     }
                     // Enregistrement du nouvel user
-                    // avec AVATAR
-                    if (isset($avatar) && !empty($avatar)) {
+                    if ($action === 'persist') {
 
-                        // var_dump($avatar);
+                        var_dump('PERSIST ' . $email);
 
-                        $password = password_hash($password, PASSWORD_BCRYPT);
+                        // avec AVATAR
+                        if (isset($avatar) && !empty($avatar)) {
 
-                        echo $userM->setUser($nickname, $lastname, $firstname, $email, $password, $avatar);
-                    } else {
-                        // sans AVATAR
+                            // var_dump($password);
 
-                        // var_dump("Sans AVATAR");
+                            $password = password_hash($password, PASSWORD_BCRYPT);
 
-                        echo $userM->setUser($nickname, $lastname, $firstname, $email, $password);
+                            echo $userM->setUser($nickname, $lastname, $firstname, $email, $password, $avatar);
+                        } else {
+                            // sans AVATAR
+
+                            // var_dump("Sans AVATAR");
+
+                            // var_dump($password);
+
+                            $password = password_hash($password, PASSWORD_BCRYPT);
+
+                            echo $userM->setUser($nickname, $lastname, $firstname, $email, $password);
+                        }
+                        \Models\Session::setOffset('info', `{$nickname} fait maintenant parti de la liste des utilisateurs.`);
+                        echo `{$nickname} fait maintenant parti de la liste des utilisateurs.`;
+
+                    } else if ($action === 'update') {
+
+                        var_dump('UPDATE ' . $user['id'] . " ".$nickName." ". $lastName." ". $firstName);
+                        // die;
+
+                        // Mise à jour du User
+                        // avec AVATAR
+                        if (isset($avatar) && !empty($avatar)) {
+
+                            echo $userM->updateUser($user['id'], $nickName, $lastName, $firstName, $avatar);
+
+                            \Models\Session::login($user['id'], $nickName, $firstName, $lastName, $email, $avatar, 2);
+                        } else {
+                            // sans AVATAR
+
+                            echo $userM->updateUser($user['id'], $nickName, $lastName, $firstName);
+
+                            \Models\Session::login($user['id'], $nickName,
+                                $firstName,
+                                $lastName,
+                                $email,
+                                "",
+                                2
+                            );
+                        }
+                        \Models\Session::setOffset('info', `Les informations ont bien été mises à jour.`);
+                        echo `Les informations ont bien été mises à jour.`;
                     }
-                    \Models\Session::setOffset('info', `{$nickname} fait maintenant parti de la liste des utilisateurs.`);
-                    echo `{$nickname} fait maintenant parti de la liste des utilisateurs.`;
                 }
                 break;
 
-            case 'comparePWD':
+            case 'auth':
+
+                // var_dump($user ['id']);
+
                 // on commence par checker le mail pour savoir s'il existe en BDD
                 if (!($user)) {
                     throw new DomainException("Attention, Cette adresse mail n'est pas reconnue, veuillez la modifier ou vous inscrire.");
@@ -106,19 +161,16 @@ if (isset($_POST) && !empty($_POST) && isset($_POST['action']) && !empty($_POST[
                         // var_dump("MdP incorrect");
 
                         throw new DomainException("Le mot de passe n'est pas correct");
+                    } else {
+                        \Models\Session::login($user['id'], $user['nickName'], $user['firstName'], $user['lastName'], $user['email'], $user['avatar'], $user['role_id']);
+
+                        \Models\Session::setOffset('info', `Vous êtes connecté. Bienvenue, {$user['nickName']} !`);
+
+                        echo $user['id'];
+                        header('Location: ./index.php?page=home&action=');
+                        die;
                     }
                 }
-                break;
-
-            case 'auth':
-                \Models\Session::login($user['id'], $user['nickName'], $user['firstName'], $user['lastName'], $user['email'], $user['avatar'], $user['role_id']);
-
-                \Models\Session::setOffset('info', `Vous êtes connecté. Bienvenue, {$user['nickName']} !`);
-
-                // var_dump(\Models\Session::getUserEmail());
-
-                // echo 'OK';
-                echo \Models\Session::isConnected();
                 break;
         }
     } catch (DomainException $e) {
