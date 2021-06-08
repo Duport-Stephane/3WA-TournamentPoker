@@ -29,6 +29,8 @@ document.addEventListener('DOMContentLoaded', function() {
     $('.message').delay(4000).fadeOut()
         // $('.message').remove();
 
+    // logout before leaving
+    window.onbeforeunload = callback.updateUserInfoLS('user', '');
 
     // page PLAYER
     //*******************************************************************
@@ -256,16 +258,19 @@ document.addEventListener('DOMContentLoaded', function() {
     // page BONUS
     //*******************************************************************
     if (pageAct === 'bonus') {
-        document.getElementById('canvasOn').addEventListener('click', e => {
+        const $btnStart = document.getElementById('canvasOn');
+        $btnStart.addEventListener('click', e => {
             e.preventDefault;
+            $btnStart.disabled = true;
             canvas.animCanvas();
         });
-        document.getElementById('canvasOff').addEventListener('click', e => {
+        const $btnStop = document.getElementById('canvasOff');
+        $btnStop.addEventListener('click', e => {
             e.preventDefault;
+            $btnStart.disabled = false;
             canvas.stopCanvas();
         });
     };
-
 
     // changement de thème
     //*******************************************************************

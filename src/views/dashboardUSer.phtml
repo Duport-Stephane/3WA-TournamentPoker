@@ -11,19 +11,9 @@
     </article>
 
     <article>
-        <h2>LISTE DES TOURNOIS DISPONIBLES</h2>
-        <p>
-            <?= $_SERVER['SERVER_NAME']; ?>
-        </p>
-        <p>
-            <?= $_SERVER['DOCUMENT_ROOT']; ?>
-        </p>
-        <p>
-            <?= $_SERVER['PHP_SELF']; ?>
-        </p>
-        </p>
-        <p>
-            <?= $_SERVER['SCRIPT_FILENAME']; ?>
-        </p>
+        <!-- <h2>LISTE DES TOURNOIS DISPONIBLES</h2> -->
+
+        <?php require_once './src/views/partials/arrayTournament.phtml' ?>
+        
     </article>
 </section>

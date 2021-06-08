@@ -40,7 +40,7 @@ class Role extends \Database
      * Get roleName by id
      */
 
-    public function getRoleNameById ($role_id) 
+    public function getRoleNameById (int $role_id) 
     {
         $query = "SELECT id, roleName 
         FROM role 
@@ -52,33 +52,40 @@ class Role extends \Database
     }
 
     /**
-     *  Insert into Role
-     * @param int user_id
-     * @param int tournament_id
+     * Get all roleName
      */
-    // public function insertPlayer (int $user_id, int $tournament_id){
-    //     $query = "INSERT INTO player (user_id, tournament_id) 
-    //                 VALUES (:user_id, :tournament_id)";
-    //     $param = [
-    //         ':user_id'          => $user_id,
-    //         ':tournament_id'    => $tournament_id
-    //     ];
-    //     return $this->executeSql($query, $param);
-    // }
+
+    public function getAllRoleName()
+    {
+        $query = "SELECT id, roleName 
+        FROM role";
+        return $this->findAll($query, []);
+    }
+
+    /**
+     *  Insert into Role
+     * @param string roleName
+     */
+    public function insertRole (string $roleName){
+        $query = "INSERT INTO role (roleName) 
+                    VALUES (:roleName)";
+        $param = [
+            ':roleName' => $roleName
+        ];
+        return $this->executeSql($query, $param);
+    }
 
     /**
      *  Delete from Role
      * @param int role_id
      */
-    // public function deletePlayer(int $user_id, int $tournament_id)
-    // {
-    //     $query = "DELETE FROM player 
-    //                 WHERE user_id = :user_id
-    //                 AND tournament_id = :tournament_id";
-    //     $param = [
-    //         ':user_id'          => $user_id,
-    //         ':tournament_id'    => $tournament_id
-    //     ];
-    //     return $this->executeSql($query, $param);
-    // }
+    public function deleteRole(int $role_id)
+    {
+        $query = "DELETE FROM role 
+                    WHERE role_id = :role_id";
+        $param = [
+            ':role_id'          => $role_id
+        ];
+        return $this->executeSql($query, $param);
+    }
 }

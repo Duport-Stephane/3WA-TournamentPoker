@@ -121,8 +121,6 @@ fieldset div label {
 }
 
 .fond-Table {
-  width: 90%;
-  height: 90%;
   margin: 3rem auto;
   background-image: url("../../asset/images/table-70.png");
   background-size: contain;
@@ -421,6 +419,14 @@ footer ul li a:hover {
 .text-left {
   text-align: left;
   padding: 0.2rem;
+}
+
+.border-screen {
+  width: 90%;
+  height: 90%;
+  margin: 0px auto;
+  border: 1px solid var(--border);
+  overflow-y: auto;
 }
 
 .flex-between {

@@ -1,6 +1,8 @@
 <?php
 // Importer le nécessaire
 
+use Models\Role;
+
 var_dump($_POST);
 var_dump($_GET);
 
@@ -54,8 +56,10 @@ if (isset($_POST) && !empty($_POST) && isset($_POST['action']) && !empty($_POST[
         }
 
         if ($action === 'update') {
+            // Si update, on ne peut pas modifier le mail, donc on le récupère directement dans la session
             $email = \Models\Session::getOffset1_Offset2('user', 'email');
         }
+
         $user = $userM->getUserByMail($email);
 
         // var_dump($user);
@@ -118,7 +122,7 @@ if (isset($_POST) && !empty($_POST) && isset($_POST['action']) && !empty($_POST[
 
                     } else if ($action === 'update') {
 
-                        var_dump('UPDATE ' . $user['id'] . " ".$nickName." ". $lastName." ". $firstName);
+                        // var_dump('UPDATE ' . $user['id'] . " / ".$nickName." / ". $lastName." / ". $firstName." / ".$role);
                         // die;
 
                         // Mise à jour du User
@@ -127,7 +131,7 @@ if (isset($_POST) && !empty($_POST) && isset($_POST['action']) && !empty($_POST[
 
                             echo $userM->updateUser($user['id'], $nickName, $lastName, $firstName, $avatar);
 
-                            \Models\Session::login($user['id'], $nickName, $firstName, $lastName, $email, $avatar, 2);
+                            \Models\Session::login($user['id'], $nickName, $firstName, $lastName, $email, $avatar, $role);
                         } else {
                             // sans AVATAR
 

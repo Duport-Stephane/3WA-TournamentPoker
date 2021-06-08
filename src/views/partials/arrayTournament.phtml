@@ -1,0 +1,29 @@
+<table class='array'>
+
+    <caption>Liste des tournois à venir</caption>
+    <tr> 
+        <th>​</th>
+        <th>Date</th>
+        <th>Nom du tournoi</th>
+        <th>Nb Tables</th>
+        <th>Logo</th>
+    </tr> 
+</table>
+<div class='array-border'>
+    <table class='array'>
+        <?php foreach ($tournaments as $tournament) : { ?>
+                <tr>
+                    <td><input type='checkbox' name='checkboxtournament[]' value=<?= $tournament['id'] ?>></td>
+                    <td class="selectUser <?= $tournament['id'] ?>"><?= $tournament['started_at'] ?></td>
+                    <td class="selectUser <?= $tournament['id'] ?>"><?= $tournament['name'] ?></td>
+                    <td class="selectUser <?= $tournament['id'] ?>"><?= $tournament['tableMax'] ?></td>
+                    <td><?php if ($tournament['avatar'] !== "") : { ?>
+                                <img src=<?= $tournament['avatar'] ?> alt='avatar'>
+                        <?php }
+                        endif; ?>
+                    </td>
+                </tr>
+        <?php }
+        endforeach; ?>
+    </table>
+</div>

@@ -7,7 +7,7 @@
 
 // Actions : Traitement (POST)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    
+
     var_dump('DASHBOARD USER.PHP en POST');
 
     // Si pas de param, je repars à l'accueil
@@ -21,8 +21,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     var_dump('DASHBOARD USER.PHP en GET');
 
     $roleM = new \Models\Role;
-    $roleName = $roleM ->getRoleNameById(\Models\Session::getOffset1_Offset2('user', 'role_id'))['roleName'];
-
+    // role du user
+    $roleName = $roleM->getRoleNameById(\Models\Session::getOffset1_Offset2('user', 'role_id'))['roleName'];
 }
 
 require_once './src/views/dashboardUser.phtml';

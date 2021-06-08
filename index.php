@@ -91,7 +91,7 @@ if (isset($_POST) && !empty($_POST)) {
     } else if (array_key_exists('page', $_GET) && !empty($_GET['page'])) {
         // No specific treatment, Display requested page (except home)
 
-        var_dump("GET Page");
+        // var_dump("GET Page");
 
         $page = $_GET['page'];
     }

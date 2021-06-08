@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // 1 er chargement de la page 'BONUS = CANVAS'
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
-    var_dump('regles.PHP en GET');
+    // var_dump('regles.PHP en GET');
 
 }
 
