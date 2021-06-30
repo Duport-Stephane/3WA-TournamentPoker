@@ -1,0 +1,32 @@
+<!-- <h2 class="from-left">Liste des joueurs</h2> -->
+
+<table class='array'>
+
+    <caption>Liste des joueurs inscrits sur l'appli</caption>
+<input type="text">Saisie pour recherche d'un joueur
+    <tr> 
+        <th>​</th>
+        <th>Pseudo</th>
+        <th>Nom</th>
+        <th>Prénom</th>
+        <th>Avatar</th>
+    </tr> 
+</table>
+<div class='array-border'>
+    <table class='array'>
+        <?php foreach ($tournaments as $tournament) : { ?>
+                <tr>
+                    <td><input type='checkbox' name='checkboxtournament[]' value=<?= $tournament['id'] ?>></td>
+                    <td class="selectUser <?= $tournament['id'] ?>"><?= $tournament['started_at'] ?></td>
+                    <td class="selectUser <?= $tournament['id'] ?>"><?= $tournament['name'] ?></td>
+                    <td class="selectUser <?= $tournament['id'] ?>"><?= $tournament['tableMax'] ?></td>
+                    <td><?php if ($tournament['avatar'] !== "") : { ?>
+                                <img src=<?= $tournament['avatar'] ?> alt='avatar'>
+                        <?php }
+                        endif; ?>
+                    </td>
+                </tr>
+        <?php }
+        endforeach; ?>
+    </table>
+</div>

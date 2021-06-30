@@ -429,7 +429,10 @@ fieldset {
 // *******************************************************************
 footer {
     & section {
-        width: 25%;
+        width: 35%;
+        &:first-child {
+            width: 15%;
+        }
     }
     & img {
         padding-right: 0.7rem;
@@ -497,6 +500,14 @@ footer {
     display: flex;
     justify-content: space-around;
     // align-items: center;
+}
+
+.flex-around-wrap {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: 0 auto;
 }
 
 .flex-center-items {

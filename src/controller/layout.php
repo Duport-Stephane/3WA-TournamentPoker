@@ -38,10 +38,6 @@
 
     <footer class='headband'>
         <?php require_once './src/views/partials/footer.phtml'; ?>
-        <?php if ($page === 'game') : { ?>
-                <a href="./index.php?page=home"><img src="./asset/images/carte-R.jpg" alt="home">Accueil</a>
-        <?php }
-        endif; ?>
     </footer>
 
     <script type='module' src='./asset/js/app.js'></script>

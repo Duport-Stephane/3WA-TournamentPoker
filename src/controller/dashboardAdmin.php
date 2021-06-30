@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     var_dump('DASHBOARD ADMIN.PHP en POST');
 
     // Si pas de param, je repars à l'accueil
-    header('Location: ./index.php?page=dashboardUSer');
+    header('Location: ./index.php?page=dashboardAdmin');
     die;
 }
 
@@ -21,11 +21,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     // var_dump('DASHBOARD ADMIN.PHP en GET');
 
     $roleM = new \Models\Role;
-    // role du user
+    // role du user, only for Admin
     $roleName = $roleM ->getRoleNameById(\Models\Session::getOffset1_Offset2('user', 'role_id'))['roleName'];
     // on récupère la liste des rôles pour les afficher en COMBO LIST
     $roles = $roleM->getAllRoleName();
     
+    // liste des joueurs inscrit sue l'appli
+
+
+
     // on récupère la liste des tournois à venir (closed_at = null) pour les afficher en Tableau
     $tournament = new \Models\Tournament;
     $tournaments = $tournament->getAllTournamentOn();
