@@ -108,13 +108,29 @@ function isSamePassword(form) {
  * Persist User in database
  * @param {formData} form 
  */
-function persistUser(form) {
-    fetch('./index.php?action=persist', {
-            method: 'post',
-            body: form
-        })
-        // .then(response => response.text())
+async function persistUser(form) {
+    const response = await fetch('./index.php?action=persist', {
+        method: 'post',
+        body: form
+    })
+    const result = await response.text()
         // .then(response => console.log(response))
+    return result;
+}
+
+function isPersistUser(form) {
+    persistUser(form).then(result => result.text())
+        // .then(response => console.log(response))
+        .then(result => {
+            // console.log("RES dans le FETCH : " + result);
+            if (result.length < 500) {
+                const _customError = new ErrorCustom;
+                _customError.messages = "Attention, cette adresse mail est déjà utilisée !";
+                return false;
+            } else {
+                return true;
+            }
+        })
 }
 
 
@@ -142,4 +158,4 @@ function updateUser(form) {
 
 
 
-export { modifPlayerList, isSamePassword, persistUser, updateUser }
+export { modifPlayerList, isSamePassword, isPersistUser, updateUser }

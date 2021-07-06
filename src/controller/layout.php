@@ -21,13 +21,15 @@
         <div class="message">
             <?php if (\Models\Session::isOffsetExists('info') && !empty(\Models\Session::getOffset('info'))) : ?>
                 <p id="notif" class="alert alert-info">
+                    info =
                     <?= \Models\Session::getOffset('info') ?>
                 </p>
-                <?php \Models\Session::unsetOffset('info'); ?> 
+                <?php \Models\Session::unsetOffset('info'); ?>
             <?php endif; ?>
 
             <?php if (\Models\Session::isOffsetExists('alert') && !empty(\Models\Session::getOffset('alert'))) : ?>
-                <p class="alert alert-alert">
+                <p id="notifAlert" class="alert alert-danger">
+                    alert =
                     <?= \Models\Session::getOffset('alert') ?>
                 </p>
                 <?php \Models\Session::unsetOffset('alert'); ?>

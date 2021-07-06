@@ -1,4 +1,4 @@
-<h2 class="from-left">Modifier votre profil</h2>
+<h2 class="from-left">Modifier votre profil ?</h2>
 <form class="updateUser card-body" action='./index.php?page=dashboardUser' method="POST" enctype="multipart/form-data">
     <fieldset>
         <div>
@@ -37,14 +37,13 @@
             endif; ?>
         </div>
 
-        <!-- TODO --------------------------------- -->
-        <!-- Visible uniquement par les ADMIN -->
-        <?php if (\Models\Session::getOffset1_Offset2('user', 'role_id') === '1') : ?>
+        <!-- Visible uniquement par les ADMIN || USER-ADMIN-->
+        <?php if (\Models\Session::getOffset1_Offset2('user', 'role_id') !== '2') : ?>
             <div>
-                <label for="role" class="btn-info">Rôle</label>
+                <label for="role" class="btn-info">Rôle *</label>
                 <div class="card-text">
                     <span class="card-puce"><i class="far fa-id-badge"></i></span>
-                    <select name="role" size="1" class="card-input">
+                    <select name="role" size="1" class="card-input" required>
                         <?php foreach ($roles as $role) : { ?>
                                 <?php if ($role['roleName'] === $roleName) : ?>
                                     <option value=<?= $role['id'] ?>><?= $role['roleName'] ?>
@@ -58,6 +57,7 @@
                 </div>
             </div>
         <?php endif; ?>
+        <p class="small text-left messageGrey">* : information obligatoire</p>
         <button type="submit" class="btn btn-info">Modifier vos informations</button>
         <button class="btn btn-alert"><a href="./index.php?page=dashboardUSer">Annuler les modifications</a></button>
     </fieldset>

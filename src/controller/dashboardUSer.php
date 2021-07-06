@@ -23,6 +23,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $roleM = new \Models\Role;
     // role du user
     $roleName = $roleM->getRoleNameById(\Models\Session::getOffset1_Offset2('user', 'role_id'))['roleName'];
+
+    // on récupère la liste des tournois à venir (closed_at = null) pour les afficher en Tableau
+    $tournament = new \Models\Tournament;
+    $tournaments = $tournament->getAllTournamentOn();
+    // var_dump($tournaments);
 }
 
 require_once './src/views/dashboardUser.phtml';

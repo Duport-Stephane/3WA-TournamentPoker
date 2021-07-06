@@ -1,3 +1,6 @@
+<h1 class="flex-center-items headband">
+    <img src="./asset/images/logo.png" alt="logo" class="token">Poker Hold'hem Tournament Poker
+</h1>
 <section class="navHeader flex-between headband">
     <nav>
         <ul class="flex-around">
@@ -17,7 +20,7 @@
                 <?php if (\Models\Session::isOffsetExists('user') && (\Models\Session::getOffset1_Offset2('user', 'role_id') != 1)) : ?>
                     <li><a href="./index.php?page=dashboardUSer" class="dashboardUSer flex-column">
                             <img src="./asset/images/token/yellow.png" alt="dashboard User" class="token">
-                            <div class="small">Tableau de bord U</div>
+                            <div class="small">Mon espace</div>
                         </a></li>
                 <?php else : ?>
                     <li><a href="./index.php?page=dashboardAdmin" class="dashboardAdmin flex-column">
@@ -52,7 +55,3 @@
 
     </nav>
 </section>
-
-<h1 class="flex-center-items headband">
-    <img src="./asset/images/logo.png" alt="logo" class="token">Poker Hold'hem Tournament Poker
-</h1>

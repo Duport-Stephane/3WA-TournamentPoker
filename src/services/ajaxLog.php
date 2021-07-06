@@ -3,8 +3,8 @@
 
 use Models\Role;
 
-var_dump($_POST);
-var_dump($_GET);
+// var_dump($_POST);
+// var_dump($_GET);
 
 $userM = new \Models\User;
 
@@ -19,13 +19,14 @@ if (isset($_POST) && !empty($_POST) && isset($_POST['action']) && !empty($_POST[
 
     try {
         foreach ($_POST as $key => $input) {
+            // Traitement des saisies utilisateurs
 
-            // var_dump($key . " / " . $input);
+            var_dump($key . " / " . $input);
 
             if (empty($input) && $key !== 'lastName' && $key !== 'firstName' && $key !== 'avatar') {
                 throw new DomainException("Attention, Le champ $key est vide.");
-            } else if (strlen($input) > 30 && $key !== 'avatar') {
-                throw new DomainException("Attention, Le texte saisi dépasse les 30 caractères autorisés.");
+            } else if (strlen($input) > 32 && $key !== 'avatar') {
+                throw new DomainException("Attention, Le texte saisi dépasse les 32 caractères autorisés.");
             } else {
                 switch ($key) {
                     case 'nickName':
@@ -45,7 +46,7 @@ if (isset($_POST) && !empty($_POST) && isset($_POST['action']) && !empty($_POST[
                         $email = $input;
                         break;
                     case 'password':
-                        $passwordPattern = '/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,20}$/';
+                        $passwordPattern = '/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,32}$/';
                         if (preg_match($passwordPattern, $input) !== 1) {
                             throw new DomainException("Le mot de passe doit contenir au moins 8 caractères dont une minuscule, une majuscule, un chiffre et un caractère spécial");
                         }
@@ -62,13 +63,13 @@ if (isset($_POST) && !empty($_POST) && isset($_POST['action']) && !empty($_POST[
 
         $user = $userM->getUserByMail($email);
 
-        // var_dump($user);
+        var_dump($user);
 
         switch ($action) {
             case 'persist':
             case 'update':
                 // on commence par checker le mail qui doit être UNIQUE pour la création (mais pas pour l'update)
-                if ($user && $action !== 'update') {
+                if ($user && $action === 'persist') {
                     throw new DomainException("Attention, L'utilisateur existe déjà !");
                 } else {
                     // Donc on peut sauvegarder le USER
@@ -86,7 +87,7 @@ if (isset($_POST) && !empty($_POST) && isset($_POST['action']) && !empty($_POST[
                         }
 
                         // ***********************************************
-                        // TODO : si UPDATE de AVATAR, il faut supprimer la photo existante
+                        // si UPDATE de AVATAR, il faut supprimer la photo existante
                         // ***********************************************
                         if (isset($avatar) && !empty($avatar)) {
                             unlink($user['avatar']);
@@ -97,27 +98,21 @@ if (isset($_POST) && !empty($_POST) && isset($_POST['action']) && !empty($_POST[
                     if ($action === 'persist') {
 
                         var_dump('PERSIST ' . $email);
+                        // var_dump($password);
+                        
+                        $password = password_hash($password, PASSWORD_BCRYPT);
 
+                        \Models\Session::setOffset('info', `{$nickname} fait maintenant parti de la liste des utilisateurs.`);
+                        
                         // avec AVATAR
                         if (isset($avatar) && !empty($avatar)) {
-
-                            // var_dump($password);
-
-                            $password = password_hash($password, PASSWORD_BCRYPT);
-
-                            echo $userM->setUser($nickname, $lastname, $firstname, $email, $password, $avatar);
+                            $userM->setUser($nickname, $lastname, $firstname, $email, $password, $avatar);
                         } else {
                             // sans AVATAR
-
                             // var_dump("Sans AVATAR");
-
                             // var_dump($password);
-
-                            $password = password_hash($password, PASSWORD_BCRYPT);
-
-                            echo $userM->setUser($nickname, $lastname, $firstname, $email, $password);
+                            $userM->setUser($nickname, $lastname, $firstname, $email, $password);
                         }
-                        \Models\Session::setOffset('info', `{$nickname} fait maintenant parti de la liste des utilisateurs.`);
                         echo `{$nickname} fait maintenant parti de la liste des utilisateurs.`;
 
                     } else if ($action === 'update') {
@@ -125,28 +120,27 @@ if (isset($_POST) && !empty($_POST) && isset($_POST['action']) && !empty($_POST[
                         // var_dump('UPDATE ' . $user['id'] . " / ".$nickName." / ". $lastName." / ". $firstName." / ".$role);
                         // die;
 
+                        \Models\Session::setOffset('info', `Les informations ont bien été mises à jour.`);
+                        
                         // Mise à jour du User
-                        // avec AVATAR
                         if (isset($avatar) && !empty($avatar)) {
-
-                            echo $userM->updateUser($user['id'], $nickName, $lastName, $firstName, $avatar);
-
-                            \Models\Session::login($user['id'], $nickName, $firstName, $lastName, $email, $avatar, $role);
+                            // avec AVATAR
+                            $userM->updateUser($user['id'], $nickName, $lastName, $firstName, $avatar);
                         } else {
                             // sans AVATAR
-
-                            echo $userM->updateUser($user['id'], $nickName, $lastName, $firstName);
-
-                            \Models\Session::login($user['id'], $nickName,
-                                $firstName,
-                                $lastName,
-                                $email,
-                                "",
-                                2
-                            );
+                            $userM->updateUser($user['id'], $nickName, $lastName, $firstName);
                         }
-                        \Models\Session::setOffset('info', `Les informations ont bien été mises à jour.`);
                         echo `Les informations ont bien été mises à jour.`;
+
+                        // \Models\Session::login(
+                        //     $user['id'],
+                        //     $nickName,
+                        //     $firstName,
+                        //     $lastName,
+                        //     $email,
+                        //     $avatar,
+                        //     $role
+                        // );
                     }
                 }
                 break;
@@ -163,10 +157,15 @@ if (isset($_POST) && !empty($_POST) && isset($_POST['action']) && !empty($_POST[
                     // compare le $user['password'] hashé avec celui lu dans le champ input $password du form
                     if (!password_verify($password, $user['password'])) {
                         // var_dump("MdP incorrect");
-
                         throw new DomainException("Le mot de passe n'est pas correct");
                     } else {
-                        \Models\Session::login($user['id'], $user['nickName'], $user['firstName'], $user['lastName'], $user['email'], $user['avatar'], $user['role_id']);
+                        \Models\Session::login($user['id'], 
+                                                $user['nickName'], 
+                                                $user['firstName'], 
+                                                $user['lastName'], 
+                                                $user['email'], 
+                                                $user['avatar'], 
+                                                $user['role_id']);
 
                         \Models\Session::setOffset('info', `Vous êtes connecté. Bienvenue, {$user['nickName']} !`);
 

@@ -1,8 +1,7 @@
-<h1>Mes informations</h1>
+<h1>Mon espace</h1>
 
 <section class="flex-around">
     <article>
-        <h2 class="from-left">Modifier votre profil ?</h2>
         <form class="updateUser card-body" action='./index.php?page=dashboardUser' method="POST" enctype="multipart/form-data">
 
             <?php require_once './src/views/partials/infoUser.phtml' ?>
@@ -11,9 +10,6 @@
     </article>
 
     <article>
-        <!-- <h2>LISTE DES TOURNOIS DISPONIBLES</h2> -->
-
         <?php require_once './src/views/partials/arrayTournament.phtml' ?>
-        
     </article>
 </section>

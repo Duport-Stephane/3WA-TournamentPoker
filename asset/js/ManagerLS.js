@@ -21,6 +21,20 @@ class ManagerLS {
 
         window.localStorage.setItem(key, value)
     };
+
+    removeKey(key) {
+        // Delete Key in LocalStorage
+        window.localStorage.removeItem(key);
+    }
+
+    existKey(key) {
+        if (window.localStorage.getItem(key) !== null) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
 }
 
 export default ManagerLS;

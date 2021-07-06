@@ -23,14 +23,131 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // A chaque changement de page, met en évidence le bon menu de la nav du header et celui de A propos
     const pageAct = callback.currentNav();
+    // console.log(pageAct);
 
     // jQuery - Affichage de la notif pendant 2 sec 
-    // $('#notif').delay(2000).fadeOut()
-    $('.message').delay(4000).fadeOut()
+    $('#notif').delay(2000).fadeOut()
+    $('#notifAlert').delay(2000).fadeOut()
+        // $('.message').delay(4000).fadeOut()
         // $('.message').remove();
 
-    // logout before leaving
-    window.onbeforeunload = callback.updateUserInfoLS('user', '');
+    // logout before leaving site and NOT PAGE !!!!!!!!!
+    // si on prend onbeforeunload, c'est executé dès qu'on change de page et pas à la fermeture de l'appli !
+    // window.onbeforeunload = callback.updateUserInfoLS('user', '');
+
+
+    // page INSCRIPTION || DASHBOARDUSER
+    //*******************************************************************
+    if (pageAct === 'inscription' || pageAct === 'dashboardUSer') {
+
+        console.log('PAGE inscription / dashboard User');
+        // return;
+
+        const $manipUsers = document.querySelectorAll('.createUser, .updateUser');
+        $manipUsers.forEach($manipUser => {
+            $manipUser.addEventListener('submit', e => {
+                e.preventDefault();
+
+                // console.log(e);
+
+                // const champsAControler = ['nickname', 'lastname', 'firstname', 'email', 'password', 'avatar'];
+                // const inputs = document.querySelectorAll('input');
+                // const form = new Form(inputs, champsAControler);
+
+                // Get action to do (from input hidden)
+                const action = e.target[1].value;
+
+                // console.log(action);
+
+                // form datas
+                const form = new FormData(e.currentTarget)
+
+                // console.log(form);
+
+                if (callback.addValidate(form, action)) {
+                    // console.log("TOUT EST OK, le USER a été " + action);
+                    // true => on efface le formulaire
+                    // e.currentTarget.reset();
+
+                    if (action === 'persist') {
+                        // Back to Home Page
+                        window.location.href = "./index.php?page=home";
+                    } else {
+                        window.location.reload();
+                    }
+
+                } else {
+                    // console.log("PERDU ! PAS de création / modification du USER")
+                    // false => on reste sur le form et on affiche les erreurs détectées
+                    // _customError.displayMessages();
+                    window.location.reload();
+                }
+            });
+        })
+    }
+
+
+    // page LOGIN
+    //*******************************************************************
+    if (pageAct === 'login') {
+
+        console.log("Page LOGIN");
+
+        // const _customError = new ErrorCustom // Référencer et afficher les erreurs
+        const user_email = callback.getUserInfoLS('user');
+
+        // Si exist : affiche le mail du LocalStorage dans l'input Mail du log
+        if (user_email.length !== 0) {
+            // console.log(user_email);
+            document.querySelector('.auth input[name="email"]').value = user_email;
+            document.querySelector('.auth input[name="password"]').value = "";
+            document.querySelector('.auth input[name="password"]').focus();
+        };
+
+        document.querySelector('.auth').addEventListener('submit', e => {
+            e.preventDefault();
+            // console.log(e);
+            // const action = e.currentTarget.id
+            // console.log(action);
+            // form datas
+            const form = new FormData(e.currentTarget)
+                // console.log(form);
+
+            if (callback.logValidate(form)) {
+
+                // console.log("TOUT EST OK pour l'authentification")
+
+                // ajaxCallback.loginUser(form);
+
+                // true => on efface le formulaire
+                e.currentTarget.reset();
+
+                window.location = './index.php?page=home';
+
+
+            } else {
+                console.log("PERDU PAS d'authentification")
+                    // false => on reste sur le form et on affiche les erreurs détectées
+                    // _customError.displayMessages();
+                document.querySelector('.auth input[name=password]').value = "";
+                document.querySelector('.auth input[name=password]').focus();
+            }
+        });
+    }
+
+
+    // LOGOUT
+    //*******************************************************************
+    // console.log(callback.getUserInfoLS('user'))
+    if (callback.isKeyExistLS('user')) {
+        document.getElementById('logout').addEventListener('click', e => {
+            // document.addEventListener('click', '#logout', e => {
+            // Vider le localStorage
+            callback.removeKeyLS('user');
+            // console.log('LOGOUT !');
+        })
+    }
+
 
     // page PLAYER
     //*******************************************************************
@@ -82,112 +199,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // page LOGIN
-    //*******************************************************************
-    if (pageAct === 'login') {
-
-        // console.log("Page LOGIN");
-
-        const _customError = new ErrorCustom // Référencer et afficher les erreurs
-        const user_email = callback.getUserInfoLS('user');
-
-        // Si exist : affiche le mail du LocalStorage dans l'input Mail du log
-        if (user_email.length !== 0) {
-            // console.log(user_email);
-            document.querySelector('.auth input[name="email"]').value = user_email;
-            document.querySelector('.auth input[name="password"]').value = "";
-            document.querySelector('.auth input[name="password"]').focus();
-        };
-
-        document.querySelector('.auth').addEventListener('submit', e => {
-            e.preventDefault();
-            // console.log(e);
-            // const action = e.currentTarget.id
-
-            // console.log(action);
-
-            // form datas
-            const form = new FormData(e.currentTarget)
-                // console.log(form);
-
-            if (callback.logValidate(form)) {
-
-                // console.log("TOUT EST OK pour l'authentification")
-
-                // ajaxCallback.loginUser(form);
-
-                // true => on efface le formulaire
-                e.currentTarget.reset();
-
-                window.location = './index.php?page=home';
-
-
-            } else {
-                console.log("PERDU PAS d'authentification")
-                    // false => on reste sur le form et on affiche les erreurs détectées
-                _customError.displayMessages();
-                document.querySelector('.auth input[name=password]').value = "";
-                document.querySelector('.auth input[name=password]').focus();
-            }
-        });
-    }
-
-    // page INSCRIPTION
-    //*******************************************************************
-    if (pageAct === 'inscription' || pageAct === 'dashboardUSer') {
-
-        console.log('PAGE inscription / dashboard User');
-        // return;
-
-        const $manipUsers = document.querySelectorAll('.createUser, .updateUser');
-        $manipUsers.forEach($manipUser => {
-            $manipUser.addEventListener('submit', e => {
-                e.preventDefault();
-
-                // console.log(e);
-
-                // const champsAControler = ['nickname', 'lastname', 'firstname', 'email', 'password', 'avatar'];
-                // const inputs = document.querySelectorAll('input');
-                // const form = new Form(inputs, champsAControler);
-
-                // Get action to do (from input hidden)
-                const action = e.target[1].value;
-
-                // console.log(action);
-
-                // form datas
-                const form = new FormData(e.currentTarget)
-
-                // console.log(form);
-
-                if (callback.addValidate(form, action)) {
-                    console.log("TOUT EST OK pour " + action + " le USER");
-                    // true => on efface le formulaire
-                    e.currentTarget.reset();
-
-                    // window.location.reload();
-
-                } else {
-                    console.log("PERDU PAS de création")
-                        // false => on reste sur le form et on affiche les erreurs détectées
-                    _customError.displayMessages();
-                }
-            });
-        })
-    }
-
-    // LOGOUT
-    //*******************************************************************
-    // console.log(callback.getUserInfoLS('user'))
-    if (callback.getUserInfoLS('user').length != 0) {
-        document.getElementById('logout').addEventListener('click', e => {
-            // document.addEventListener('click', '#logout', e => {
-            // Vider le localStorage
-            callback.updateUserInfoLS('user', '');
-
-            // console.log('LOGOUT !');
-        })
-    }
 
     // page GAME
     //*******************************************************************
@@ -255,6 +266,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 1000);
     };
 
+
     // page BONUS
     //*******************************************************************
     if (pageAct === 'bonus') {
@@ -272,9 +284,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     };
 
+
     // changement de thème
     //*******************************************************************
-
     // https://stackoverflow.com/questions/56300132/how-to-override-css-prefers-color-scheme-setting
 
     callback.detectColorScheme();

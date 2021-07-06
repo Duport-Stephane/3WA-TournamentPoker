@@ -22,7 +22,7 @@ class ErrorCustom {
      */
     set messages(errorMessages) {
 
-        // console.log(errorMessages);
+        console.log("Save errorMessage : " + errorMessages);
 
         this._messages = errorMessages
     }

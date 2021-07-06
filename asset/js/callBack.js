@@ -60,194 +60,8 @@ function htmlEntities(str) {
         .replace(/\r/g, '&#92;r');
 }
 
-
-// page PLAYER
+// For LOCALSTORAGE
 //*******************************************************************
-/**
- * vérifier si la checkbox de ALL est coché ou non
- * et fait de même pour tous les check dessous
- * @param {bool} isChecked
- * @param {string} type user ou player : pour sélectionner le bon tableau
- */
-function checkInputAll(isChecked, type) {
-    const checkboxes = document.querySelectorAll('.tab' + type + 'List input');
-    checkboxes.forEach(checkbox => {
-        checkbox.checked = isChecked;
-    });
-}
-
-/**
- * Affiche les 2 tableaux de la page PLAYERS
- * @param {array} users retour de la requête
- * @param {string} typeUser user ou player : pour sélectionner le bon tableau
- */
-function displayTabUser(users, typeUser) {
-
-    const $tableauUser = document.querySelector('.tab' + typeUser + 'List');
-    // vider les noeuds contenu dans le tableau
-    while ($tableauUser.firstChild) {
-        $tableauUser.removeChild($tableauUser.firstChild);
-    }
-    // insert table pour préparer le tableau
-    const $userList = document.createElement('table');
-    $userList.classList.add('array', typeUser);
-    $tableauUser.append($userList);
-    users.map(user => {
-        // Construction des lignes du tableau, une par user
-        const $tr = document.createElement('tr');
-        $userList.append($tr);
-        // un td pour chaque colonne
-        let $td = document.createElement('td');
-        $tr.append($td);
-        // l'input avec la checkbox dans la 1ere colonne
-        const $input = document.createElement('input');
-        $input.type = 'checkbox';
-        $input.name = 'checkboxuser[]';
-        $input.value = htmlEntities(user['id']);
-        $td.append($input);
-        let value;
-        let $add
-            // nickName dans le 2eme colonne, puis fisrt et last name...
-        for (let column = 2; column < 5; column++) {
-            switch (column) {
-                case 2:
-                    value = htmlEntities(user['nickName'])
-                    break;
-                case 3:
-                    value = htmlEntities(user['firstName'])
-                    break;
-                case 4:
-                    value = htmlEntities(user['lastName'])
-                    break;
-                default:
-                    console.log('Désolé, il n\'y a plus de choix');
-            }
-            $add = document.createElement('td');
-            $tr.append($add);
-            $add.append(value);
-        }
-        // et s'il y a un avatar... en dernière colonne
-        if (htmlEntities(user['avatar']) && htmlEntities(user['avatar']) != '') {
-            const $avatar = document.createElement('img');
-            $avatar.src = htmlEntities(user['avatar']);
-            $avatar.alt = 'avatar';
-            $add = document.createElement('td');
-            $tr.append($add);
-            $add.append($avatar);
-        }
-    })
-}
-
-
-// page LOGIN
-//*******************************************************************
-
-/**
- * 
- * @param {formData} form 
- * @returns {boolean}
- */
-function logValidate(form) {
-
-    const _key = 'user' // Clé d'accès au stockage du LocalStorage
-    const _errors = [] // Référencer les erreurs trouvées dans le form lors du validate
-    const _customError = new ErrorCustom // Référencer et afficher les erreurs
-    const _user = {
-            email: '',
-            password: ''
-        } // Stocker les infos du user
-
-    // console.log(form)
-
-    const inputs = document.querySelectorAll('input');
-    inputs.forEach(input => {
-
-        // console.log("TEST de ", input)
-
-        // Si les champs obligatoires sont vides => ERROR
-        if (input.value === "") {
-
-            console.log("invalid VIDE ", input)
-
-            this._errors.push({
-                field: input.name,
-                type: 'empty',
-                message: `Merci de remplir le champ ${input.placeholder}`
-            })
-        } else if (input.name === 'email' && !isMailValid(input.value)) {
-
-            console.log("invalid EMAIL ", input)
-
-            // Création de l'erreur de format du mail
-            _errors.push({
-                field: input.name,
-                type: 'format',
-                message: `Merci de remplir le champ ${input.placeholder} avec un email correctement formaté`
-            })
-        } else if (input.name === 'password' && !isPasswordValid(input.value)) {
-
-            console.log("invalid PWD ", input)
-
-            // Création de l'erreur de format du password
-            _errors.push({
-                field: input.placeholder,
-                type: 'format',
-                message: `Le mot de passe doit contenir au moins 8 caractères dont une minuscule, une majuscule, un chiffre et un caractère spécial`
-            })
-        } else {
-
-            // console.log("save l'input ", input.name)
-
-            switch (input.name) {
-                case 'email':
-                    _user.email = htmlEntities(input.value)
-                    break;
-                case 'password':
-                    _user.password = htmlEntities(input.value)
-                    break;
-            }
-        }
-    })
-
-    if (_errors.length > 0) {
-
-        console.log(_errors);
-
-        // On enregistre les errors de notre form dans la class ErrorCustom,
-        _customError.messages = _errors
-            // afin de bénéficier des fonctionnalités de celui-ci pour les affichées par la suite
-
-        _customError.displayMessages();
-
-        return false
-    } else {
-        // on compare le password saisi à celui qui est en BDD
-        // const Rep = ajaxCallBack.isSamePassword(form);
-        // console.log(Rep);
-
-        if (ajaxCallBack.isSamePassword(form)) {
-
-            // console.log("Les mots de passe coïncident : LOGIN ok !")
-
-            // si OK, actualise le mail dans le LocalStorage
-            updateUserInfoLS(_key, _user.email)
-
-            return true;
-        } else {
-            _errors.push({
-                field: 'email',
-                type: 'format',
-                message: `Vos identifiants sont incorrects. Merci de réessayer.`
-            });
-            _customError.messages = _errors;
-            _customError.displayMessages();
-            document.querySelector('.auth input[name=password]').value = "";
-            document.querySelector('.auth input[name=password]').focus();
-
-            return false;
-        }
-    }
-}
 
 /**
  * Get the value for this key
@@ -259,7 +73,36 @@ function getUserInfoLS(key) {
     return _manager.getDatasByKey(key);
 }
 
-// page INSCRIPTION
+/**
+ * Persist/update in LocalStorage the value for the Key
+ * @param {string} key 
+ * @param {string} value 
+ */
+function updateUserInfoLS(key, value) {
+    const _manager = new ManagerLS
+    _manager.setDatas(key, value)
+}
+
+/**
+ * Test if key exist in LocalStorage
+ * @param {string} key  
+ */
+function isKeyExistLS(key) {
+    const _manager = new ManagerLS
+    return _manager.existKey(key)
+}
+
+/**
+ * Remove key in LocalStorage
+ * @param {string} key  
+ */
+function removeKeyLS(key) {
+    const _manager = new ManagerLS
+    _manager.removeKey(key)
+}
+
+
+// page INSCRIPTION || DASHBOARDUSER
 //*******************************************************************
 
 /**
@@ -353,23 +196,35 @@ function addValidate(form, action) {
         console.log("Il y a des errors !!!!!!!!!!!")
 
         // On enregistre les errors de notre form dans la class ErrorCustom,
-        _customError.messages = _errors
-            // afin de bénéficier des fonctionnalités de celui-ci pour les affichées par la suite
+        _customError.messages(_errors);
+        // afin de bénéficier des fonctionnalités de celui-ci pour les affichées par la suite
+
+        _customError.displayMessages();
+
         return false
     } else {
 
-        console.log(action)
+        // console.log("ACTION : " + action)
+        let res;
 
         if (action === 'persist') {
-            ajaxCallBack.persistUser(form);
+            res = ajaxCallBack.isPersistUser(form);
 
-            updateUserInfoLS(_key, _user.email)
+            // Inscrire le nouvel user dans le localStorage : pas une bonne idée
+            // updateUserInfoLS(_key, _user.email)
 
         } else if (action === 'update') {
             ajaxCallBack.updateUser(form);
         }
+        // console.log(_customError.messages);
+        // console.log("RES : " + res);
 
-        _customError.viderError();
+        if (!res) {
+            return false
+        } else {
+            _customError.viderError();
+            return true;
+        }
 
         // // Vider les erreurs
         // const errorSpan = document.querySelector('.errors')
@@ -377,19 +232,122 @@ function addValidate(form, action) {
         // errorSpan.innerHTML = ''
         // errorSpan.innerText = ''
 
-        return true
     }
 }
 
+
+
+// page LOGIN
+//*******************************************************************
+
 /**
- * Persist in LocalStorage the value for the Key
- * @param {string} key 
- * @param {string} value 
+ * 
+ * @param {formData} form 
+ * @returns {boolean}
  */
-function updateUserInfoLS(key, value) {
-    const _manager = new ManagerLS // Enregistrer ou mettre à jour le mail du user dans le LocalStorage
-    _manager.setDatas(key, value)
+function logValidate(form) {
+
+    const _key = 'user' // Clé d'accès au stockage du LocalStorage
+    const _errors = [] // Référencer les erreurs trouvées dans le form lors du validate
+    const _customError = new ErrorCustom // Référencer et afficher les erreurs
+    const _user = {
+            email: '',
+            password: ''
+        } // Stocker les infos du user
+
+    // console.log(form)
+
+    const inputs = document.querySelectorAll('input');
+    inputs.forEach(input => {
+
+        // console.log("TEST de ", input)
+
+        // Si les champs obligatoires sont vides => ERROR
+        if (input.value === "") {
+
+            console.log("invalid : EMPTY ", input)
+
+            this._errors.push({
+                field: input.name,
+                type: 'empty',
+                message: `Merci de remplir le champ ${input.placeholder}`
+            })
+        } else if (input.name === 'email' && !isMailValid(input.value)) {
+
+            console.log("invalid EMAIL ", input)
+
+            // Création de l'erreur de format du mail
+            _errors.push({
+                field: input.name,
+                type: 'format',
+                message: `Merci de remplir le champ ${input.placeholder} avec un email correctement formaté`
+            })
+        } else if (input.name === 'password' && !isPasswordValid(input.value)) {
+
+            console.log("invalid PWD ", input)
+
+            // Création de l'erreur de format du password
+            _errors.push({
+                field: input.placeholder,
+                type: 'format',
+                message: `Le mot de passe doit contenir au moins 8 caractères dont une minuscule, une majuscule, un chiffre et un caractère spécial`
+            })
+        } else {
+
+            // console.log("save l'input ", input.name)
+
+            switch (input.name) {
+                case 'email':
+                    _user.email = htmlEntities(input.value)
+                    break;
+                case 'password':
+                    _user.password = htmlEntities(input.value)
+                    break;
+            }
+        }
+    })
+
+    if (_errors.length > 0) {
+
+        console.log(_errors);
+
+        // On enregistre les errors de notre form dans la class ErrorCustom,
+        _customError.messages = _errors
+            // afin de bénéficier des fonctionnalités de celui-ci pour les affichées par la suite
+
+        _customError.displayMessages();
+
+        return false
+    } else {
+        // on compare le password saisi à celui qui est en BDD
+        // const Rep = ajaxCallBack.isSamePassword(form);
+        // console.log(Rep);
+
+        if (ajaxCallBack.isSamePassword(form)) {
+
+            // console.log("Les mots de passe coïncident : LOGIN ok !")
+
+            // si OK, actualise le mail dans le LocalStorage
+            updateUserInfoLS(_key, _user.email)
+
+            return true;
+        } else {
+            _errors.push({
+                field: 'email',
+                type: 'format',
+                message: `Vos identifiants sont incorrects. Merci de réessayer.`
+            });
+            _customError.messages = _errors;
+            _customError.displayMessages();
+            document.querySelector('.auth input[name=password]').value = "";
+            document.querySelector('.auth input[name=password]').focus();
+
+            return false;
+        }
+    }
 }
+
+
 
 // COMMUN page LOGIN & INSCRIPTION
 //*******************************************************************
@@ -402,7 +360,7 @@ function updateUserInfoLS(key, value) {
 function isMailValid(email) {
     // https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
     const regExMail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,4}))$/;
-    if (regExMail.test(email) && email.length < 30) {
+    if (regExMail.test(email) && email.length < 32) {
         return true;
     } else {
         return false;
@@ -416,14 +374,93 @@ function isMailValid(email) {
  */
 function isPasswordValid(pwd) {
     // https://ihateregex.io/expr/password/
-    // Au moins 8 caractères [max 20] dont une majuscule, [une minuscule], un chiffre et un caractère spécial
-    const regExPwd = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,20}$/;
+    // Au moins 8 caractères [max 32] dont une majuscule, [une minuscule], un chiffre et un caractère spécial
+    const regExPwd = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,32}$/;
     if (regExPwd.test(pwd)) {
         return true;
     } else {
         return false;
     }
 }
+
+
+// page PLAYER
+//*******************************************************************
+/**
+ * vérifier si la checkbox de ALL est coché ou non
+ * et fait de même pour tous les check dessous
+ * @param {bool} isChecked
+ * @param {string} type user ou player : pour sélectionner le bon tableau
+ */
+function checkInputAll(isChecked, type) {
+    const checkboxes = document.querySelectorAll('.tab' + type + 'List input');
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = isChecked;
+    });
+}
+
+/**
+ * Affiche les 2 tableaux de la page PLAYERS
+ * @param {array} users retour de la requête
+ * @param {string} typeUser user ou player : pour sélectionner le bon tableau
+ */
+function displayTabUser(users, typeUser) {
+
+    const $tableauUser = document.querySelector('.tab' + typeUser + 'List');
+    // vider les noeuds contenu dans le tableau
+    while ($tableauUser.firstChild) {
+        $tableauUser.removeChild($tableauUser.firstChild);
+    }
+    // insert table pour préparer le tableau
+    const $userList = document.createElement('table');
+    $userList.classList.add('array', typeUser);
+    $tableauUser.append($userList);
+    users.map(user => {
+        // Construction des lignes du tableau, une par user
+        const $tr = document.createElement('tr');
+        $userList.append($tr);
+        // un td pour chaque colonne
+        let $td = document.createElement('td');
+        $tr.append($td);
+        // l'input avec la checkbox dans la 1ere colonne
+        const $input = document.createElement('input');
+        $input.type = 'checkbox';
+        $input.name = 'checkboxuser[]';
+        $input.value = htmlEntities(user['id']);
+        $td.append($input);
+        let value;
+        let $add
+            // nickName dans le 2eme colonne, puis fisrt et last name...
+        for (let column = 2; column < 5; column++) {
+            switch (column) {
+                case 2:
+                    value = htmlEntities(user['nickName'])
+                    break;
+                case 3:
+                    value = htmlEntities(user['firstName'])
+                    break;
+                case 4:
+                    value = htmlEntities(user['lastName'])
+                    break;
+                default:
+                    console.log('Désolé, il n\'y a plus de choix');
+            }
+            $add = document.createElement('td');
+            $tr.append($add);
+            $add.append(value);
+        }
+        // et s'il y a un avatar... en dernière colonne
+        if (htmlEntities(user['avatar']) && htmlEntities(user['avatar']) != '') {
+            const $avatar = document.createElement('img');
+            $avatar.src = htmlEntities(user['avatar']);
+            $avatar.alt = 'avatar';
+            $add = document.createElement('td');
+            $tr.append($add);
+            $add.append($avatar);
+        }
+    })
+}
+
 
 // Gestion de l'affichage des MESSAGES
 //*******************************************************************
@@ -531,4 +568,4 @@ function switchTheme(e) {
 }
 
 
-export { currentNav, htmlEntities, checkInputAll, displayTabUser, logValidate, addValidate, getUserInfoLS, updateUserInfoLS, testMessageBeforeDisplay, detectColorScheme, switchTheme }
+export { currentNav, htmlEntities, checkInputAll, displayTabUser, logValidate, addValidate, getUserInfoLS, updateUserInfoLS, isKeyExistLS, removeKeyLS, testMessageBeforeDisplay, detectColorScheme, switchTheme }
