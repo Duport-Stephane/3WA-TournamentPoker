@@ -1,7 +1,4 @@
 <?php
-// Importer le nécessaire
-
-use Models\Role;
 
 // var_dump($_POST);
 // var_dump($_GET);
@@ -52,6 +49,16 @@ if (isset($_POST) && !empty($_POST) && isset($_POST['action']) && !empty($_POST[
                         }
                         $password = htmlentities($input);
                         break;
+                    case 'avatar':
+                        $avatar = htmlentities($input);
+                        break;
+                    case 'role':
+                        if ($input !== '') {
+                            $role = htmlentities($input);
+                        } else {
+                            $role = '2';
+                        }
+                        break;
                 };
             }
         }
@@ -68,11 +75,12 @@ if (isset($_POST) && !empty($_POST) && isset($_POST['action']) && !empty($_POST[
         switch ($action) {
             case 'persist':
             case 'update':
-                // on commence par checker le mail qui doit être UNIQUE pour la création (mais pas pour l'update)
+                // on commence par checker le mail qui doit être UNIQUE pour la création (mais pas utilisé si update)
                 if ($user && $action === 'persist') {
                     throw new DomainException("Attention, L'utilisateur existe déjà !");
                 } else {
                     // Donc on peut sauvegarder le USER
+
                     // Gestion du fichier AVATAR 
                     if (array_key_exists('avatar', $_FILES) && !empty($_FILES['avatar']['name'])) {
 
@@ -92,18 +100,23 @@ if (isset($_POST) && !empty($_POST) && isset($_POST['action']) && !empty($_POST[
                         if (isset($avatar) && !empty($avatar)) {
                             unlink($user['avatar']);
                         }
-
+                    } else {
+                        // S'il n'y a pas de nom de fichier dans l'input, on vérifie qu'il n'existe pas déjà un visuel en BdD pour le reprendre
+                        if (\Models\Session::getOffset1_Offset2('user', 'avatar') !== "") {
+                            $avatar = \Models\Session::getOffset1_Offset2('user', 'avatar');
+                        }
                     }
+
                     // Enregistrement du nouvel user
                     if ($action === 'persist') {
 
                         var_dump('PERSIST ' . $email);
                         // var_dump($password);
-                        
+
                         $password = password_hash($password, PASSWORD_BCRYPT);
 
                         \Models\Session::setOffset('info', `{$nickname} fait maintenant parti de la liste des utilisateurs.`);
-                        
+
                         // avec AVATAR
                         if (isset($avatar) && !empty($avatar)) {
                             $userM->setUser($nickname, $lastname, $firstname, $email, $password, $avatar);
@@ -114,33 +127,33 @@ if (isset($_POST) && !empty($_POST) && isset($_POST['action']) && !empty($_POST[
                             $userM->setUser($nickname, $lastname, $firstname, $email, $password);
                         }
                         echo `{$nickname} fait maintenant parti de la liste des utilisateurs.`;
-
                     } else if ($action === 'update') {
 
-                        // var_dump('UPDATE ' . $user['id'] . " / ".$nickName." / ". $lastName." / ". $firstName." / ".$role);
-                        // die;
+                        var_dump('UPDATE ' . $user['id'] . " /pseudo ".$nickName." /prenom ". $lastName." /nom ". $firstName." /mail ". $email." /role ".$role." /avatar ". $avatar);
+                        die;
+
+                        // Persit new info in Log Session
+                        \Models\Session::login(
+                            $user['id'],
+                            $nickName,
+                            $firstName,
+                            $lastName,
+                            $email,
+                            $avatar,
+                            $role
+                        );
 
                         \Models\Session::setOffset('info', `Les informations ont bien été mises à jour.`);
-                        
+
                         // Mise à jour du User
                         if (isset($avatar) && !empty($avatar)) {
                             // avec AVATAR
-                            $userM->updateUser($user['id'], $nickName, $lastName, $firstName, $avatar);
+                            $userM->updateUser($user['id'], $nickName, $lastName, $firstName, $role, $avatar);
                         } else {
                             // sans AVATAR
-                            $userM->updateUser($user['id'], $nickName, $lastName, $firstName);
+                            $userM->updateUser($user['id'], $nickName, $lastName, $firstName, $role);
                         }
                         echo `Les informations ont bien été mises à jour.`;
-
-                        // \Models\Session::login(
-                        //     $user['id'],
-                        //     $nickName,
-                        //     $firstName,
-                        //     $lastName,
-                        //     $email,
-                        //     $avatar,
-                        //     $role
-                        // );
                     }
                 }
                 break;
@@ -159,13 +172,15 @@ if (isset($_POST) && !empty($_POST) && isset($_POST['action']) && !empty($_POST[
                         // var_dump("MdP incorrect");
                         throw new DomainException("Le mot de passe n'est pas correct");
                     } else {
-                        \Models\Session::login($user['id'], 
-                                                $user['nickName'], 
-                                                $user['firstName'], 
-                                                $user['lastName'], 
-                                                $user['email'], 
-                                                $user['avatar'], 
-                                                $user['role_id']);
+                        \Models\Session::login(
+                            $user['id'],
+                            $user['nickName'],
+                            $user['firstName'],
+                            $user['lastName'],
+                            $user['email'],
+                            $user['avatar'],
+                            $user['role_id']
+                        );
 
                         \Models\Session::setOffset('info', `Vous êtes connecté. Bienvenue, {$user['nickName']} !`);
 

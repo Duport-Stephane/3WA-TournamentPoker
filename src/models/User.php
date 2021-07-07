@@ -164,17 +164,18 @@ class User extends \Database
 
     /**
      * Pour mettre à jour un user dans la BDD
-     * @param {string} $nickName
-     * @param {string} $lastName
-     * @param {string} $firstName
-     * @param {string} $avatar
+     * @param {string}  $nickName
+     * @param {string}  $lastName
+     * @param {string}  $firstName
+     * @param {int}     $role
+     * @param {string}  $avatar
      *  
      * @return string
      */
-    public function updateUser(int $user_id, string $nickName, string $lastName, string $firstName, string $avatar = "") : void
+    public function updateUser(int $user_id, string $nickName, string $lastName, string $firstName, int $role, string $avatar = "") : void
     {
         try {
-            $sql = 'UPDATE user SET nickName = :nickName, lastName = :lastName, firstName = :firstName, avatar = :avatar, role_id = :role_id
+            $sql = 'UPDATE user SET nickName = :nickName, lastName = :lastName, firstName = :firstName, role_id = :role_id, avatar = :avatar
             WHERE id = :user_id';
 
             $param = [
@@ -182,8 +183,8 @@ class User extends \Database
                 ':nickName'     => $nickName,
                 ':lastName'     => $lastName,
                 ':firstName'    => $firstName,
-                ':avatar'       => $avatar,
-                ':role_id'      => 2            // user
+                ':role_id'      => $role,
+                ':avatar'       => $avatar
             ];
             $this->executeSql($sql, $param);
         } catch (\DomainException $e) {
