@@ -38,7 +38,7 @@
             endif; ?>
         </div>
 
-        <!-- Visible uniquement par les ADMIN || USER-ADMIN-->
+        <!-- Only for ADMIN || USER-ADMIN-->
         <?php if (\Models\Session::getOffset1_Offset2('user', 'role_id') !== '2') : ?>
             <div>
                 <label for="role" class="btn-info">Rôle *</label>
@@ -58,7 +58,9 @@
                 </div>
             </div>
         <?php endif; ?>
+
         <p class="small text-left messageGrey">* : information obligatoire</p>
+        
         <button type="submit" class="btn btn-info">Modifier vos informations</button>
         <button class="btn btn-alert"><a href="./index.php?page=dashboardUSer">Annuler les modifications</a></button>
     </fieldset>

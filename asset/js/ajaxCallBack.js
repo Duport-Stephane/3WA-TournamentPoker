@@ -1,60 +1,8 @@
 /* Ici, les fonctions AJAX de Callback appelées par les écouteurs de app.js */
 
 // Appels de dépendances
-import * as callback from './callBack.js';
+import * as callback from './callBack.js'
 import ErrorCustom from './ErrorCustom.js' // Gestion des erreurs s'il y en a
-
-// page PLAYER
-//*******************************************************************
-/**
- * Refresh Tab User, Players
- */
-// function refresh() {
-//     fetch('./index.php?page=players&action=display')
-
-// fetch('./index.php?action=refresh&type=user')
-//     .then(response => response.json())
-//     .then(users => {
-
-//         console.log("Refresh USERS");
-
-// callback.displayTabUser(users, 'users');
-//     });
-
-// fetch('./index.php?action=refresh&type=player')
-//     .then(response => response.json())
-//     .then(players => {
-
-//         console.log("Refresh PLAYERS");
-
-// callback.displayTabUser(players, 'players');
-//     });
-// }:
-
-/** 
- * récupère le(s) input(s) coché(s) dans le tableau des users pour déplacer ce(s) user(s) dans la table des players
- * Uniquement si la partie n'est pas commencée !
- * @param {*} form Le formulaire validé
- */
-function modifPlayerList(form) {
-
-    console.log('FETCH MODIF-PLAYER')
-        // Fetch pour actualiser la table Player
-
-    fetch('./index.php', {
-            method: 'POST',
-            body: form
-        })
-        .then(response => response.text())
-        // .then(response => console.log("response : " + response))
-        .then(response => {
-            // console.log(response);
-            callback.testMessageBeforeDisplay(response);
-            window.location = './index.php?page=players&action=display';
-            // window.location.reload();
-            // refresh()
-        });
-}
 
 
 // page LOGIN
@@ -66,6 +14,8 @@ function modifPlayerList(form) {
  * @returns {boolean}
  */
 function isSamePassword(form) {
+
+    callback.addInfoLS("log", "isSamePassword");
 
     // console.log(form);
 
@@ -109,6 +59,9 @@ function isSamePassword(form) {
  * @param {formData} form 
  */
 async function persistUser(form) {
+
+    callback.addInfoLS("log", "persitUser");
+
     const response = await fetch('./index.php?action=persist', {
         method: 'post',
         body: form
@@ -119,6 +72,9 @@ async function persistUser(form) {
 }
 
 function isPersistUser(form) {
+
+    callback.addInfoLS("log", "isPersistUser");
+
     persistUser(form).then(result => result.text())
         // .then(response => console.log(response))
         .then(result => {
@@ -139,12 +95,15 @@ function isPersistUser(form) {
  * @param {formData} form 
  */
 function updateUser(form) {
+
+    callback.addInfoLS("log", "updateUser");
+
     fetch('./index.php?action=update', {
             method: 'post',
             body: form
         })
-        // .then(response => response.text())
-        // .then(response => console.log(response))
+        .then(response => response.text())
+        .then(response => console.log("RES du fetch UPDATEUSER : " + response))
 }
 
 /**
@@ -155,6 +114,60 @@ function updateUser(form) {
 //     fetch('./index.php?action=logout')
 //         .then(response => console.log(response))
 // }
+
+// page PLAYER
+//*******************************************************************
+/**
+ * Refresh Tab User, Players
+ */
+// function refresh() {
+//     fetch('./index.php?page=players&action=display')
+
+// fetch('./index.php?action=refresh&type=user')
+//     .then(response => response.json())
+//     .then(users => {
+
+//         console.log("Refresh USERS");
+
+// callback.displayTabUser(users, 'users');
+//     });
+
+// fetch('./index.php?action=refresh&type=player')
+//     .then(response => response.json())
+//     .then(players => {
+
+//         console.log("Refresh PLAYERS");
+
+// callback.displayTabUser(players, 'players');
+//     });
+// }:
+
+/** 
+ * récupère le(s) input(s) coché(s) dans le tableau des users pour déplacer ce(s) user(s) dans la table des players
+ * Uniquement si la partie n'est pas commencée !
+ * @param {*} form Le formulaire validé
+ */
+function modifPlayerList(form) {
+
+
+    callback.addInfoLS("log", "modifPlayerList");
+
+    // Fetch pour actualiser la table Player
+
+    fetch('./index.php', {
+            method: 'POST',
+            body: form
+        })
+        .then(response => response.text())
+        // .then(response => console.log("response : " + response))
+        .then(response => {
+            // console.log(response);
+            callback.testMessageBeforeDisplay(response);
+            window.location = './index.php?page=players&action=display';
+            // window.location.reload();
+            // refresh()
+        });
+}
 
 
 

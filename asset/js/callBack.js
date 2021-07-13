@@ -24,7 +24,8 @@ function currentNav() {
     }
     // console.log(endPage);
     const pageAct = address.slice(beginPage, endPage);
-    console.log(pageAct);
+    addInfoLS("log", "Display " + pageAct)
+        // console.log(pageAct);
 
     // cas particulier de la page HOME lors du premier chargement
     // il n'y a pas de parametre "page=" dans le root
@@ -60,16 +61,17 @@ function htmlEntities(str) {
         .replace(/\r/g, '&#92;r');
 }
 
+
 // For LOCALSTORAGE
 //*******************************************************************
-
 /**
  * Get the value for this key
  * @param {string} key 
  * @returns {string} LocalStorage's value for this key
  */
-function getUserInfoLS(key) {
+function getInfoLS(key) {
     const _manager = new ManagerLS;
+    addInfoLS("log", "Get info from LocalStorage " + key)
     return _manager.getDatasByKey(key);
 }
 
@@ -78,9 +80,24 @@ function getUserInfoLS(key) {
  * @param {string} key 
  * @param {string} value 
  */
-function updateUserInfoLS(key, value) {
+function updateInfoLS(key, value) {
     const _manager = new ManagerLS
     _manager.setDatas(key, value)
+    addInfoLS("log", "Update Info in LocalStorage")
+}
+
+/**
+ * add value in LocalStorage for the key
+ * @param {string} key 
+ * @param {string} value 
+ */
+function addInfoLS(key, value) {
+    const _manager = new ManagerLS
+    const _old = _manager.getDatasByKey(key)
+    const timeNow = new Date()
+    const timeNowFormat = timeNow.getHours() + ":" + timeNow.getMinutes() + ":" + timeNow.getSeconds() + " => "
+    const _new = _old + String.fromCharCode(10) + timeNowFormat + value
+    _manager.setDatas(key, _new)
 }
 
 /**
@@ -89,6 +106,7 @@ function updateUserInfoLS(key, value) {
  */
 function isKeyExistLS(key) {
     const _manager = new ManagerLS
+    addInfoLS("log", "Test if key " + key + " exist in LocalStorage ")
     return _manager.existKey(key)
 }
 
@@ -99,18 +117,19 @@ function isKeyExistLS(key) {
 function removeKeyLS(key) {
     const _manager = new ManagerLS
     _manager.removeKey(key)
+    addInfoLS("log", "Remove key " + key + " from LocalStorage")
 }
 
 
 // page INSCRIPTION || DASHBOARDUSER
 //*******************************************************************
-
 /**
  * Controle si le Form est correctement renseigné, avant de persist le User
  * @param {formData} form
  * @returns {boolean}
  */
 function addValidate(form, action) {
+    addInfoLS("log", "addValidate")
 
     const _key = 'user' // Clé d'accès au stockage du LocalStorage
     const _errors = [] // Référencer les erreurs trouvées dans le form lors du validate
@@ -124,7 +143,7 @@ function addValidate(form, action) {
             avatar: ''
         } // Stocker les infos du user
 
-    console.log(form)
+    // console.log(form)
 
     const inputs = document.querySelectorAll('input');
     inputs.forEach(input => {
@@ -193,7 +212,8 @@ function addValidate(form, action) {
     // Si On a des errors
     if (_errors.length > 0) {
 
-        console.log("Il y a des errors !!!!!!!!!!!")
+        // console.log("Il y a des errors !!!!!!!!!!!")
+        addInfoLS("log", "There's some ERRORS");
 
         // On enregistre les errors de notre form dans la class ErrorCustom,
         _customError.messages(_errors);
@@ -204,7 +224,8 @@ function addValidate(form, action) {
         return false
     } else {
 
-        // console.log("ACTION : " + action)
+
+        addInfoLS("log", "ACTION : " + action)
         let res;
 
         if (action === 'persist') {
@@ -247,6 +268,8 @@ function addValidate(form, action) {
  */
 function logValidate(form) {
 
+    addInfoLS("log", "logValidate");
+
     const _key = 'user' // Clé d'accès au stockage du LocalStorage
     const _errors = [] // Référencer les erreurs trouvées dans le form lors du validate
     const _customError = new ErrorCustom // Référencer et afficher les erreurs
@@ -265,7 +288,8 @@ function logValidate(form) {
         // Si les champs obligatoires sont vides => ERROR
         if (input.value === "") {
 
-            console.log("invalid : EMPTY ", input)
+
+            addInfoLS("log", "invalid: EMPTY ", input)
 
             this._errors.push({
                 field: input.name,
@@ -274,7 +298,7 @@ function logValidate(form) {
             })
         } else if (input.name === 'email' && !isMailValid(input.value)) {
 
-            console.log("invalid EMAIL ", input)
+            addInfoLS("log", "invalid EMAIL ", input)
 
             // Création de l'erreur de format du mail
             _errors.push({
@@ -284,7 +308,7 @@ function logValidate(form) {
             })
         } else if (input.name === 'password' && !isPasswordValid(input.value)) {
 
-            console.log("invalid PWD ", input)
+            addInfoLS("log", "invalid PWD ", input)
 
             // Création de l'erreur de format du password
             _errors.push({
@@ -294,7 +318,7 @@ function logValidate(form) {
             })
         } else {
 
-            // console.log("save l'input ", input.name)
+            // addInfoLS("log", "save l'input ", input.name)
 
             switch (input.name) {
                 case 'email':
@@ -309,7 +333,7 @@ function logValidate(form) {
 
     if (_errors.length > 0) {
 
-        console.log(_errors);
+        addInfoLS("log", _errors);
 
         // On enregistre les errors de notre form dans la class ErrorCustom,
         _customError.messages = _errors
@@ -393,6 +417,7 @@ function isPasswordValid(pwd) {
  * @param {string} type user ou player : pour sélectionner le bon tableau
  */
 function checkInputAll(isChecked, type) {
+    addInfoLS("log", "CheckInputAll");
     const checkboxes = document.querySelectorAll('.tab' + type + 'List input');
     checkboxes.forEach(checkbox => {
         checkbox.checked = isChecked;
@@ -405,6 +430,7 @@ function checkInputAll(isChecked, type) {
  * @param {string} typeUser user ou player : pour sélectionner le bon tableau
  */
 function displayTabUser(users, typeUser) {
+    addInfoLS("log", "displayTabUSer");
 
     const $tableauUser = document.querySelector('.tab' + typeUser + 'List');
     // vider les noeuds contenu dans le tableau
@@ -473,6 +499,8 @@ function displayTabUser(users, typeUser) {
  */
 
 function testMessageBeforeDisplay(message) {
+    addInfoLS("log", "testMessageBeforeDisplay");
+
     let indexOfFirst;
     if (indexOfFirst = message.indexOf("Danger") != -1) {
         displayMessage(message.slice(8), 'Danger');
@@ -490,7 +518,7 @@ function testMessageBeforeDisplay(message) {
  */
 function displayMessage(state, message) {
 
-    // console.log(message);
+    // addInfoLS("log", message);
 
     const $messages = document.querySelector('.message');
     const $balise = document.createElement('div')
@@ -522,6 +550,7 @@ function removeMessage() {
     };
     // console.log($messages.childNodes);
 }
+
 
 // changement de thème
 //*******************************************************************
@@ -565,7 +594,10 @@ function switchTheme(e) {
         document.documentElement.setAttribute('data-theme', 'blue');
         toggleSwitch.checked = false;
     }
+
+    // Remove Key "log" from LocalStorage
+    removeKeyLS("log");
 }
 
 
-export { currentNav, htmlEntities, checkInputAll, displayTabUser, logValidate, addValidate, getUserInfoLS, updateUserInfoLS, isKeyExistLS, removeKeyLS, testMessageBeforeDisplay, detectColorScheme, switchTheme }
+export { currentNav, htmlEntities, checkInputAll, displayTabUser, logValidate, addValidate, getInfoLS, updateInfoLS, addInfoLS, isKeyExistLS, removeKeyLS, testMessageBeforeDisplay, detectColorScheme, switchTheme }

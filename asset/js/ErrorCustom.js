@@ -14,6 +14,7 @@ class ErrorCustom {
      * @return array messages
      */
     get messages() {
+        callback.addInfoLS("log", "get errorMessages");
         return this._messages
     }
 
@@ -22,20 +23,22 @@ class ErrorCustom {
      */
     set messages(errorMessages) {
 
-        console.log("Save errorMessage : " + errorMessages);
+        callback.addInfoLS("log", "Set errorMessage : " + errorMessages);
 
         this._messages = errorMessages
     }
 
     // Affichage des erreurs s'il y en a
     displayMessages() {
+
+        callback.addInfoLS("log", "display ErrorMessages");
         const $errorSpan = document.querySelector('.message');
         // $errorSpan.innerHTML = '';
         $errorSpan.classList.add('form-error');
         // Fill
         this.messages.map(msg => {
 
-            console.log(`${msg.field} : ${msg.message}`);
+            callback.addInfoLS("log", `${msg.field} : ${msg.message}`);
 
             const $p = document.createElement('p');
             $p.textContent = `${msg.field} : ${msg.message}`;
@@ -47,11 +50,16 @@ class ErrorCustom {
     }
 
     removeMessages() {
+
+        callback.addInfoLS("log", "remove ErrorMessage");
+
         const $errorSpan = document.querySelector('.message');
         $errorSpan.classList.remove('form-error');
     }
 
     viderError() {
+
+        callback.addInfoLS("log", "Clear Error");
         // Vider les erreurs
         const $errorSpan = document.querySelector('.message')
         $errorSpan.classList.remove('form-error')

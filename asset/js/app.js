@@ -12,7 +12,7 @@ import ManagerLS from './ManagerLS.js';
 /*
 Si on désactive JS, les formulaires peuvent être remplis et soumis, les erreurs gérées :
 - Player ; refresh / addlayer / delplayer....
-Eventuellement, mettre des action= et des method= dans les form
+Eventuellement, mettre des 'action=' et des 'method=' dans les form
 */
 
 // Ecoute global (chargement)
@@ -21,8 +21,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // ENSEMBLE DES PAGES
     //*******************************************************************
 
-    // A chaque changement de page, met en évidence le bon menu de la nav du header et celui de A propos
+    // A chaque changement de page, met en évidence le bon menu de la nav du header et du footer
     const pageAct = callback.currentNav();
+    // callback.appendLog("Page actuelle : " + pageAct);
     // console.log(pageAct);
 
     // jQuery - Affichage de la notif pendant 2 sec 
@@ -40,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
     //*******************************************************************
     if (pageAct === 'inscription' || pageAct === 'dashboardUSer') {
 
-        console.log('PAGE inscription / dashboard User');
+        callback.addInfoLS("log", "PAGE inscription / dashboard User");
         // return;
 
         const $manipUsers = document.querySelectorAll('.createUser, .updateUser');
@@ -91,14 +92,16 @@ document.addEventListener('DOMContentLoaded', function() {
     //*******************************************************************
     if (pageAct === 'login') {
 
-        console.log("Page LOGIN");
+
+        callback.addInfoLS("log", "Page LOGIN");
 
         // const _customError = new ErrorCustom // Référencer et afficher les erreurs
-        const user_email = callback.getUserInfoLS('user');
+        const user_email = callback.getInfoLS('user');
 
         // Si exist : affiche le mail du LocalStorage dans l'input Mail du log
         if (user_email.length !== 0) {
             // console.log(user_email);
+            callback.addInfoLS("log", "Mail exist")
             document.querySelector('.auth input[name="email"]').value = user_email;
             document.querySelector('.auth input[name="password"]').value = "";
             document.querySelector('.auth input[name="password"]').focus();
@@ -138,11 +141,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // LOGOUT
     //*******************************************************************
-    // console.log(callback.getUserInfoLS('user'))
+    // console.log(callback.getInfoLS('user'))
     if (callback.isKeyExistLS('user')) {
         document.getElementById('logout').addEventListener('click', e => {
             // document.addEventListener('click', '#logout', e => {
             // Vider le localStorage
+            callback.addInfoLS("log", "LOGOUT, remove user")
             callback.removeKeyLS('user');
             // console.log('LOGOUT !');
         })
@@ -153,6 +157,8 @@ document.addEventListener('DOMContentLoaded', function() {
     //*******************************************************************
     // Refresh la page PLAYER, pour afficher les 2 tableaux
     if (pageAct === 'players') {
+
+        callback.addInfoLS("log", "PAge Player");
 
         // Ecoute le click sur la checkbox ALL des 2 tableaux Users et Players 
         // Si coché alors il faut cocher TOUS les checkboxes
@@ -192,7 +198,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const form = new FormData(e.target);
                 e.target.reset();
 
-                console.log("Button Valider");
+                callback.addInfoLS("log", "Button Valider");
 
                 ajaxCallback.modifPlayerList(form);
             });
@@ -204,6 +210,9 @@ document.addEventListener('DOMContentLoaded', function() {
     //*******************************************************************
 
     if (pageAct === 'game') {
+
+        callback.addInfoLS("log", "page Game");
+
         const Flipper = function() {
             function Flipper(node, currentTime, nextTime) {
                 this.isFlipping = false;
@@ -270,6 +279,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // page BONUS
     //*******************************************************************
     if (pageAct === 'bonus') {
+
+        callback.addInfoLS("log", "page Bonus");
+
         const $btnStart = document.getElementById('canvasOn');
         $btnStart.addEventListener('click', e => {
             e.preventDefault;

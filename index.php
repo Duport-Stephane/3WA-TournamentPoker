@@ -23,18 +23,19 @@ require_once './src/autoload.php';
 
 // var_dump($_POST);
 // var_dump($_GET);
+// die;
 
 // *************** POST ***************
 if (isset($_POST) && !empty($_POST)) {
 
     var_dump("POST");
     // var_dump($_POST);
-    // var_dump($_POST['action']);
+    var_dump($_POST['action']);
     // die;
 
     if (array_key_exists('action', $_POST) && !empty($_POST['action'])) {
 
-        var_dump($_POST['action']);
+        // var_dump($_POST['action']);
         // die;
 
         switch ($_POST['action']) {
@@ -43,7 +44,6 @@ if (isset($_POST) && !empty($_POST)) {
                 // Call from modifPlayerList from ADD ou DEL button on players page
                 $page = 'players';
                 require_once './src/services/ajaxPlayers.php';
-
                 break;
             case 'persist':
                 // Call from persistUser from inscription page
@@ -71,10 +71,11 @@ if (isset($_POST) && !empty($_POST)) {
 
     if (array_key_exists('page', $_GET) && !empty($_GET['page']) && array_key_exists('action', $_GET) && !empty($_GET['action'])) {
 
-        ///////////////////////// ???????? et Refrech Tab User après avoir modiPlayerList
+        ///////////////////////// ???????? et Refresh Tab User après avoir modiPlayerList
 
         var_dump("GET Action");
         var_dump($_GET['action']);
+        // die;
 
         switch ($_GET['action']) {
             case 'display':

@@ -8,7 +8,7 @@
 // Actions : Traitement (POST)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    var_dump('DASHBOARD USER.PHP en POST');
+    // var_dump('DASHBOARD USER.PHP en POST');
 
     // Si pas de param, je repars à l'accueil
     header('Location: ./index.php?page=dashboardUSer');
@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // 1 er chargement de la page 'Table'
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
-    var_dump('DASHBOARD USER.PHP en GET');
+    // var_dump('DASHBOARD USER.PHP en GET');
 
     $roleM = new \Models\Role;
     // role du user
