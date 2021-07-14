@@ -95,6 +95,7 @@ class User extends \Database
         return $nickName['nickName'];
     }
 
+
     /**
      * pour retourner les infos du user à partir de son email (unique)
      * @param {string} user_mail
@@ -137,21 +138,21 @@ class User extends \Database
      *  
      * @return string | null
      */
-    public function setUser(string $nickName, string $lastName, string $firstName, string $email, string $password, string $avatar = "") : string
+    public function setUser(string $nickName, string $lastName, string $firstName, string $email, string $password, int $role_id, string $avatar = "") : string
     {
-        var_dump("insert into USER");
+        var_dump("PERSIST into USER");
 
         try {
-            $sql = 'INSERT INTO user(nickName, lastName, firstName, email, password, avatar, role_id) 
-            VALUES (:nickName, :lastName, :firstName, :email, :password, :avatar, :role_id)';
+            $sql = 'INSERT INTO user(nickName, lastName, firstName, email, password, role_id, avatar) 
+            VALUES (:nickName, :lastName, :firstName, :email, :password, :role_id, :avatar)';
             $param = [
                 ':nickName'     => $nickName,
                 ':lastName'     => $lastName,
                 ':firstName'    => $firstName,
                 ':email'        => $email,
                 ':password'     => $password,
-                ':avatar'       => $avatar,
-                ':role_id'      => 2            // user
+                ':role_id'      => $role_id,
+                ':avatar'       => $avatar
             ];
             $this->executeSql($sql, $param);
         } catch (\DomainException $e) {
@@ -172,8 +173,10 @@ class User extends \Database
      *  
      * @return string
      */
-    public function updateUser(int $user_id, string $nickName, string $lastName, string $firstName, int $role, string $avatar = "") : void
+    public function updateUser(int $user_id, string $nickName, string $lastName, string $firstName, int $role_id, string $avatar = "") : void
     {
+        var_dump("UPDATE USER");
+
         try {
             $sql = 'UPDATE user SET nickName = :nickName, lastName = :lastName, firstName = :firstName, role_id = :role_id, avatar = :avatar
             WHERE id = :user_id';
@@ -183,7 +186,7 @@ class User extends \Database
                 ':nickName'     => $nickName,
                 ':lastName'     => $lastName,
                 ':firstName'    => $firstName,
-                ':role_id'      => $role,
+                ':role_id'      => $role_id,
                 ':avatar'       => $avatar
             ];
             $this->executeSql($sql, $param);

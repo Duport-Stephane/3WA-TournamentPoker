@@ -20,7 +20,7 @@ class Session
         // }
     }
 
-    public static function login(int $id, string $pseudo, string $prenom, string $nom, string $email, string $avatar, int $role_id): void
+    public static function login(int $id, string $pseudo, string $prenom, string $nom, string $email, int $role_id, string $avatar): void
     {
         $_SESSION['user'] = [
             'id'        => $id,
@@ -28,11 +28,12 @@ class Session
             'firstName' => htmlentities($prenom),
             'lastName'  => htmlentities($nom),
             'email'     => htmlentities($email),
-            'avatar'    => htmlentities($avatar),
-            'role_id'   => $role_id
+            'role_id'   => $role_id,
+            'avatar'    => htmlentities($avatar)
         ];
         // var_dump($_SESSION['user']['email']);
     }
+
 
     public static function logout(): void
     {
@@ -42,15 +43,18 @@ class Session
         }
     }
 
+
     public static function isConnected(): bool
     {
         return !empty($_SESSION['user']['email']) ? true : false;
     }
 
+
     public static function getOffset($offset)
     {
         return isset($_SESSION[$offset]) ? $_SESSION[$offset] : null;
     }
+
 
     public static function getOffset1_Offset2(string $offset1, string $offset2): ?string
     {
@@ -58,16 +62,19 @@ class Session
         return isset($_SESSION[$offset1][$offset2]) ? strval($_SESSION[$offset1][$offset2]) : "";
     }
 
+
     public static function setOffset($offset, $value)
     {
         // $_SESSION[$offset] = htmlentities($value);
         $_SESSION[$offset] = $value;
     }
 
+
     public static function isOffsetExists($offset)
     {
         return isset($_SESSION[$offset]);
     }
+
 
     public static function unsetOffset($offset)
     {
@@ -76,6 +83,7 @@ class Session
         }
     }
 
+    
     public static function getAllSession()
     {
         return $_SESSION;

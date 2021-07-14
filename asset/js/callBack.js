@@ -24,8 +24,9 @@ function currentNav() {
     }
     // console.log(endPage);
     const pageAct = address.slice(beginPage, endPage);
-    addInfoLS("log", "Display " + pageAct)
-        // console.log(pageAct);
+
+    // addInfoLS("log", "Display " + pageAct)
+    // console.log(pageAct);
 
     // cas particulier de la page HOME lors du premier chargement
     // il n'y a pas de parametre "page=" dans le root
@@ -71,7 +72,7 @@ function htmlEntities(str) {
  */
 function getInfoLS(key) {
     const _manager = new ManagerLS;
-    addInfoLS("log", "Get info from LocalStorage " + key)
+    addInfoLS("log", "Get value from LS " + key)
     return _manager.getDatasByKey(key);
 }
 
@@ -83,7 +84,7 @@ function getInfoLS(key) {
 function updateInfoLS(key, value) {
     const _manager = new ManagerLS
     _manager.setDatas(key, value)
-    addInfoLS("log", "Update Info in LocalStorage")
+    addInfoLS("log", "Update " + value + " in LS " + key)
 }
 
 /**
@@ -94,9 +95,10 @@ function updateInfoLS(key, value) {
 function addInfoLS(key, value) {
     const _manager = new ManagerLS
     const _old = _manager.getDatasByKey(key)
-    const timeNow = new Date()
-    const timeNowFormat = timeNow.getHours() + ":" + timeNow.getMinutes() + ":" + timeNow.getSeconds() + " => "
-    const _new = _old + String.fromCharCode(10) + timeNowFormat + value
+        // const timeNow = new Date()
+        // const timeNowFormat = timeNow.getHours() + ":" + timeNow.getMinutes() + ":" + timeNow.getSeconds() + " => "
+        // const _new = _old + String.fromCharCode(10) + timeNowFormat + value
+    const _new = _old + String.fromCharCode(10) + value
     _manager.setDatas(key, _new)
 }
 
@@ -106,7 +108,7 @@ function addInfoLS(key, value) {
  */
 function isKeyExistLS(key) {
     const _manager = new ManagerLS
-    addInfoLS("log", "Test if key " + key + " exist in LocalStorage ")
+    addInfoLS("log", "Test if key " + key + " exist in LS ")
     return _manager.existKey(key)
 }
 
@@ -117,7 +119,7 @@ function isKeyExistLS(key) {
 function removeKeyLS(key) {
     const _manager = new ManagerLS
     _manager.removeKey(key)
-    addInfoLS("log", "Remove key " + key + " from LocalStorage")
+    addInfoLS("log", "Remove " + key + " from LS")
 }
 
 
@@ -129,6 +131,7 @@ function removeKeyLS(key) {
  * @returns {boolean}
  */
 function addValidate(form, action) {
+
     addInfoLS("log", "addValidate")
 
     const _key = 'user' // Clé d'accès au stockage du LocalStorage
@@ -147,6 +150,9 @@ function addValidate(form, action) {
 
     const inputs = document.querySelectorAll('input');
     inputs.forEach(input => {
+
+        addInfoLS("log", input.name + " : " + input.value);
+
         // Si les champs obligatoires sont vides => ERROR
         if (input.value === "" && input.name != 'lastname' && input.name != 'firstname' && input.name != 'avatar') {
             _errors.push({
@@ -224,7 +230,6 @@ function addValidate(form, action) {
         return false
     } else {
 
-
         addInfoLS("log", "ACTION : " + action)
         let res;
 
@@ -232,7 +237,7 @@ function addValidate(form, action) {
             res = ajaxCallBack.isPersistUser(form);
 
             // Inscrire le nouvel user dans le localStorage : pas une bonne idée
-            // updateUserInfoLS(_key, _user.email)
+            // updateInfoLS(_key, _user.email)
 
         } else if (action === 'update') {
             ajaxCallBack.updateUser(form);
@@ -349,10 +354,10 @@ function logValidate(form) {
 
         if (ajaxCallBack.isSamePassword(form)) {
 
-            // console.log("Les mots de passe coïncident : LOGIN ok !")
+            addInfoLS("log", "Les mots de passe coïncident : LOGIN ok !")
 
             // si OK, actualise le mail dans le LocalStorage
-            updateUserInfoLS(_key, _user.email)
+            updateInfoLS(_key, _user.email)
 
             return true;
         } else {
@@ -382,6 +387,9 @@ function logValidate(form) {
  * @returns {boolean} valid or not
  */
 function isMailValid(email) {
+
+    addInfoLS("log", "isMailValid");
+
     // https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
     const regExMail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,4}))$/;
     if (regExMail.test(email) && email.length < 32) {
@@ -397,6 +405,9 @@ function isMailValid(email) {
  * @returns {boolean} valid or not
  */
 function isPasswordValid(pwd) {
+
+    addInfoLS("log", "isPassordValid");
+
     // https://ihateregex.io/expr/password/
     // Au moins 8 caractères [max 32] dont une majuscule, [une minuscule], un chiffre et un caractère spécial
     const regExPwd = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,32}$/;
@@ -417,7 +428,9 @@ function isPasswordValid(pwd) {
  * @param {string} type user ou player : pour sélectionner le bon tableau
  */
 function checkInputAll(isChecked, type) {
-    addInfoLS("log", "CheckInputAll");
+
+    addInfoLS("log", "checkInputAll");
+
     const checkboxes = document.querySelectorAll('.tab' + type + 'List input');
     checkboxes.forEach(checkbox => {
         checkbox.checked = isChecked;
@@ -430,6 +443,7 @@ function checkInputAll(isChecked, type) {
  * @param {string} typeUser user ou player : pour sélectionner le bon tableau
  */
 function displayTabUser(users, typeUser) {
+
     addInfoLS("log", "displayTabUSer");
 
     const $tableauUser = document.querySelector('.tab' + typeUser + 'List');
@@ -499,6 +513,7 @@ function displayTabUser(users, typeUser) {
  */
 
 function testMessageBeforeDisplay(message) {
+
     addInfoLS("log", "testMessageBeforeDisplay");
 
     let indexOfFirst;
@@ -518,7 +533,7 @@ function testMessageBeforeDisplay(message) {
  */
 function displayMessage(state, message) {
 
-    // addInfoLS("log", message);
+    addInfoLS("log", message);
 
     const $messages = document.querySelector('.message');
     const $balise = document.createElement('div')
@@ -533,7 +548,8 @@ function displayMessage(state, message) {
  * Gestion du temps d'affichage des messages
  */
 function removeMessage() {
-    // console.log("REMOVE INFOS")
+
+    // addInfoLS("log","REMOVE INFOS")
 
     // const mess = document.querySelector('.alert');
     // mess.delay(2500).fadeOut(600);

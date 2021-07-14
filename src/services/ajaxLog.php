@@ -18,7 +18,7 @@ if (isset($_POST) && !empty($_POST) && isset($_POST['action']) && !empty($_POST[
         foreach ($_POST as $key => $input) {
             // Traitement des saisies utilisateurs
 
-            var_dump($key . " / " . $input);
+            var_dump($key . " ==> " . $input);
 
             if (empty($input) && $key !== 'lastName' && $key !== 'firstName' && $key !== 'avatar') {
                 throw new DomainException("Attention, Le champ $key est vide.");
@@ -101,10 +101,15 @@ if (isset($_POST) && !empty($_POST) && isset($_POST['action']) && !empty($_POST[
                             unlink($user['avatar']);
                         }
                     } else {
-                        // S'il n'y a pas de nom de fichier dans l'input, on vérifie qu'il n'existe pas déjà un visuel en BdD pour le reprendre
+                        // S'il n'y a pas de nom de fichier dans l'input avatar, on vérifie qu'il n'existe pas déjà un visuel en BdD pour le reprendre
                         if (\Models\Session::getOffset1_Offset2('user', 'avatar') !== "") {
                             $avatar = \Models\Session::getOffset1_Offset2('user', 'avatar');
                         }
+                    }
+
+                    if (!isset($role_id) || $role_id === "") {
+                        // c'est au moins un USER : role_id=2
+                        $role_id = 2;
                     }
 
                     // Enregistrement du nouvel user
@@ -119,18 +124,18 @@ if (isset($_POST) && !empty($_POST) && isset($_POST['action']) && !empty($_POST[
 
                         // avec AVATAR
                         if (isset($avatar) && !empty($avatar)) {
-                            $userM->setUser($nickname, $lastname, $firstname, $email, $password, $avatar);
+                            $userM->setUser($nickname, $lastname, $firstname, $email, $password, $role_id, $avatar);
                         } else {
                             // sans AVATAR
                             // var_dump("Sans AVATAR");
                             // var_dump($password);
-                            $userM->setUser($nickname, $lastname, $firstname, $email, $password);
+                            $userM->setUser($nickname, $lastname, $firstname, $email, $password, $role_id);
                         }
                         echo `{$nickname} fait maintenant parti de la liste des utilisateurs.`;
                     } else if ($action === 'update') {
 
-                        var_dump('UPDATE ' . $user['id'] . " /pseudo ".$nickName." /prenom ". $lastName." /nom ". $firstName." /mail ". $email." /role ".$role." /avatar ". $avatar);
-                        die;
+                        var_dump('UPDATE ' . $user['id'] . " /pseudo= ".$nickName." /prenom= ". $lastName." /nom= ". $firstName." /mail= ". $email." /role= ".$role_id." /avatar= ". $avatar);
+                        // die;
 
                         // Persit new info in Log Session
                         \Models\Session::login(
@@ -139,8 +144,8 @@ if (isset($_POST) && !empty($_POST) && isset($_POST['action']) && !empty($_POST[
                             $firstName,
                             $lastName,
                             $email,
-                            $avatar,
-                            $role
+                            $role_id,
+                            $avatar
                         );
 
                         \Models\Session::setOffset('info', `Les informations ont bien été mises à jour.`);
@@ -148,10 +153,10 @@ if (isset($_POST) && !empty($_POST) && isset($_POST['action']) && !empty($_POST[
                         // Mise à jour du User
                         if (isset($avatar) && !empty($avatar)) {
                             // avec AVATAR
-                            $userM->updateUser($user['id'], $nickName, $lastName, $firstName, $role, $avatar);
+                            $userM->updateUser($user['id'], $nickName, $lastName, $firstName, $role_id, $avatar);
                         } else {
                             // sans AVATAR
-                            $userM->updateUser($user['id'], $nickName, $lastName, $firstName, $role);
+                            $userM->updateUser($user['id'], $nickName, $lastName, $firstName, $role_id);
                         }
                         echo `Les informations ont bien été mises à jour.`;
                     }
@@ -178,8 +183,8 @@ if (isset($_POST) && !empty($_POST) && isset($_POST['action']) && !empty($_POST[
                             $user['firstName'],
                             $user['lastName'],
                             $user['email'],
-                            $user['avatar'],
-                            $user['role_id']
+                            $user['role_id'],
+                            $user['avatar']
                         );
 
                         \Models\Session::setOffset('info', `Vous êtes connecté. Bienvenue, {$user['nickName']} !`);

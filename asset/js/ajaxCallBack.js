@@ -15,7 +15,7 @@ import ErrorCustom from './ErrorCustom.js' // Gestion des erreurs s'il y en a
  */
 function isSamePassword(form) {
 
-    callback.addInfoLS("log", "isSamePassword");
+    callback.addInfoLS("log", "FETCH isSamePassword");
 
     // console.log(form);
 
@@ -60,7 +60,7 @@ function isSamePassword(form) {
  */
 async function persistUser(form) {
 
-    callback.addInfoLS("log", "persitUser");
+    callback.addInfoLS("log", "FETCH persitUser");
 
     const response = await fetch('./index.php?action=persist', {
         method: 'post',
@@ -73,7 +73,7 @@ async function persistUser(form) {
 
 function isPersistUser(form) {
 
-    callback.addInfoLS("log", "isPersistUser");
+    callback.addInfoLS("log", "FETCH isPersistUser");
 
     persistUser(form).then(result => result.text())
         // .then(response => console.log(response))
@@ -96,14 +96,14 @@ function isPersistUser(form) {
  */
 function updateUser(form) {
 
-    callback.addInfoLS("log", "updateUser");
+    callback.addInfoLS("log", "FETCH updateUser");
 
     fetch('./index.php?action=update', {
             method: 'post',
             body: form
         })
         .then(response => response.text())
-        .then(response => console.log("RES du fetch UPDATEUSER : " + response))
+        .then(response => callback.addInfoLS("log", "RES du fetch UPDATEUSER : " + response))
 }
 
 /**
@@ -150,7 +150,7 @@ function updateUser(form) {
 function modifPlayerList(form) {
 
 
-    callback.addInfoLS("log", "modifPlayerList");
+    callback.addInfoLS("log", "FETCH modifPlayerList");
 
     // Fetch pour actualiser la table Player
 

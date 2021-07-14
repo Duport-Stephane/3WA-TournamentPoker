@@ -23,7 +23,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // A chaque changement de page, met en évidence le bon menu de la nav du header et du footer
     const pageAct = callback.currentNav();
-    // callback.appendLog("Page actuelle : " + pageAct);
+
+    callback.addInfoLS("log", "Display " + pageAct);
+
     // console.log(pageAct);
 
     // jQuery - Affichage de la notif pendant 2 sec 
@@ -41,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
     //*******************************************************************
     if (pageAct === 'inscription' || pageAct === 'dashboardUSer') {
 
-        callback.addInfoLS("log", "PAGE inscription / dashboard User");
+        // callback.addInfoLS("log", "PAGE inscription / dashboard User");
         // return;
 
         const $manipUsers = document.querySelectorAll('.createUser, .updateUser');
@@ -93,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (pageAct === 'login') {
 
 
-        callback.addInfoLS("log", "Page LOGIN");
+        // callback.addInfoLS("log", "Page LOGIN");
 
         // const _customError = new ErrorCustom // Référencer et afficher les erreurs
         const user_email = callback.getInfoLS('user');
@@ -158,7 +160,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Refresh la page PLAYER, pour afficher les 2 tableaux
     if (pageAct === 'players') {
 
-        callback.addInfoLS("log", "PAge Player");
+        // callback.addInfoLS("log", "PAge Player");
 
         // Ecoute le click sur la checkbox ALL des 2 tableaux Users et Players 
         // Si coché alors il faut cocher TOUS les checkboxes
@@ -211,7 +213,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (pageAct === 'game') {
 
-        callback.addInfoLS("log", "page Game");
+        // callback.addInfoLS("log", "page Game");
 
         const Flipper = function() {
             function Flipper(node, currentTime, nextTime) {
@@ -280,7 +282,7 @@ document.addEventListener('DOMContentLoaded', function() {
     //*******************************************************************
     if (pageAct === 'bonus') {
 
-        callback.addInfoLS("log", "page Bonus");
+        // callback.addInfoLS("log", "page Bonus");
 
         const $btnStart = document.getElementById('canvasOn');
         $btnStart.addEventListener('click', e => {
