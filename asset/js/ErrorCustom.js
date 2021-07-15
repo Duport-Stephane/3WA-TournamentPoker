@@ -2,6 +2,9 @@
 /*
     Gestion des erreurs
 */
+
+import * as callback from './callBack.js';
+
 class ErrorCustom {
 
     constructor() {
@@ -13,7 +16,7 @@ class ErrorCustom {
      *
      * @return array messages
      */
-    get messages() {
+    getMessages() {
         callback.addInfoLS("log", "get errorMessages");
         return this._messages
     }
@@ -21,9 +24,9 @@ class ErrorCustom {
     /**
      * Mise à jour des erreurs
      */
-    set messages(errorMessages) {
+    setMessages(errorMessages) {
 
-        callback.addInfoLS("log", "Set errorMessage : " + errorMessages);
+        callback.addInfoLS("log", "Set errorMessages");
 
         this._messages = errorMessages
     }
@@ -36,9 +39,9 @@ class ErrorCustom {
         // $errorSpan.innerHTML = '';
         $errorSpan.classList.add('form-error');
         // Fill
-        this.messages.map(msg => {
+        this._messages.map(msg => {
 
-            callback.addInfoLS("log", `${msg.field} : ${msg.message}`);
+            callback.addInfoLS("log", `Error = ${msg.field} :: ${msg.message}`);
 
             const $p = document.createElement('p');
             $p.textContent = `${msg.field} : ${msg.message}`;
@@ -59,7 +62,7 @@ class ErrorCustom {
 
     viderError() {
 
-        callback.addInfoLS("log", "Clear Error");
+        callback.addInfoLS("log", "Clear Errors");
         // Vider les erreurs
         const $errorSpan = document.querySelector('.message')
         $errorSpan.classList.remove('form-error')

@@ -2,8 +2,7 @@
 
 <table class='array'>
 
-    <caption>Liste des joueurs inscrits sur l'appli</caption>
-<input type="text">Saisie pour recherche d'un joueur
+    <h3><?= count($users) ?> Joueurs inscrits sur l'application</h3>
     <tr> 
         <th>​</th>
         <th>Pseudo</th>
@@ -14,14 +13,14 @@
 </table>
 <div class='array-border'>
     <table class='array'>
-        <?php foreach ($tournaments as $tournament) : { ?>
+        <?php foreach ($users as $user) : { ?>
                 <tr>
-                    <td><input type='checkbox' name='checkboxtournament[]' value=<?= $tournament['id'] ?>></td>
-                    <td class="selectUser <?= $tournament['id'] ?>"><?= $tournament['started_at'] ?></td>
-                    <td class="selectUser <?= $tournament['id'] ?>"><?= $tournament['name'] ?></td>
-                    <td class="selectUser <?= $tournament['id'] ?>"><?= $tournament['tableMax'] ?></td>
-                    <td><?php if ($tournament['avatar'] !== "") : { ?>
-                                <img src=<?= $tournament['avatar'] ?> alt='avatar'>
+                    <td><input type='checkbox' name='checkboxuser[]' value=<?= $user['id'] ?>></td>
+                    <td class="selectUser <?= $user['id'] ?>"><?= $user['nickName'] ?></td>
+                    <td class="selectUser <?= $user['id'] ?>"><?= $user['lastName'] ?></td>
+                    <td class="selectUser <?= $user['id'] ?>"><?= $user['firstName'] ?></td>
+                    <td><?php if ($user['avatar'] !== "") : { ?>
+                                <img src=<?= $user['avatar'] ?> alt='avatar'>
                         <?php }
                         endif; ?>
                     </td>
@@ -30,3 +29,4 @@
         endforeach; ?>
     </table>
 </div>
+<input class="card-search" type="text" name="findUser">Rechercher un joueur

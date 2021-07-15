@@ -30,6 +30,29 @@ class User extends \Database
     }
 
     /**
+     * Find all Users
+     *
+     * @return array
+     */
+    // pour retourner l'ensemble des joueurs USER ou USER/ADMIN (mais pas admin seul)
+
+    public function getAllUsers(): array
+    {
+        try {
+            $query = 'SELECT user.id, nickName, firstName, lastName, avatar, role_id
+                FROM user
+                ORDER BY nickName';
+            $param = [];
+
+            $users = $this->findAll($query, $param);
+        } catch (\DomainException $e) {
+            echo $e->getMessage();
+            die;
+        }
+        return $users ?? [];
+    }
+
+    /**
      * Get Users
      * ????????? param integer role_id 1 pour admin ?????
      * @param integer dependUser_id
@@ -130,25 +153,25 @@ class User extends \Database
     /**
      * Pour créer un user dans la BDD
      * @param {string} $nickName
-     * @param {string} $lastName
      * @param {string} $firstName
+     * @param {string} $lastName
      * @param {string} $email
      * @param {string} $pwd
      * @param {string} $avatar
      *  
      * @return string | null
      */
-    public function setUser(string $nickName, string $lastName, string $firstName, string $email, string $password, int $role_id, string $avatar = "") : string
+    public function setUser(string $nickName, string $firstName, string $lastName, string $email, string $password, int $role_id, string $avatar = "") : string
     {
         var_dump("PERSIST into USER");
 
         try {
-            $sql = 'INSERT INTO user(nickName, lastName, firstName, email, password, role_id, avatar) 
-            VALUES (:nickName, :lastName, :firstName, :email, :password, :role_id, :avatar)';
+            $sql = 'INSERT INTO user(nickName, firstName, lastName, email, password, role_id, avatar) 
+            VALUES (:nickName, :firstName, :lastName, :email, :password, :role_id, :avatar)';
             $param = [
                 ':nickName'     => $nickName,
-                ':lastName'     => $lastName,
                 ':firstName'    => $firstName,
+                ':lastName'     => $lastName,
                 ':email'        => $email,
                 ':password'     => $password,
                 ':role_id'      => $role_id,
@@ -166,26 +189,26 @@ class User extends \Database
     /**
      * Pour mettre à jour un user dans la BDD
      * @param {string}  $nickName
-     * @param {string}  $lastName
      * @param {string}  $firstName
+     * @param {string}  $lastName
      * @param {int}     $role
      * @param {string}  $avatar
      *  
      * @return string
      */
-    public function updateUser(int $user_id, string $nickName, string $lastName, string $firstName, int $role_id, string $avatar = "") : void
+    public function updateUser(int $user_id, string $nickName, string $firstName, string $lastName, int $role_id, string $avatar = "") : void
     {
-        var_dump("UPDATE USER");
+        var_dump('USER.PHP : ' . $user_id . " /pseudo= ".$nickName." /prenom= ".$firstName . " /nom= " . $lastName." /role_id= ".$role_id." /avatar= ". $avatar);
 
         try {
-            $sql = 'UPDATE user SET nickName = :nickName, lastName = :lastName, firstName = :firstName, role_id = :role_id, avatar = :avatar
+            $sql = 'UPDATE user SET nickName = :nickName, firstName = :firstName, lastName = :lastName, role_id = :role_id, avatar = :avatar
             WHERE id = :user_id';
 
             $param = [
                 ':user_id'      => $user_id,
                 ':nickName'     => $nickName,
-                ':lastName'     => $lastName,
                 ':firstName'    => $firstName,
+                ':lastName'     => $lastName,
                 ':role_id'      => $role_id,
                 ':avatar'       => $avatar
             ];

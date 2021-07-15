@@ -108,7 +108,7 @@ function addInfoLS(key, value) {
  */
 function isKeyExistLS(key) {
     const _manager = new ManagerLS
-    addInfoLS("log", "Test if key " + key + " exist in LS ")
+    addInfoLS("log", "Test if key " + key + " exist in LS : " + _manager.existKey(key))
     return _manager.existKey(key)
 }
 
@@ -118,8 +118,8 @@ function isKeyExistLS(key) {
  */
 function removeKeyLS(key) {
     const _manager = new ManagerLS
-    _manager.removeKey(key)
     addInfoLS("log", "Remove " + key + " from LS")
+    _manager.removeKey(key)
 }
 
 
@@ -143,18 +143,19 @@ function addValidate(form, action) {
             lastname: '',
             email: '',
             password: '',
+            role_id: '',
             avatar: ''
         } // Stocker les infos du user
 
     // console.log(form)
 
-    const inputs = document.querySelectorAll('input');
+    const inputs = document.querySelectorAll('input, select');
     inputs.forEach(input => {
 
         addInfoLS("log", input.name + " : " + input.value);
 
         // Si les champs obligatoires sont vides => ERROR
-        if (input.value === "" && input.name != 'lastname' && input.name != 'firstname' && input.name != 'avatar') {
+        if (input.value === "" && input.name != 'lastname' && input.name != 'firstname' && input.name != 'avatar' && input.name != 'findUser') {
             _errors.push({
                 field: input.name,
                 type: 'empty',
@@ -173,6 +174,12 @@ function addValidate(form, action) {
                 field: input.name,
                 type: 'format',
                 message: `Le mot de passe doit contenir au moins 8 caractères dont une minuscule, une majuscule, un chiffre et un caractère spécial`
+            })
+        } else if (input.name === 'role' && isNaN(parseInt(input.value))) {
+            _errors.push({
+                field: input.name,
+                type: 'format',
+                message: `Merci de remplir le champ ${input.name}`
             })
 
         } else {
@@ -211,6 +218,11 @@ function addValidate(form, action) {
                         _user.avatar = htmlEntities(input.value)
                     }
                     break;
+                case 'role':
+                    if (_user.role_id !== "") {
+                        _user.role_id = parseInt(input.value)
+                    }
+                    break;
             }
         }
     })
@@ -220,9 +232,12 @@ function addValidate(form, action) {
 
         // console.log("Il y a des errors !!!!!!!!!!!")
         addInfoLS("log", "There's some ERRORS");
+        // _errors.forEach(err => {
+        //     addInfoLS("log", `${err.field} : ${err.message}`);
+        // });
 
         // On enregistre les errors de notre form dans la class ErrorCustom,
-        _customError.messages(_errors);
+        _customError.setMessages(_errors);
         // afin de bénéficier des fonctionnalités de celui-ci pour les affichées par la suite
 
         _customError.displayMessages();
@@ -239,8 +254,11 @@ function addValidate(form, action) {
             // Inscrire le nouvel user dans le localStorage : pas une bonne idée
             // updateInfoLS(_key, _user.email)
 
-        } else if (action === 'update') {
+        } else if (action === 'updateUser') {
             ajaxCallBack.updateUser(form);
+
+        } else if (action === 'updateAdmin') {
+            ajaxCallBack.updateAdmin(form);
         }
         // console.log(_customError.messages);
         // console.log("RES : " + res);

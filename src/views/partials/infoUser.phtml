@@ -1,13 +1,18 @@
-<h2 class="from-left">Modifier votre profil ?</h2>
-<form class="updateUser card-body" action='./index.php?page=dashboardUser' method="POST" enctype="multipart/form-data">
-    <fieldset>
-        <div>
-            <input type="hidden" name="action" value="update">
-            <label for="nickName" class="btn-info">Pseudonyme *</label>
-            <div class="card-text">
-                <span class="card-puce"><i class="fas fa-ghost"></i></span>
-                <input type="text" class="card-input" name="nickName" placeholder="Pseudonyme" required autofocus value=<?= \Models\Session::getOffset1_Offset2('user', 'nickName') ?>>
-            </div>
+<h3 class="from-left">Modifier votre profil ?</h3>
+<fieldset>
+    <div>
+        <input type="hidden" name="action" <?php if (\Models\Session::getOffset1_Offset2('user', 'role_id') === '2') : ?> value="updateUser" <?php else : ?> value="updateAdmin" <?php endif; ?>>
+        <label for="nickName" class="btn-info">Pseudonyme *</label>
+        <div class="card-text">
+            <span class="card-puce"><i class="fas fa-ghost"></i></span>
+            <input type="text" class="card-input" name="nickName" placeholder="Pseudonyme" required autofocus value=<?= \Models\Session::getOffset1_Offset2('user', 'nickName') ?>>
+        </div>
+    </div>
+    <div>
+        <label for="firstName" class="btn-info">Prénom</label>
+        <div class="card-text">
+            <span class="card-puce"><i class="fas fa-user"></i></span>
+            <input type="text" class="card-input" name="firstName" placeholder="Prénom" value=<?= \Models\Session::getOffset1_Offset2('user', 'firstName') ?>>
         </div>
         <div>
             <label for="lastName" class="btn-info">Nom</label>
@@ -16,52 +21,52 @@
                 <input type="text" class="card-input" name="lastName" placeholder="Nom" value=<?= \Models\Session::getOffset1_Offset2('user', 'lastName') ?>>
             </div>
         </div>
-        <div>
-            <label for="firstName" class="btn-info">Prénom</label>
-            <div class="card-text">
-                <span class="card-puce"><i class="fas fa-user"></i></span>
-                <input type="text" class="card-input" name="firstName" placeholder="Prénom" value=<?= \Models\Session::getOffset1_Offset2('user', 'firstName') ?>>
-            </div>
+    </div>
+    <div>
+        <label for="avatar" class="btn-info">Avatar</label>
+        <div class="card-text">
+            <span class="card-puce"><i class="fas fa-camera"></i></span>
+            <input type="file" accept=".jpg, .jpeg, .png, .bmp" class="card-input btn-info-inv" name="avatar">
         </div>
-        <div>
-            <label for="avatar" class="btn-info">Avatar</label>
-            <div class="card-text">
-                <span class="card-puce"><i class="fas fa-camera"></i></span>
-                <input type="file" accept=".jpg, .jpeg, .png, .bmp" class="card-input btn-info-inv" name="avatar">
-            </div>
-            <!-- <p><?php if (\Models\Session::getOffset1_Offset2('user', 'avatar') !== "") : { ?><?= \Models\Session::getOffset1_Offset2('user', 'avatar') ?> <?php } endif; ?></p> -->
-        </div>
-        <div>
-            <?php if (\Models\Session::getOffset1_Offset2('user', 'avatar') !== "") : { ?>
-                    <img class="bigImg" src=<?= \Models\Session::getOffset1_Offset2('user', 'avatar') ?> alt='avatar'>
-            <?php }
-            endif; ?>
-        </div>
+        <!-- <p><?php if (\Models\Session::getOffset1_Offset2('user', 'avatar') !== "") : { ?><?= \Models\Session::getOffset1_Offset2('user', 'avatar') ?> <?php }
+                                                                                                                                                    endif; ?></p> -->
+    </div>
+    <div>
+        <?php if (\Models\Session::getOffset1_Offset2('user', 'avatar') !== "") : { ?>
+                <img class="middle2Img" src=<?= \Models\Session::getOffset1_Offset2('user', 'avatar') ?> alt='avatar'>
+        <?php }
+        endif; ?>
+    </div>
 
-        <!-- Only for ADMIN || USER-ADMIN-->
-        <?php if (\Models\Session::getOffset1_Offset2('user', 'role_id') !== '2') : ?>
-            <div>
-                <label for="role" class="btn-info">Rôle *</label>
-                <div class="card-text">
-                    <span class="card-puce"><i class="far fa-id-badge"></i></span>
-                    <select name="role" size="1" class="card-input" required>
-                        <?php foreach ($roles as $role) : { ?>
-                                <?php if ($role['roleName'] === $roleName) : ?>
-                                    <option value=<?= $role['id'] ?>><?= $role['roleName'] ?>
-                                    <?php endif; ?>
-                                    <?php if ($role['roleName'] !== $roleName) : ?>
-                                    <option value=<?= $role['id'] ?>><?= $role['roleName'] ?>
-                                    <?php endif; ?>
-                            <?php }
-                        endforeach; ?>
-                    </select>
-                </div>
+    <!-- Only for ADMIN || USER-ADMIN-->
+    <?php if (\Models\Session::getOffset1_Offset2('user', 'role_id') !== '2') : ?>
+        <div>
+            <label for="role" class="btn-info">Rôle *</label>
+            <div class="card-text">
+                <span class="card-puce"><i class="far fa-id-badge"></i></span>
+                <select name="role" size="1" class="card-input" required>
+                    <?php foreach ($roles as $role) : { ?>
+                            <?php if ($role['roleName'] === $roleName) : ?>
+                                <option value=<?= $role['id'] ?> selected><?= $role['roleName'] ?>
+                            <?php endif; ?>
+                            <?php if ($role['roleName'] !== $roleName) : ?>
+                                <option value=<?= $role['id'] ?>><?= $role['roleName'] ?>
+                            <?php endif; ?>
+                        <?php }
+                    endforeach; ?>
+                </select>
             </div>
-        <?php endif; ?>
+        </div>
+    <?php endif; ?>
 
-        <p class="small text-left messageGrey">* : information obligatoire</p>
-        
-        <button type="submit" class="btn btn-info">Modifier vos informations</button>
-        <button class="btn btn-alert"><a href="./index.php?page=dashboardUSer">Annuler les modifications</a></button>
-    </fieldset>
+    <p class="small text-left messageGrey">* : information obligatoire</p>
+
+    <button type="submit" class="btn btn-info">Modifier les informations</button>
+    <button class="btn btn-alert">
+        <?php if (\Models\Session::getOffset1_Offset2('user', 'role_id') === '2') : ?>
+            <a href="./index.php?page=dashboardUser">Annuler les modifications</a>
+        <?php else : ?>
+            <a href="./index.php?page=dashboardAdmin">Annuler les modifications</a>
+        <?php endif; ?></button>
+</fieldset>
 </form>

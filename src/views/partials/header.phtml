@@ -17,7 +17,7 @@
                         <img src="./asset/images/token/red.png" alt="logout" class="token">
                         <div class="small">Déconnexion</div>
                     </a></li>
-                <?php if (\Models\Session::isOffsetExists('user') && (\Models\Session::getOffset1_Offset2('user', 'role_id') != 1)) : ?>
+                <?php if (\Models\Session::isOffsetExists('user') && (\Models\Session::getOffset1_Offset2('user', 'role_id') === '2')) : ?>
                     <li><a href="./index.php?page=dashboardUSer" class="dashboardUSer flex-column">
                             <img src="./asset/images/token/yellow.png" alt="dashboard User" class="token">
                             <div class="small">Mon espace</div>

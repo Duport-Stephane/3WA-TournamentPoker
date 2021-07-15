@@ -39,19 +39,21 @@ document.addEventListener('DOMContentLoaded', function() {
     // window.onbeforeunload = callback.updateUserInfoLS('user', '');
 
 
-    // page INSCRIPTION || DASHBOARDUSER
+    // page INSCRIPTION || DASHBOARDUSER || DASHBOARDADMIN
     //*******************************************************************
-    if (pageAct === 'inscription' || pageAct === 'dashboardUSer') {
+    if (pageAct === 'inscription' || pageAct === 'dashboardUSer' || pageAct === 'dashboardAdmin') {
 
         // callback.addInfoLS("log", "PAGE inscription / dashboard User");
         // return;
 
-        const $manipUsers = document.querySelectorAll('.createUser, .updateUser');
+        const $manipUsers = document.querySelectorAll('.createUser, .updateUser, .updateAdmin');
         $manipUsers.forEach($manipUser => {
             $manipUser.addEventListener('submit', e => {
                 e.preventDefault();
 
+                // callback.addInfoLS("log", e);
                 // console.log(e);
+                // callback.addInfoLS("log", e.target[1].value);
 
                 // const champsAControler = ['nickname', 'lastname', 'firstname', 'email', 'password', 'avatar'];
                 // const inputs = document.querySelectorAll('input');
@@ -60,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Get action to do (from input hidden)
                 const action = e.target[1].value;
 
-                // console.log(action);
+                callback.addInfoLS("log", action);
 
                 // form datas
                 const form = new FormData(e.currentTarget)
@@ -75,10 +77,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (action === 'persist') {
                         // Back to Home Page
                         window.location.href = "./index.php?page=home";
-                    } else {
-                        window.location.reload();
                     }
-
                 } else {
                     // console.log("PERDU ! PAS de création / modification du USER")
                     // false => on reste sur le form et on affiche les erreurs détectées
@@ -94,7 +93,6 @@ document.addEventListener('DOMContentLoaded', function() {
     //*******************************************************************
     if (pageAct === 'login') {
 
-
         // callback.addInfoLS("log", "Page LOGIN");
 
         // const _customError = new ErrorCustom // Référencer et afficher les erreurs
@@ -104,6 +102,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (user_email.length !== 0) {
             // console.log(user_email);
             callback.addInfoLS("log", "Mail exist")
+
             document.querySelector('.auth input[name="email"]').value = user_email;
             document.querySelector('.auth input[name="password"]').value = "";
             document.querySelector('.auth input[name="password"]').focus();
@@ -141,19 +140,15 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
 
-    // LOGOUT
+    // Page LOGOUT
     //*******************************************************************
-    // console.log(callback.getInfoLS('user'))
-    if (callback.isKeyExistLS('user')) {
-        document.getElementById('logout').addEventListener('click', e => {
-            // document.addEventListener('click', '#logout', e => {
+
+    if (pageAct === 'logout' && callback.isKeyExistLS('user')) {
+        document.querySelector('button').addEventListener('click', e => {
             // Vider le localStorage
-            callback.addInfoLS("log", "LOGOUT, remove user")
             callback.removeKeyLS('user');
-            // console.log('LOGOUT !');
         })
     }
-
 
     // page PLAYER
     //*******************************************************************

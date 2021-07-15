@@ -91,19 +91,33 @@ function isPersistUser(form) {
 
 
 /**
- * UPdate User in database
+ * Update User in database
  * @param {formData} form 
  */
-function updateUser(form) {
+async function updateUser(form) {
 
     callback.addInfoLS("log", "FETCH updateUser");
 
-    fetch('./index.php?action=update', {
+    const response = await fetch('./index.php?action=updateUser', {
+        method: 'post',
+        body: form
+    })
+}
+
+/**
+ * Update Admin in database
+ * @param {formData} form 
+ */
+async function updateAdmin(form) {
+
+    callback.addInfoLS("log", "FETCH updateAdmin");
+
+    const response = await fetch('./index.php?action=updateAdmin', {
             method: 'post',
             body: form
         })
-        .then(response => response.text())
-        .then(response => callback.addInfoLS("log", "RES du fetch UPDATEUSER : " + response))
+        // const result = await response.text()
+        // callback.addInfoLS("log", result)
 }
 
 /**
@@ -171,4 +185,4 @@ function modifPlayerList(form) {
 
 
 
-export { modifPlayerList, isSamePassword, isPersistUser, updateUser }
+export { modifPlayerList, isSamePassword, isPersistUser, updateUser, updateAdmin }

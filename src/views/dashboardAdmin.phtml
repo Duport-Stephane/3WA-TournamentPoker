@@ -1,24 +1,32 @@
-<h1>Tableau de bord Administrateur</h1>
+<h2>Tableau de bord Administrateur</h2>
 
-<h3>
-    <a class="btn btn-success" href="#userProfilDashboard">adminProfil</a>
-    <a class="btn btn-success" href="#userListDashboard">usersList</a>
-    <a class="btn btn-success" href="#tournamentOnDashboard">tournamentOn</a>
-    <a class="btn btn-success">Structure des tournois</a>
-    <a class="btn btn-success">Valeur des jetons</a>
-    <a class="btn btn-success">Accès aux commentaires</a>
-</h3>
-<section class="flex-around-wrap border-screen">
-    <!-- <article>
+<div class="flex-between-top">
+    <section class="flex-column border-screen bigImg position-sticky">
+        <a class="btn btn-info" href="#userProfilDashboard">Mon espace</a>
+        <a class="btn btn-info" href="#userListDashboard">Liste des utilisateurs</a>
+        <a class="btn btn-info" href="#tournamentOnDashboard">Tournois à venir</a>
+        <!-- <a class="btn btn-info">Structure des tournois</a>
+    <a class="btn btn-info">Valeur des jetons</a>
+    <a class="btn btn-info">Accès aux commentaires</a> -->
+    </section>
+    <section class="flex-around-wrap border-screen">
+        <!-- <article>
     </article> -->
-    <article id="userProfilDashboard">
-        <?php require_once './src/views/partials/infoUser.phtml' ?>
-    </article>
-    <article id="userListDashboard">
-        <?php require_once './src/views/partials/usersList.phtml' ?>
-    </article>
-    <article id="tournamentOnDashboard">
-        <!-- <h2>LISTE DES TOURNOIS DISPONIBLES</h2> -->
-        <?php require_once './src/views/partials/arrayTournament.phtml' ?>
-    </article>
-</section>
+        <article id="userProfilDashboard">
+            <form class="updateAdmin card-body" action='./index.php?page=dashboardAdmin' method="POST" enctype="multipart/form-data">
+
+                <?php require_once './src/views/partials/infoUser.phtml' ?>
+
+            </form>
+        </article>
+        <article id="userListDashboard">
+            <form class="card-body" action='./index.php?page=dashboardAdmin' method="POST">
+                <?php require_once './src/views/partials/usersList.phtml' ?>
+            </form>
+        </article>
+        <article id="tournamentOnDashboard">
+            <!-- <h2>LISTE DES TOURNOIS DISPONIBLES</h2> -->
+            <?php require_once './src/views/partials/arrayTournament.phtml' ?>
+        </article>
+    </section>
+</div>

@@ -18,7 +18,7 @@ if (isset($_POST) && !empty($_POST) && isset($_POST['action']) && !empty($_POST[
         foreach ($_POST as $key => $input) {
             // Traitement des saisies utilisateurs
 
-            var_dump($key . " ==> " . $input);
+            var_dump($key . " = " . $input);
 
             if (empty($input) && $key !== 'lastName' && $key !== 'firstName' && $key !== 'avatar') {
                 throw new DomainException("Attention, Le champ $key est vide.");
@@ -29,11 +29,11 @@ if (isset($_POST) && !empty($_POST) && isset($_POST['action']) && !empty($_POST[
                     case 'nickName':
                         $nickName = htmlentities($input);
                         break;
-                    case 'lastName':
-                        $lastName = htmlentities($input);
-                        break;
                     case 'firstName':
                         $firstName = htmlentities($input);
+                        break;
+                    case 'lastName':
+                        $lastName = htmlentities($input);
                         break;
                     case 'email':
                         $mailPattern = '/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/';
@@ -53,18 +53,21 @@ if (isset($_POST) && !empty($_POST) && isset($_POST['action']) && !empty($_POST[
                         $avatar = htmlentities($input);
                         break;
                     case 'role':
+
+                        // var_dump($input);
+
                         if ($input !== '') {
-                            $role = htmlentities($input);
+                            $role_id = intval($input);
                         } else {
-                            $role = '2';
+                            $role_id = 2;
                         }
                         break;
                 };
             }
         }
 
-        if ($action === 'update') {
-            // Si update, on ne peut pas modifier le mail, donc on le récupère directement dans la session
+        if ($action === 'updateUser' || $action === 'updateAdmin' || $action === 'logout') {
+            // Si updateUser || updateAdmin, on ne peut pas modifier le mail, donc on le récupère directement dans la session
             $email = \Models\Session::getOffset1_Offset2('user', 'email');
         }
 
@@ -74,12 +77,13 @@ if (isset($_POST) && !empty($_POST) && isset($_POST['action']) && !empty($_POST[
 
         switch ($action) {
             case 'persist':
-            case 'update':
-                // on commence par checker le mail qui doit être UNIQUE pour la création (mais pas utilisé si update)
+            case 'updateUser':
+            case 'updateAdmin':
+                // on commence par checker le mail qui doit être UNIQUE pour la création (mais pas utilisé si updateUser || updateAdmin)
                 if ($user && $action === 'persist') {
                     throw new DomainException("Attention, L'utilisateur existe déjà !");
                 } else {
-                    // Donc on peut sauvegarder le USER
+                    // Donc on peut sauvegarder le USER || ADMIN
 
                     // Gestion du fichier AVATAR 
                     if (array_key_exists('avatar', $_FILES) && !empty($_FILES['avatar']['name'])) {
@@ -104,18 +108,23 @@ if (isset($_POST) && !empty($_POST) && isset($_POST['action']) && !empty($_POST[
                         // S'il n'y a pas de nom de fichier dans l'input avatar, on vérifie qu'il n'existe pas déjà un visuel en BdD pour le reprendre
                         if (\Models\Session::getOffset1_Offset2('user', 'avatar') !== "") {
                             $avatar = \Models\Session::getOffset1_Offset2('user', 'avatar');
+                        } else {
+                            $avatar = "";
                         }
                     }
 
+                    var_dump($role_id);
                     if (!isset($role_id) || $role_id === "") {
                         // c'est au moins un USER : role_id=2
                         $role_id = 2;
                     }
-
+                    var_dump($role_id);
+                    
                     // Enregistrement du nouvel user
                     if ($action === 'persist') {
 
                         var_dump('PERSIST ' . $email);
+                        // die;
                         // var_dump($password);
 
                         $password = password_hash($password, PASSWORD_BCRYPT);
@@ -123,42 +132,66 @@ if (isset($_POST) && !empty($_POST) && isset($_POST['action']) && !empty($_POST[
                         \Models\Session::setOffset('info', `{$nickname} fait maintenant parti de la liste des utilisateurs.`);
 
                         // avec AVATAR
-                        if (isset($avatar) && !empty($avatar)) {
-                            $userM->setUser($nickname, $lastname, $firstname, $email, $password, $role_id, $avatar);
-                        } else {
+                        // if (isset($avatar) && !empty($avatar)) {
+                            $userM->setUser($nickname, $firstname, $lastname, $email, $password, $role_id, $avatar);
+                        //} else {
                             // sans AVATAR
                             // var_dump("Sans AVATAR");
                             // var_dump($password);
-                            $userM->setUser($nickname, $lastname, $firstname, $email, $password, $role_id);
-                        }
+                        //    $userM->setUser($nickname, $firstname, $lastname, $email, $password, $role_id);
+                        //}
                         echo `{$nickname} fait maintenant parti de la liste des utilisateurs.`;
-                    } else if ($action === 'update') {
-
-                        var_dump('UPDATE ' . $user['id'] . " /pseudo= ".$nickName." /prenom= ". $lastName." /nom= ". $firstName." /mail= ". $email." /role= ".$role_id." /avatar= ". $avatar);
+                    } else {
+                        var_dump(\Models\Session::getOffset('user'));
                         // die;
-
-                        // Persit new info in Log Session
-                        \Models\Session::login(
-                            $user['id'],
-                            $nickName,
-                            $firstName,
-                            $lastName,
-                            $email,
-                            $role_id,
-                            $avatar
-                        );
 
                         \Models\Session::setOffset('info', `Les informations ont bien été mises à jour.`);
 
                         // Mise à jour du User
-                        if (isset($avatar) && !empty($avatar)) {
+                        //if (isset($avatar) && !empty($avatar)) {
                             // avec AVATAR
-                            $userM->updateUser($user['id'], $nickName, $lastName, $firstName, $role_id, $avatar);
-                        } else {
+
+                            var_dump('UPDATE ' . $user['id'] . " /pseudo= " . $nickName . " /prenom= " . $firstName . " /nom= " . $lastName . " /mail= " . $email . " /role_id= " . $role_id . " /avatar= " . $avatar);
+                            // die;
+
+                            // Persit update info in Log Session
+                            \Models\Session::login(
+                                $user['id'],
+                                $nickName,
+                                $firstName,
+                                $lastName,
+                                $email,
+                                $role_id,
+                                $avatar
+                            );
+
+                            $userM->updateUser($user['id'], $nickName, $firstName, $lastName, $role_id, $avatar);
+                        //} else {
                             // sans AVATAR
-                            $userM->updateUser($user['id'], $nickName, $lastName, $firstName, $role_id);
-                        }
+
+                        //    var_dump('UPDATE ' . $user['id'] . " /pseudo= " . $nickName . " /prenom= " . $firstName . " /nom= " . $lastName . " /mail= " . $email . " /role_id= " . $role_id );
+                            // die;
+
+                            // Persit update info in Log Session
+                            // \Models\Session::login(
+                            //     $user['id'],
+                            //     $nickName,
+                            //     $firstName,
+                            //     $lastName,
+                            //     $email,
+                            //     $role_id,
+                            //     ""
+                            // );
+
+                            // $userM->updateUser($user['id'], $nickName, $firstName, $lastName, $role_id);
+                        // }
                         echo `Les informations ont bien été mises à jour.`;
+                        if ($action === 'updateUser') {
+                            header('Location: ./index.php?page=dashboardUser');
+                        } else {
+                            header('Location: ./index.php?page=dashboardAdmin');
+                        }
+                        die;
                     }
                 }
                 break;
@@ -190,9 +223,18 @@ if (isset($_POST) && !empty($_POST) && isset($_POST['action']) && !empty($_POST[
                         \Models\Session::setOffset('info', `Vous êtes connecté. Bienvenue, {$user['nickName']} !`);
 
                         echo $user['id'];
-                        header('Location: ./index.php?page=home&action=');
+                        header('Location: ./index.php?page=home&action=null');
                         die;
                     }
+                }
+                break;
+
+            case 'logout':
+                if (\Models\Session::isConnected()) {
+                    \Models\Session::logout();
+                    echo 'Vous êtes déconnecté.';
+                    header('Location: ./index.php?page=home&action=null');
+                    die;
                 }
                 break;
         }

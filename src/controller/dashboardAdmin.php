@@ -22,13 +22,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     $roleM = new \Models\Role;
     // role du user, only for Admin
-    $roleName = $roleM ->getRoleNameById(\Models\Session::getOffset1_Offset2('user', 'role_id'))['roleName'];
-    // on récupère la liste des rôles pour les afficher en COMBO LIST
-    $roles = $roleM->getAllRoleName();
-    
-    // liste des joueurs inscrit sue l'appli
+    if (\Models\Session::getOffset1_Offset2('user', 'role_id')) {
+        $roleName = $roleM ->getRoleNameById(\Models\Session::getOffset1_Offset2('user', 'role_id'))['roleName'];
+        // on récupère la liste des rôles pour les afficher en COMBO LIST
+        $roles = $roleM->getAllRoleName();
+    }
 
-
+    // liste des joueurs inscrits sur l'appli
+    $user = new \Models\User;
+    $users = $user->getAllUsers();
+    // var_dump($users);
 
     // on récupère la liste des tournois à venir (closed_at = null) pour les afficher en Tableau
     $tournament = new \Models\Tournament;

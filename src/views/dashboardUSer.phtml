@@ -2,7 +2,13 @@
 
 <section class="flex-around">
     <article>
-        <form class="updateUser card-body" action='./index.php?page=dashboardUser' method="POST" enctype="multipart/form-data">
+        <form class="updateUser card-body" 
+            <?php if (\Models\Session::getOffset1_Offset2('user', 'role_id') === '2') : ?> 
+                action='./index.php?page=dashboardUser' 
+            <?php else : ?> 
+                action='./index.php?page=dashboardAdmin' 
+            <?php endif; ?> 
+            method="POST" enctype="multipart/form-data">
 
             <?php require_once './src/views/partials/infoUser.phtml' ?>
 

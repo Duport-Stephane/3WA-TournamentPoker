@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // var_dump('DASHBOARD USER.PHP en POST');
 
     // Si pas de param, je repars à l'accueil
-    header('Location: ./index.php?page=dashboardUSer');
+    header('Location: ./index.php?page=dashboardUser');
     die;
 }
 
@@ -22,7 +22,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     $roleM = new \Models\Role;
     // role du user
-    $roleName = $roleM->getRoleNameById((int)\Models\Session::getOffset1_Offset2('user', 'role_id'))['roleName'];
+    if (\Models\Session::getOffset1_Offset2('user', 'role_id')) {
+        $roleName = $roleM->getRoleNameById((int)\Models\Session::getOffset1_Offset2('user', 'role_id'))['roleName'];
+    };
 
     // on récupère la liste des tournois à venir (closed_at = null) pour les afficher en Tableau
     $tournament = new \Models\Tournament;

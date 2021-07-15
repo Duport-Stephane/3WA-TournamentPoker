@@ -55,13 +55,18 @@ if (isset($_POST) && !empty($_POST)) {
                 $page = 'login';
                 require_once './src/services/ajaxLog.php';
                 break;
-            case 'update':
-                // call from update from Dashboard
-                $page = 'dashboardUSer';
+            case 'updateUser':
+                // call from update from Dashboard User
+                $page = 'dashboardUser';
+                require_once './src/services/ajaxLog.php';
+                break;
+            case 'updateAdmin':
+                // call from update from Dashboard Admin
+                $page = 'dashboardAdmin';
                 require_once './src/services/ajaxLog.php';
                 break;
             default:
-                header('location: ./index.php?page=home');
+                header('Location: ./index.php?page=home');
         }
     }
 
@@ -95,11 +100,13 @@ if (isset($_POST) && !empty($_POST)) {
         // var_dump("GET Page");
 
         $page = $_GET['page'];
+    // } else {
+    //     $page = 'home';
     }
 } else {
     // First call, Display Home page
 
-    var_dump("Page Home");
+    // var_dump("Page Home");
 
     // Session::logout();
     $page = 'home';

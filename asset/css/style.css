@@ -29,6 +29,7 @@ a:hover {
   --bgColorAlert: rgba(161, 96, 20, .8);
   --bgColorDanger: rgba(201, 40, 40, .8);
   --bgColorGrey: rgba(128, 128, 128, .8);
+  --bgColorGreySoft: rgba(128, 128, 128, .4);
 }
 
 [data-theme=green] {
@@ -53,6 +54,7 @@ a:hover {
   --bgColorAlert: rgba(161, 96, 20, .8);
   --bgColorDanger: rgba(201, 40, 40, .5);
   --bgColorGrey: rgba(128, 128, 128, .8);
+  --bgColorGreySoft: rgba(128, 128, 128, .4);
 }
 
 body {
@@ -106,14 +108,36 @@ h1 {
   text-shadow: 4px 2px var(--textShadowH1);
 }
 
+h2 {
+  text-align: center;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  padding-top: 0.5rem;
+  font-family: "Merienda", cursive;
+  font-size: 2rem;
+  text-shadow: 4px 2px var(--textShadowH1);
+  background-color: var(--bgColorGreySoft);
+}
+
+h3 {
+  text-align: center;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  padding-top: 0.5rem;
+  font-family: "Merienda", cursive;
+  font-size: 1.5rem;
+  text-shadow: 4px 2px var(--textShadowH1);
+  background-color: var(--bgColorGreySoft);
+}
+
 .from-left {
   position: relative;
 }
 
 .container {
   margin: 0 auto;
-  max-width: 90%;
-  height: 70vh;
+  max-width: 90vw;
+  height: 68vh;
 }
 
 fieldset div label {
@@ -168,6 +192,10 @@ fieldset div label {
   background-color: var(--bgcolorDealerHover);
   box-shadow: 2px 2px 4px var(--boxShadow), -2px -2px 4px var(--boxShadow), 2px -2px 4px var(--boxShadow), -2px 2px 4px var(--boxShadow);
   transform: scale(0.95);
+}
+
+fieldset {
+  width: 30rem;
 }
 
 .array-border {
@@ -231,10 +259,6 @@ fieldset div label {
   color: var(--hoverNav);
 }
 
-fieldset {
-  width: 30rem;
-}
-
 .grid {
   display: grid;
 }
@@ -281,6 +305,10 @@ fieldset {
 }
 
 footer {
+  position: fixed;
+  bottom: 0;
+  max-width: 1280px;
+  width: 100vw;
   padding-top: 1rem;
 }
 footer section {
@@ -335,6 +363,7 @@ footer ul li a:hover {
 .border-screen {
   width: 90%;
   height: 90%;
+  max-height: 68vh;
   margin: 0px auto;
   border: 1px solid var(--border);
   overflow-y: auto;
@@ -344,6 +373,13 @@ footer ul li a:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin: 0 auto;
+}
+
+.flex-between-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
   margin: 0 auto;
 }
 
@@ -372,6 +408,11 @@ footer ul li a:hover {
   align-items: center;
 }
 
+.position-sticky {
+  position: sticky;
+  top: 0;
+}
+
 .headband {
   background-image: linear-gradient(90deg, var(--bgHeadbandLeft) -30%, var(--bgHeadbandRight) 60%);
 }
@@ -390,6 +431,14 @@ footer ul li a:hover {
   padding: 0.2rem;
   font-size: 1.2rem;
   color: var(--fontColorCaption);
+}
+
+.card-search {
+  padding: 0.2rem;
+  font-size: 1rem;
+  color: var(--fontColorCaption);
+  border-radius: 10px;
+  margin-right: 0.5rem;
 }
 
 .card-puce {
@@ -450,12 +499,6 @@ footer ul li a:hover {
   background-color: var(--bgColorCaption);
 }
 
-.message {
-  position: absolute;
-  bottom: 165px;
-  left: 5vw;
-}
-
 .alert {
   border: 1px solid var(--border);
   border-radius: 1rem;
@@ -482,6 +525,12 @@ footer ul li a:hover {
   background-color: var(--bgColorDanger);
 }
 
+.message {
+  position: absolute;
+  bottom: 165px;
+  left: 5vw;
+}
+
 .messageGrey {
   width: 50%;
   margin: 0;
@@ -506,6 +555,11 @@ footer ul li a:hover {
 
 .middleImg {
   max-width: 5rem;
+  height: auto;
+}
+
+.middle2Img {
+  max-width: 10rem;
   height: auto;
 }
 
