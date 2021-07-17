@@ -10,8 +10,6 @@
     <a class="btn btn-info">Accès aux commentaires</a> -->
     </section>
     <section class="flex-around-wrap border-screen">
-        <!-- <article>
-    </article> -->
         <article id="userProfilDashboard">
             <form class="updateAdmin card-body" action='./index.php?page=dashboardAdmin' method="POST" enctype="multipart/form-data">
 
@@ -20,8 +18,10 @@
             </form>
         </article>
         <article id="userListDashboard">
-            <form class="card-body" action='./index.php?page=dashboardAdmin' method="POST">
+            <form class="delUserList card-body" action='./index.php?page=dashboardAdmin' method="POST">
+                <input type='hidden' name='action' value='delUserList'>
                 <?php require_once './src/views/partials/usersList.phtml' ?>
+                <button type='submit' class='btn btn-alert'>Supprimer le(s) joueur(s) sélectionné(s)</button>
             </form>
         </article>
         <article id="tournamentOnDashboard">

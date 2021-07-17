@@ -1,21 +1,21 @@
 <h1>Mon espace</h1>
 
-<section class="flex-around">
-    <article>
-        <form class="updateUser card-body" 
-            <?php if (\Models\Session::getOffset1_Offset2('user', 'role_id') === '2') : ?> 
-                action='./index.php?page=dashboardUser' 
-            <?php else : ?> 
-                action='./index.php?page=dashboardAdmin' 
-            <?php endif; ?> 
-            method="POST" enctype="multipart/form-data">
+<div class="flex-between-top">
+    <section class="flex-column border-screen bigImg position-sticky">
+        <a class="btn btn-info" href="#userProfilDashboard">Mon espace</a>
+        <a class="btn btn-info" href="#tournamentOnDashboard">Tournois à venir</a>
+    </section>
+    <section class="flex-around-wrap border-screen">
 
-            <?php require_once './src/views/partials/infoUser.phtml' ?>
+        <article id="userProfilDashboard">
+            <form class="updateUser card-body" action='./index.php?page=dashboardUser' method="POST" enctype="multipart/form-data">
 
-        </form>
-    </article>
+                <?php require_once './src/views/partials/infoUser.phtml' ?>
 
-    <article>
-        <?php require_once './src/views/partials/arrayTournament.phtml' ?>
-    </article>
-</section>
+            </form>
+        </article>
+
+        <article id="tournamentOnDashboard">
+            <?php require_once './src/views/partials/arrayTournament.phtml' ?>
+        </article>
+    </section>

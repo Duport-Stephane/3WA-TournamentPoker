@@ -5,52 +5,6 @@ import * as callback from './callBack.js'
 import ErrorCustom from './ErrorCustom.js' // Gestion des erreurs s'il y en a
 
 
-// page LOGIN
-//*******************************************************************
-
-/**
- * Compare password
- * @param {formData} form
- * @returns {boolean}
- */
-function isSamePassword(form) {
-
-    callback.addInfoLS("log", "FETCH isSamePassword");
-
-    // console.log(form);
-
-    // on compare les 2 password
-    return fetch('./index.php', {
-            method: 'POST',
-            body: form
-        })
-        .then(response => response.text())
-        // .then(response => console.log("Retour ajax : " + response))
-        // .then(response => {
-        //     if (response === "Le mot de passe n'est pas correct") {
-        //         console.log("Retour ajax FALSE : ")
-        //         return false;
-        //     } else {
-        //         console.log("Retour ajax TRUE : ")
-
-    //         return true;
-    //     }
-    // })
-}
-
-// /**
-//  * Login user
-//  * @param {formData} form 
-//  */
-// function loginUser(form) {
-//     fetch('./index.php', {
-//             method: 'post',
-//             body: form
-//         })
-//         // .then(response => response.text())
-//         // .then(response => console.log(response))
-// }
-
 // page INSCRIPTION
 //*******************************************************************
 
@@ -120,6 +74,54 @@ async function updateAdmin(form) {
         // callback.addInfoLS("log", result)
 }
 
+
+// page LOGIN
+//*******************************************************************
+
+/**
+ * Compare password
+ * @param {formData} form
+ * @returns {boolean}
+ */
+function isSamePassword(form) {
+
+    callback.addInfoLS("log", "FETCH isSamePassword");
+
+    // console.log(form);
+
+    // on compare les 2 password
+    return fetch('./index.php', {
+            method: 'POST',
+            body: form
+        })
+        .then(response => response.text())
+        // .then(response => console.log("Retour ajax : " + response))
+        // .then(response => {
+        //     if (response === "Le mot de passe n'est pas correct") {
+        //         console.log("Retour ajax FALSE : ")
+        //         return false;
+        //     } else {
+        //         console.log("Retour ajax TRUE : ")
+
+    //         return true;
+    //     }
+    // })
+}
+
+// /**
+//  * Login user
+//  * @param {formData} form 
+//  */
+// function loginUser(form) {
+//     fetch('./index.php', {
+//             method: 'post',
+//             body: form
+//         })
+//         // .then(response => response.text())
+//         // .then(response => console.log(response))
+// }
+
+
 /**
  * Logout user
  * 
@@ -128,6 +130,32 @@ async function updateAdmin(form) {
 //     fetch('./index.php?action=logout')
 //         .then(response => console.log(response))
 // }
+
+
+
+// page DASHBOARDADMIN
+//*******************************************************************
+/**
+/** 
+ * Delete User checked on List
+ * @param {*} form Le formulaire validé
+ */
+function delUserList(form) {
+
+    callback.addInfoLS("log", "FETCH delUSerList");
+
+    fetch('./index.php', {
+            method: 'POST',
+            body: form
+        })
+        .then(response => response.text())
+        // .then(response => console.log("response : " + response))
+        .then(response => {
+            callback.testMessageBeforeDisplay(response);
+            window.location = './index.php?page=dashboardAdmin';
+        });
+}
+
 
 // page PLAYER
 //*******************************************************************
@@ -185,4 +213,4 @@ function modifPlayerList(form) {
 
 
 
-export { modifPlayerList, isSamePassword, isPersistUser, updateUser, updateAdmin }
+export { modifPlayerList, isSamePassword, isPersistUser, updateUser, updateAdmin, delUserList }

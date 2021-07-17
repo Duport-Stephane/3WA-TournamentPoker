@@ -29,8 +29,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // console.log(pageAct);
 
     // jQuery - Affichage de la notif pendant 2 sec 
-    $('#notif').delay(2000).fadeOut()
-    $('#notifAlert').delay(2000).fadeOut()
+    $('#notif').delay(5000).fadeOut()
+    $('#notifAlert').delay(5000).fadeOut()
         // $('.message').delay(4000).fadeOut()
         // $('.message').remove();
 
@@ -150,9 +150,40 @@ document.addEventListener('DOMContentLoaded', function() {
         })
     }
 
+
+    // page DASHBOARDADMIN only
+    //*******************************************************************
+    if (pageAct === 'dashboardAdmin') {
+
+        // Ecoute le clic n'importe où sur une ligne du tableau pour cocher la checkbox
+        callback.ListenClickLine();
+
+        // Listen DEL button
+        document.querySelector('button').addEventListener('click', e => {
+            e.preventDefault();
+
+            callback.addInfoLS("log", "Click Button delUserList ( display before doing something !");
+
+            // @TODO
+            // @TODO = vérifier s'il y au moins une ligne de chochée
+            // @TODO
+
+
+            // Confirm ?
+            if (window.confirm("Toute suppression est définitve ! Souhaitez-vous supprimer la sélection ")) {
+                const form = new FormData(e.target);
+                e.target.reset();
+
+                callback.addInfoLS("log", "Button delUserList");
+
+                ajaxCallback.delUserList(form);
+            }
+        });
+    }
+
+
     // page PLAYER
     //*******************************************************************
-    // Refresh la page PLAYER, pour afficher les 2 tableaux
     if (pageAct === 'players') {
 
         // callback.addInfoLS("log", "PAge Player");
@@ -173,16 +204,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
         // Ecoute le clic n'importe où sur une ligne du tableau pour cocher la checkbox
-        const $lineUser = document.querySelectorAll('.selectUSer');
-        $lineUser.forEach($line => {
-            $line.addEventListener('click', e => {
-
-                // console.log(e);
-
-                const $cell = document.querySelector("input[value='" + e.target.classList[1] + "']");
-                $cell.checked ? $cell.checked = false : $cell.checked = true;
-            })
-        });
+        callback.ListenClickLine();
 
 
         // console.log('APPEL DE addplayer et delPlayer');
@@ -192,10 +214,17 @@ document.addEventListener('DOMContentLoaded', function() {
         $buttonValidUsers.forEach($button => {
             $button.addEventListener('submit', e => {
                 e.preventDefault();
+
+
+                // @TODO
+                // @TODO = vérifier s'il y au moins une ligne de chochée
+                // @TODO
+
+
                 const form = new FormData(e.target);
                 e.target.reset();
 
-                callback.addInfoLS("log", "Button Valider");
+                callback.addInfoLS("log", "Button " + $button);
 
                 ajaxCallback.modifPlayerList(form);
             });

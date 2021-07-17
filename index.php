@@ -76,8 +76,6 @@ if (isset($_POST) && !empty($_POST)) {
 
     if (array_key_exists('page', $_GET) && !empty($_GET['page']) && array_key_exists('action', $_GET) && !empty($_GET['action'])) {
 
-        ///////////////////////// ???????? et Refresh Tab User après avoir modiPlayerList
-
         var_dump("GET Action");
         var_dump($_GET['action']);
         // die;

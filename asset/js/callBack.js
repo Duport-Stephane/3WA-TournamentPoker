@@ -123,7 +123,7 @@ function removeKeyLS(key) {
 }
 
 
-// page INSCRIPTION || DASHBOARDUSER
+// page INSCRIPTION || DASHBOARDUSER || DASHBOARDADMIN
 //*******************************************************************
 /**
  * Controle si le Form est correctement renseigné, avant de persist le User
@@ -395,7 +395,6 @@ function logValidate(form) {
 }
 
 
-
 // COMMUN page LOGIN & INSCRIPTION
 //*******************************************************************
 
@@ -436,6 +435,25 @@ function isPasswordValid(pwd) {
     }
 }
 
+
+
+// COMMUN page PLAYER & DASHBOARDADMIN
+//*******************************************************************
+
+function ListenClickLine() {
+    // Ecoute le clic n'importe où sur une ligne du tableau pour cocher la checkbox
+    const $lineUser = document.querySelectorAll('.selectUser');
+
+    $lineUser.forEach($line => {
+        $line.addEventListener('click', e => {
+
+            addInfoLS("log", "Click une ligne")
+
+            const $cell = document.querySelector("input[value='" + e.target.classList[1] + "']");
+            $cell.checked ? $cell.checked = false : $cell.checked = true;
+        })
+    });
+}
 
 // page PLAYER
 //*******************************************************************
@@ -634,4 +652,4 @@ function switchTheme(e) {
 }
 
 
-export { currentNav, htmlEntities, checkInputAll, displayTabUser, logValidate, addValidate, getInfoLS, updateInfoLS, addInfoLS, isKeyExistLS, removeKeyLS, testMessageBeforeDisplay, detectColorScheme, switchTheme }
+export { currentNav, htmlEntities, checkInputAll, displayTabUser, logValidate, addValidate, getInfoLS, updateInfoLS, addInfoLS, isKeyExistLS, removeKeyLS, ListenClickLine, testMessageBeforeDisplay, detectColorScheme, switchTheme }

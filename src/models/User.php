@@ -36,13 +36,16 @@ class User extends \Database
      */
     // pour retourner l'ensemble des joueurs USER ou USER/ADMIN (mais pas admin seul)
 
-    public function getAllUsers(): array
+    public function getAllUsers(string $order): array
     {
         try {
-            $query = 'SELECT user.id, nickName, firstName, lastName, avatar, role_id
+            $query = 'SELECT user.id, nickName, firstName, lastName, avatar, role_id, created_at
                 FROM user
                 ORDER BY nickName';
-            $param = [];
+                // ORDER BY :order';
+            $param = [
+                // ':order' => $order
+            ];
 
             $users = $this->findAll($query, $param);
         } catch (\DomainException $e) {
@@ -66,7 +69,7 @@ class User extends \Database
     public function getUsers(int $tournament_id): array
     {
         try {
-            $query = 'SELECT user.id, nickName, firstName, lastName, avatar, role_id
+            $query = 'SELECT user.id, nickName, firstName, lastName, avatar, role_id, created_at
                 FROM user
                 WHERE role_id != :role_id
                 -- AND dependUser_id = :dependUser_id
@@ -218,4 +221,22 @@ class User extends \Database
             die;
         }
     }
+
+
+    /**
+     * Delete user
+     * @param int user_id
+     */
+    public function delUser(int $user_id)
+    {
+        $query = 'DELETE id
+                    FROM user
+                    WHERE id = :user_id';
+        $param = [
+            ':user_id' => $user_id
+        ];
+        return $this->findOne($query, $param);
+    }
+
+
 }
