@@ -229,8 +229,7 @@ class User extends \Database
      */
     public function delUser(int $user_id)
     {
-        $query = 'DELETE id
-                    FROM user
+        $query = 'DELETE FROM user
                     WHERE id = :user_id';
         $param = [
             ':user_id' => $user_id

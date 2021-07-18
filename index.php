@@ -62,8 +62,13 @@ if (isset($_POST) && !empty($_POST)) {
                 break;
             case 'updateAdmin':
                 // call from update from Dashboard Admin
-                $page = 'dashboardAdmin';
+                $page = 'dashboardAdmin#userProfilDashboard';
                 require_once './src/services/ajaxLog.php';
+                break;
+            case 'delUserList':
+                // call from delete button from Dashboard Admin
+                $page = 'dashboardAdmin#userListDashboard';
+                require_once './src/services/ajaxUsers.php';
                 break;
             default:
                 header('Location: ./index.php?page=home');
@@ -76,8 +81,8 @@ if (isset($_POST) && !empty($_POST)) {
 
     if (array_key_exists('page', $_GET) && !empty($_GET['page']) && array_key_exists('action', $_GET) && !empty($_GET['action'])) {
 
-        var_dump("GET Action");
-        var_dump($_GET['action']);
+        // var_dump("GET Action");
+        // var_dump($_GET['action']);
         // die;
 
         switch ($_GET['action']) {

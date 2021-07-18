@@ -159,20 +159,18 @@ document.addEventListener('DOMContentLoaded', function() {
         callback.ListenClickLine();
 
         // Listen DEL button
-        document.querySelector('button').addEventListener('click', e => {
+        document.querySelector('.delUserList').addEventListener('submit', e => {
             e.preventDefault();
-
-            callback.addInfoLS("log", "Click Button delUserList ( display before doing something !");
 
             // @TODO
             // @TODO = vérifier s'il y au moins une ligne de chochée
             // @TODO
 
+            const form = new FormData(e.target);
+            e.target.reset();
 
             // Confirm ?
             if (window.confirm("Toute suppression est définitve ! Souhaitez-vous supprimer la sélection ")) {
-                const form = new FormData(e.target);
-                e.target.reset();
 
                 callback.addInfoLS("log", "Button delUserList");
 

@@ -66,7 +66,7 @@ async function updateAdmin(form) {
 
     callback.addInfoLS("log", "FETCH updateAdmin");
 
-    const response = await fetch('./index.php?action=updateAdmin', {
+    const response = await fetch('./index.php?action=updateAdmin#userProfilDashboard', {
             method: 'post',
             body: form
         })
@@ -142,17 +142,17 @@ function isSamePassword(form) {
  */
 function delUserList(form) {
 
-    callback.addInfoLS("log", "FETCH delUSerList");
+    callback.addInfoLS("log", "FETCH delUserList");
 
-    fetch('./index.php', {
+    fetch('./index.php?action=delUserList', {
             method: 'POST',
             body: form
         })
         .then(response => response.text())
-        // .then(response => console.log("response : " + response))
+        .then(response => callback.addInfoLS("log", "response FETCH delUserList: " + response))
         .then(response => {
-            callback.testMessageBeforeDisplay(response);
-            window.location = './index.php?page=dashboardAdmin';
+            // callback.testMessageBeforeDisplay(response);
+            window.location = './index.php?page=dashboardAdmin#userListDashboard';
         });
 }
 

@@ -15,7 +15,6 @@ if (isset($_POST) && !empty($_POST) && array_key_exists('action', $_POST)) {
     try {
 
         modifUser($action, $userM, $playerM);
-
     } catch (DomainException $e) {
         \Models\Session::setOffset('alert', $e->getMessage());
 
@@ -92,46 +91,47 @@ function modifUser($action, $userM, $playerM)
             }
 
 
-            // Déterminer l'action à mener
-            switch ($action) {
-                case 'addPlayerList':
-                    // on controle différents points avant d'ajouter dans la table Player : 
-                    // ---> si l'id est bien dans la table User
-                    if (!($userM->isIdExist(intval($value)))) {
-                        throw new DomainException('Danger, Ce joueur n\'existe pas ! L\'identifiant n\'est pas reconnu.');
-                    }
+            // ---> si l'id est bien dans la table User
+            if (!($userM->isIdExist(intval($value)))) {
+                throw new DomainException('Danger, Ce joueur n\'existe pas ! L\'identifiant n\'est pas reconnu.');
+            } else {
+                // Déterminer l'action à mener
+                switch ($action) {
+                    case 'addPlayerList':
+                        // on controle différents points avant d'ajouter dans la table Player : 
 
-                    // ---> et si l'id n'est pas déjà présent dans la table Player pour ce tournoi
-                    if (!empty($playerM->isPlayerExistTournament(intval($value), intval($tournament_id)))) {
-                        throw new DomainException('Danger, Ce joueur est déjà validé pour ce tournoi !');
-                    }
+                        // ---> et si l'id n'est pas déjà présent dans la table Player pour ce tournoi
+                        if (!empty($playerM->isPlayerExistTournament(intval($value), intval($tournament_id)))) {
+                            throw new DomainException('Danger, Ce joueur est déjà validé pour ce tournoi !');
+                        }
 
-                    // créer une nouvelle entrée dans la table PLAYER avec l'id du User et le numéro du tournoi
-                    $playerM->insertPlayer(intval($value), intval($tournament_id));
+                        // créer une nouvelle entrée dans la table PLAYER avec l'id du User et le numéro du tournoi
+                        $playerM->insertPlayer(intval($value), intval($tournament_id));
 
-                    \Models\Session::setOffset('info', "Success, La sélection fait maintenant partie des joueurs validés");
-                    echo "Success, La sélection fait maintenant partie des joueurs validés";
+                        \Models\Session::setOffset('info', "Success, La sélection fait maintenant partie des joueurs validés");
+                        echo "Success, La sélection fait maintenant partie des joueurs validés";
 
-                    break;
+                        break;
 
 
-                case 'delPlayerList':
-                    //controle avant la suppression : ID bien présent pour ce tournoi ?
+                    case 'delPlayerList':
+                        //controle avant la suppression : ID bien présent pour ce tournoi ?
 
-                    if (!empty($playerM->isPlayerExistTournament(intval($value), intval($tournament_id)))) {
-                        throw new DomainException('Danger, Ce joueur n\'est pas inscrit à ce tournoi !');
-                    } else {
-                        $playerM->deletePlayer(intval($value), intval($tournament_id));
-                    };
+                        if (!empty($playerM->isPlayerExistTournament(intval($value), intval($tournament_id)))) {
+                            throw new DomainException('Danger, Ce joueur n\'est pas inscrit à ce tournoi !');
+                        } else {
+                            $playerM->deletePlayer(intval($value), intval($tournament_id));
+                        };
 
-                    \Models\Session::setOffset('info', "Success, La sélection a bien été retirée de la liste des joueurs validés");
-                    echo "Success, La sélection a bien été retirée de la liste des joueurs validés";
+                        \Models\Session::setOffset('info', "Success, La sélection a bien été retirée de la liste des joueurs validés");
+                        echo "Success, La sélection a bien été retirée de la liste des joueurs validés";
 
-                    break;
+                        break;
 
-                default:
-                    // code...
-                    throw new DomainException('Danger, Je ne sais pas comment on en est là !');
+                    default:
+                        // code...
+                        throw new DomainException('Danger, Je ne sais pas comment on en est là !');
+                }
             }
         }
     } else {
