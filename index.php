@@ -62,12 +62,12 @@ if (isset($_POST) && !empty($_POST)) {
                 break;
             case 'updateAdmin':
                 // call from update from Dashboard Admin
-                $page = 'dashboardAdmin#userProfilDashboard';
+                $page = 'dashboardAdmin';
                 require_once './src/services/ajaxLog.php';
                 break;
             case 'delUserList':
                 // call from delete button from Dashboard Admin
-                $page = 'dashboardAdmin#userListDashboard';
+                $page = 'dashboardAdmin';
                 require_once './src/services/ajaxUsers.php';
                 break;
             default:

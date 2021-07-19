@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Models;
@@ -36,15 +37,16 @@ class User extends \Database
      */
     // pour retourner l'ensemble des joueurs USER ou USER/ADMIN (mais pas admin seul)
 
-    public function getAllUsers(string $order): array
+    public function getAllUsers(string $sort, string $findText): array
     {
         try {
             $query = 'SELECT user.id, nickName, firstName, lastName, avatar, role_id, created_at
                 FROM user
-                ORDER BY nickName';
-                // ORDER BY :order';
+                WHERE nickName LIKE :findText
+                ORDER BY :sort';
             $param = [
-                // ':order' => $order
+                ':sort'     => $sort,
+                ':findText' => $findText
             ];
 
             $users = $this->findAll($query, $param);
@@ -101,7 +103,7 @@ class User extends \Database
      * @param integer user_id
      *
      * @return string Name of the user
-     */ 
+     */
     public function getNickNameById(int $user_id): string
     {
         try {
@@ -130,7 +132,7 @@ class User extends \Database
      */
     public function getUserByMail(string $user_email)
     {
-        
+
         // var_dump($user_email);
 
         try {
@@ -164,9 +166,9 @@ class User extends \Database
      *  
      * @return string | null
      */
-    public function setUser(string $nickName, string $firstName, string $lastName, string $email, string $password, int $role_id, string $avatar = "") : string
+    public function setUser(string $nickName, string $firstName, string $lastName, string $email, string $password, int $role_id, string $avatar = ""): string
     {
-        var_dump("PERSIST into USER");
+        // var_dump("PERSIST into USER");
 
         try {
             $sql = 'INSERT INTO user(nickName, firstName, lastName, email, password, role_id, avatar) 
@@ -199,9 +201,9 @@ class User extends \Database
      *  
      * @return string
      */
-    public function updateUser(int $user_id, string $nickName, string $firstName, string $lastName, int $role_id, string $avatar = "") : void
+    public function updateUser(int $user_id, string $nickName, string $firstName, string $lastName, int $role_id, string $avatar = ""): void
     {
-        var_dump('USER.PHP : ' . $user_id . " /pseudo= ".$nickName." /prenom= ".$firstName . " /nom= " . $lastName." /role_id= ".$role_id." /avatar= ". $avatar);
+        // var_dump('USER.PHP : ' . $user_id . " /pseudo= " . $nickName . " /prenom= " . $firstName . " /nom= " . $lastName . " /role_id= " . $role_id . " /avatar= " . $avatar);
 
         try {
             $sql = 'UPDATE user SET nickName = :nickName, firstName = :firstName, lastName = :lastName, role_id = :role_id, avatar = :avatar
@@ -229,13 +231,16 @@ class User extends \Database
      */
     public function delUser(int $user_id)
     {
-        $query = 'DELETE FROM user
+        try {
+            $sql = 'DELETE FROM user
                     WHERE id = :user_id';
-        $param = [
-            ':user_id' => $user_id
-        ];
-        return $this->findOne($query, $param);
+            $param = [
+                ':user_id' => $user_id
+            ];
+            $this->executeSql($sql, $param);
+        } catch (\DomainException $e) {
+            echo $e->getMessage();
+            die;
+        };
     }
-
-
 }

@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     // liste des joueurs inscrits sur l'appli
     $user = new \Models\User;
-    $users = $user->getAllUsers('nickName');
+    $users = $user->getAllUsers('nickName','%');
     // $users = $user->getAllUsers('firstName');
     // var_dump($users);
 

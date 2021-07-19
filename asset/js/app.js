@@ -158,7 +158,15 @@ document.addEventListener('DOMContentLoaded', function() {
         // Ecoute le clic n'importe où sur une ligne du tableau pour cocher la checkbox
         callback.ListenClickLine();
 
-        // Listen DEL button
+        // Listenkeyboard on find field
+        document.querySelector('.findUser').addEventListener('keydown', e => {
+            e.preventDefault;
+            // a partir de 3 caracteres, on filtre les users affichées dans le tableau
+
+
+        })
+
+        // Listen DELETE button
         document.querySelector('.delUserList').addEventListener('submit', e => {
             e.preventDefault();
 
@@ -170,7 +178,7 @@ document.addEventListener('DOMContentLoaded', function() {
             e.target.reset();
 
             // Confirm ?
-            if (window.confirm("Toute suppression est définitve ! Souhaitez-vous supprimer la sélection ")) {
+            if (window.confirm("Toute suppression est définitve ! Souhaitez-vous supprimer la sélection ?")) {
 
                 callback.addInfoLS("log", "Button delUserList");
 

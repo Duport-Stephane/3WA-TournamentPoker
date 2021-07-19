@@ -148,11 +148,11 @@ function delUserList(form) {
             method: 'POST',
             body: form
         })
-        .then(response => response.text())
-        .then(response => callback.addInfoLS("log", "response FETCH delUserList: " + response))
+        // .then(response => response.text())
+        // .then(response => callback.addInfoLS("log", "response FETCH delUserList: " + response))
         .then(response => {
             // callback.testMessageBeforeDisplay(response);
-            window.location = './index.php?page=dashboardAdmin#userListDashboard';
+            window.location = './index.php?page=dashboardAdmin';
         });
 }
 

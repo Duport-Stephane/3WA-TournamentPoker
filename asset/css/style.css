@@ -364,10 +364,6 @@ footer section:first-child {
   width: 15%;
 }
 
-footer p {
-  padding-bottom: .5rem;
-}
-
 footer img {
   padding-right: 0.7rem;
 }
@@ -422,7 +418,7 @@ footer ul li a:hover {
 .border-screen {
   width: 90%;
   height: 90%;
-  max-height: 60vh;
+  max-height: 65vh;
   margin: 0px auto;
   border: 1px solid var(--border);
   overflow-y: auto;
