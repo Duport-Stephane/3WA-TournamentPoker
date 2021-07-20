@@ -31,11 +31,10 @@ class User extends \Database
     }
 
     /**
-     * Find all Users
+     * Find all Users in array, order by $sort and with $findText caractere in nickName
      *
      * @return array
      */
-    // pour retourner l'ensemble des joueurs USER ou USER/ADMIN (mais pas admin seul)
 
     public function getAllUsers(string $sort, string $findText): array
     {
@@ -58,15 +57,12 @@ class User extends \Database
     }
 
     /**
-     * Get Users
-     * ????????? param integer role_id 1 pour admin ?????
-     * @param integer dependUser_id
+     * Get players in tournament (only user)
      * @param integer tournament_id
      *
      * @return array
      */
-    // pour retourner l'ensemble des joueurs USER ou USER/ADMIN (mais pas admin seul)
-    // La sous requête dans le NOT EXISTS permet de ne pas prendre les joueurs DEJA validés pour le tournoi actuel
+    // NOT EXISTS : only players not yet in this tournament
 
     public function getUsers(int $tournament_id): array
     {
@@ -74,7 +70,6 @@ class User extends \Database
             $query = 'SELECT user.id, nickName, firstName, lastName, avatar, role_id, created_at
                 FROM user
                 WHERE role_id != :role_id
-                -- AND dependUser_id = :dependUser_id
                 AND NOT EXISTS 
                     (
                     SELECT user_id, tournament_id 
@@ -85,7 +80,6 @@ class User extends \Database
                 ORDER BY nickName';
             $param = [
                 ':role_id'          => 1,                   // Admin
-                // ':dependUser_id'    => $dependUser_id,
                 ':tournament_id'    => $tournament_id
             ];
 
@@ -99,7 +93,7 @@ class User extends \Database
 
 
     /**
-     * pour retourner le nom du user passé en paramètre
+     * Get nickName of user with this id
      * @param integer user_id
      *
      * @return string Name of the user
@@ -125,18 +119,15 @@ class User extends \Database
 
 
     /**
-     * pour retourner les infos du user à partir de son email (unique)
-     * @param {string} user_mail
+     * Get user info by unique mail
+     * @param string user_mail
      *
-     * @return {array} info of the user
+     * @return array
      */
     public function getUserByMail(string $user_email)
     {
-
-        // var_dump($user_email);
-
         try {
-            $sql = 'SELECT id, nickName, firstName, lastName, email, password, avatar, role_id, dependUser_id, created_at
+            $sql = 'SELECT id, nickName, firstName, lastName, email, password, avatar, role_id, created_at
             FROM user 
             WHERE email = :user_email';
             $param = [
@@ -156,20 +147,18 @@ class User extends \Database
 
 
     /**
-     * Pour créer un user dans la BDD
-     * @param {string} $nickName
-     * @param {string} $firstName
-     * @param {string} $lastName
-     * @param {string} $email
-     * @param {string} $pwd
-     * @param {string} $avatar
+     * Create new user in database
+     * @param string $nickName
+     * @param string $firstName
+     * @param string $lastName
+     * @param string $email
+     * @param string $pwd
+     * @param string $avatar
      *  
      * @return string | null
      */
     public function setUser(string $nickName, string $firstName, string $lastName, string $email, string $password, int $role_id, string $avatar = ""): string
     {
-        // var_dump("PERSIST into USER");
-
         try {
             $sql = 'INSERT INTO user(nickName, firstName, lastName, email, password, role_id, avatar) 
             VALUES (:nickName, :firstName, :lastName, :email, :password, :role_id, :avatar)';
@@ -192,19 +181,17 @@ class User extends \Database
 
 
     /**
-     * Pour mettre à jour un user dans la BDD
-     * @param {string}  $nickName
-     * @param {string}  $firstName
-     * @param {string}  $lastName
-     * @param {int}     $role
-     * @param {string}  $avatar
+     * Update user in database
+     * @param string  $nickName
+     * @param string  $firstName
+     * @param string  $lastName
+     * @param int     $role
+     * @param string  $avatar
      *  
      * @return string
      */
     public function updateUser(int $user_id, string $nickName, string $firstName, string $lastName, int $role_id, string $avatar = ""): void
     {
-        // var_dump('USER.PHP : ' . $user_id . " /pseudo= " . $nickName . " /prenom= " . $firstName . " /nom= " . $lastName . " /role_id= " . $role_id . " /avatar= " . $avatar);
-
         try {
             $sql = 'UPDATE user SET nickName = :nickName, firstName = :firstName, lastName = :lastName, role_id = :role_id, avatar = :avatar
             WHERE id = :user_id';

@@ -12,7 +12,6 @@ require_once './src/autoload.php';
 // Provision of the session
 \Models\Session::init();
 
-// var_dump($_SESSION);
 
 
 

@@ -625,6 +625,7 @@ footer ul li a:hover {
   position: absolute;
   bottom: 165px;
   left: 5vw;
+  z-index: 100;
 }
 
 .messageGrey {

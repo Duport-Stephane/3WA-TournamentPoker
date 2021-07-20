@@ -10,6 +10,11 @@
     <header>
         <?php if ($page !== 'game') : { ?>
                 <?php require_once './src/views/partials/header.phtml'; ?>
+        <?php } else : { ?>
+            <h1 class="headband">
+                <?php $tournament = new \Models\Tournament ?>
+                <?= $tournament->getTournamentName(1) ?>
+            </h1>
         <?php }
         endif; ?>
     </header>

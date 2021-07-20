@@ -20,12 +20,12 @@
                 <?php if (\Models\Session::isOffsetExists('user') && (\Models\Session::getOffset1_Offset2('user', 'role_id') === '2')) : ?>
                     <li><a href="./index.php?page=dashboardUSer" class="dashboardUSer flex-column">
                             <img src="./asset/images/token/yellow.png" alt="dashboard User" class="token">
-                            <div class="small">Mon espace</div>
+                            <div class="small"><?= \Models\Session::getOffset1_Offset2('user', 'nickName') ?></div>
                         </a></li>
                 <?php else : ?>
                     <li><a href="./index.php?page=dashboardAdmin" class="dashboardAdmin flex-column">
                             <img src="./asset/images/token/green.png" alt="dashboard Admin" class="token">
-                            <div class="small">Tableau de bord A</div>
+                            <div class="small"><?= \Models\Session::getOffset1_Offset2('user', 'nickName') ?></div>
                         </a></li>
                 <?php endif; ?>
             <?php else : ?>
@@ -39,19 +39,5 @@
                     </a></li>
             <?php endif; ?>
         </ul>
-
-        <!-- ///////////////////////////////// -->
-        <!-- ///////////////////////////////// -->
-        <!-- A SUPPRIMER -->
-        <!-- ///////////////////////////////// -->
-        <?php //if (\Models\Session::isOffsetExists('user')): 
-        ?>
-        <div style="font-size: .8rem;"><?= \Models\Session::getOffset1_Offset2('user', 'email') ?></div>
-        <?php //endif; 
-        ?>
-        <!-- ///////////////////////////////// -->
-        <!-- ///////////////////////////////// -->
-        <!-- ///////////////////////////////// -->
-
     </nav>
 </section>

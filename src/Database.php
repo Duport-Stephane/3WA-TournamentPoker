@@ -6,7 +6,7 @@ require_once './config/connect.php';
 
 /**
  * Database class
- * Permet d'obtenir une connexion à une bdd de type MySQL
+ * To connect width database MySQL
  */
 abstract class Database
 {
@@ -14,7 +14,6 @@ abstract class Database
 
     public function __construct()
     {
-        //	Connexion à la base de données
         try {
             $PDOAddress =   "mysql:host=" . DATABASE_HOST . 
                             ";dbname=" . DATABASE_NAME . 
@@ -28,7 +27,6 @@ abstract class Database
                     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
                 ]
-                // require_once './src/services/connect.php'
 
             );
             $this->_instance->exec('SET NAMES utf8mb4 COLLATE utf8mb4_general_ci');
@@ -40,6 +38,7 @@ abstract class Database
             echo "Message d'erreur : $e->getMessage() /n Code erreur : $e->getCode()";
         }
     }
+
 
     public function executeSql($sql, array $values = array())
     {

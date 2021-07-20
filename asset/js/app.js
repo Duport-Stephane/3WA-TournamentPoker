@@ -159,12 +159,12 @@ document.addEventListener('DOMContentLoaded', function() {
         callback.ListenClickLine();
 
         // Listenkeyboard on find field
-        document.querySelector('.findUser').addEventListener('keydown', e => {
-            e.preventDefault;
-            // a partir de 3 caracteres, on filtre les users affichées dans le tableau
+        // document.querySelector('.findUser').addEventListener('keydown', e => {
+        //     e.preventDefault;
+        //     // a partir de 3 caracteres, on filtre les users affichées dans le tableau
 
 
-        })
+        // })
 
         // Listen DELETE button
         document.querySelector('.delUserList').addEventListener('submit', e => {
