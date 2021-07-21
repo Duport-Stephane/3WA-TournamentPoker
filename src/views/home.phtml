@@ -3,19 +3,26 @@
     <!-- <p>Accès à la table de jeu</p> -->
     <div class="flex-between">
         <p>
-            <a href="./index.php?page=players&action=display"><img src="./asset/images/carte-R.jpg" alt="carte">Players</a>
+            <a href="./index.php?page=players&action=display"><img src="./asset/images/carte-R.jpg" alt="carte">Joueurs</a>
         </p>
         <p>
             <a href="./index.php?page=tables"><img src="./asset/images/carte-R.jpg" alt="carte" role="button">Tables</a>
         </p>
         <p>
-            <a href=""><img src="./asset/images/carte-R.jpg" alt="carte">Structure</a>
+            <?php if (\Models\Session::isOffsetExists('user') && (\Models\Session::getOffset1_Offset2('user', 'role_id') === '2')) : ?>
+                <a href="./index.php?page=dashboardUser">
+            <?php elseif (\Models\Session::isOffsetExists('user') && ((\Models\Session::getOffset1_Offset2('user', 'role_id') === '1') || (\Models\Session::getOffset1_Offset2('user', 'role_id') === '5'))) : ?>
+                <a href="./index.php?page=dashboardAdmin">
+            <?php else : ?>
+                <a href="./index.php?page=home">
+            <?php endif; ?>
+            <img src="./asset/images/carte-R.jpg" alt="carte">Mon espace</a>
         </p>
         <p>
-            <a href=""><img src="./asset/images/carte-R.jpg" alt="carte">Classement</a>
+            <a href=""><img src="./asset/images/carte-R.jpg" alt="carte">Classements</a>
         </p>
         <p>
-            <a href=""><img src="./asset/images/carte-R.jpg" alt="carte">Comments</a>
+            <a href="./index.php?page=comments"><img src="./asset/images/carte-R.jpg" alt="carte">Commentaires</a>
         </p>
     </div>
 </section>

@@ -1,17 +1,30 @@
 <h1>JEU</h1>
 
-<div class='grid c1'>
-    <p class="item btn btn-success">Heure actuelle</p>
-    <p class="item btn btn-info">
-        <!-- <?php require './src/views/partials/flip.phtml'; ?> -->
-        <?= date('D, d M Y H:i:s') ?>
-    </p>
-    <p class="item btn btn-alert">Valeur des jetons</p>
+<section class='grid c2'>
+    <article class="item btn btn-success">Heure actuelle
+        <!-- <?= date('H:i:s') ?> -->
+        <p id='actualTime'></p>
+    </article>
+    <article class="item btn btn-info">Chronomètre
+        <p id='chrono'></p>
+    </article>
+    <article class="item btn btn-alert">Valeur des jetons</article>
+</section>
 
-    <p class="item btn btn-success">Heure actuelle</p>
-    <p class="item btn btn-info">
-        <!-- <?php require './src/views/partials/flip.phtml'; ?> -->
-        <?= date('D, d M Y H:i:s') ?>
-    </p>
-    <p class="item btn btn-alert">Valeur des jetons</p>
-</div>
+<section class='grid c2'>
+    <article class="item btn btn-success">Prochaine pause à
+        <?= date('H:i:s') ?>
+    </article>
+    <article class="item btn btn-info">Valeurs des blinds
+    </article>
+    <article class="item btn btn-alert">Stack moyen</article>
+</section>
+
+<section class='grid c2'>
+    <article class="item btn btn-success">Pause dans
+        <?= date('H:i:s') ?>
+    </article>
+    <article class="item btn btn-info">Prochaines blinds
+    </article>
+</section>
+

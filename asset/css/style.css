@@ -419,7 +419,7 @@ footer ul li a:hover {
   width: 90%;
   height: 90%;
   max-height: 65vh;
-  margin: 0px auto;
+  margin: 1rem auto;
   border: 1px solid var(--border);
   overflow-y: auto;
 }

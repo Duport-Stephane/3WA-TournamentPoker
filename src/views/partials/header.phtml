@@ -18,11 +18,11 @@
                         <div class="small">Déconnexion</div>
                     </a></li>
                 <?php if (\Models\Session::isOffsetExists('user') && (\Models\Session::getOffset1_Offset2('user', 'role_id') === '2')) : ?>
-                    <li><a href="./index.php?page=dashboardUSer" class="dashboardUSer flex-column">
+                    <li><a href="./index.php?page=dashboardUser" class="dashboardUser flex-column">
                             <img src="./asset/images/token/yellow.png" alt="dashboard User" class="token">
                             <div class="small"><?= \Models\Session::getOffset1_Offset2('user', 'nickName') ?></div>
                         </a></li>
-                <?php else : ?>
+                <?php elseif (\Models\Session::isOffsetExists('user') && ((\Models\Session::getOffset1_Offset2('user', 'role_id') === '1') || (\Models\Session::getOffset1_Offset2('user', 'role_id') === '5'))) : ?>
                     <li><a href="./index.php?page=dashboardAdmin" class="dashboardAdmin flex-column">
                             <img src="./asset/images/token/green.png" alt="dashboard Admin" class="token">
                             <div class="small"><?= \Models\Session::getOffset1_Offset2('user', 'nickName') ?></div>

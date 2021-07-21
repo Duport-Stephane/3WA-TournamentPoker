@@ -29,10 +29,18 @@ document.addEventListener('DOMContentLoaded', function() {
     // console.log(pageAct);
 
     // jQuery - Affichage de la notif pendant 2 sec 
-    $('#notif').delay(5000).fadeOut()
-    $('#notifAlert').delay(5000).fadeOut()
-        // $('.message').delay(4000).fadeOut()
-        // $('.message').remove();
+    //*******************************************************************
+    //*******************************************************************
+    //*******************************************************************
+    //*******************************************************************
+    // $('#notif').delay(5000).fadeOut()
+    // $('#notifAlert').delay(5000).fadeOut()
+    //*******************************************************************
+    //*******************************************************************
+    //*******************************************************************
+    //*******************************************************************
+    ////////// $('.message').delay(4000).fadeOut()
+    ////////// $('.message').remove();
 
     // logout before leaving site and NOT PAGE !!!!!!!!!
     // si on prend onbeforeunload, c'est executé dès qu'on change de page et pas à la fermeture de l'appli !
@@ -243,70 +251,42 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (pageAct === 'game') {
 
-        // callback.addInfoLS("log", "page Game");
+        const actualTime = document.getElementById("actualTime");
+        window.setTimeout(updateTime, 1000);
 
-        const Flipper = function() {
-            function Flipper(node, currentTime, nextTime) {
-                this.isFlipping = false;
-                this.duration = 600;
-                this.flipNode = node;
-                this.frontNode = node.querySelector(".front");
-                this.backNode = node.querySelector(".back");
-                this.setFrontTime(currentTime);
-                this.setBackTime(nextTime);
-            }
-            Flipper.prototype.setFrontTime = function(time) {
-                this.frontNode.dataset.number = time;
-            };
-            Flipper.prototype.setBackTime = function(time) {
-                this.backNode.dataset.number = time;
-            };
-            Flipper.prototype.flipDown = function(currentTime, nextTime) {
-                const _this = this;
+        const chrono = document.getElementById("chrono");
+        window.setTimeout(updateChrono, 1000);
 
-                if (this.isFlipping) {
-                    return false;
-                }
 
-                this.isFlipping = true;
-                this.setFrontTime(currentTime);
-                this.setBackTime(nextTime);
-                this.flipNode.classList.add("running");
-                setTimeout(function() {
-                    _this.flipNode.classList.remove("running");
-                    _this.isFlipping = false;
-                    _this.setFrontTime(nextTime);
-                }, this.duration);
-            };
-            return Flipper;
-        }();
-
-        const getTimeFromDate = function(date) {
-            return date.toTimeString().slice(0, 8).split(":").join("");
-        };
-
-        const flips = document.querySelectorAll(".flip");
-        const now = new Date();
-        const nowTimeStr = getTimeFromDate(new Date(now.getTime() - 1000));
-        const nextTimeStr = getTimeFromDate(now);
-        const Flippers = Array.from(flips).map(function(flip, i) {
-            return new Flipper(flip, nowTimeStr[i], nextTimeStr[i]);
-        });
-
-        setInterval(function() {
-            const now = new Date();
-            const nowTimeStr = getTimeFromDate(new Date(now.getTime() - 1000));
-            const nextTimeStr = getTimeFromDate(now);
-
-            for (let i = 0; i < Flippers.length; i++) {
-                if (nowTimeStr[i] === nextTimeStr[i]) {
-                    continue;
-                }
-                Flippers[i].flipDown(nowTimeStr[i], nextTimeStr[i]);
-            }
-        }, 1000);
     };
 
+    /** Met à jour l'affichage de l'heure
+     *  
+     */
+    function updateTime() {
+
+        const now = new Date();
+        const timeStr = getTimeFromDate(now);
+        actualTime.innerText = timeStr;
+
+        window.setTimeout(updateTime, 1000);
+    }
+
+    /** Met à jour l'affichage du chrono
+     *  
+     */
+    function updateChrono() {
+
+        const now = new Date();
+        const timeStr = getTimeFromDate(now);
+        chrono.innerText = timeStr;
+
+        window.setTimeout(updateChrono, 1000);
+    }
+
+    const getTimeFromDate = function(date) {
+        return date.toTimeString().slice(0, 8);
+    };
 
     // page BONUS
     //*******************************************************************
