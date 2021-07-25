@@ -28,19 +28,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // console.log(pageAct);
 
-    // jQuery - Affichage de la notif pendant 2 sec 
-    //*******************************************************************
-    //*******************************************************************
-    //*******************************************************************
-    //*******************************************************************
-    // $('#notif').delay(5000).fadeOut()
-    // $('#notifAlert').delay(5000).fadeOut()
-    //*******************************************************************
-    //*******************************************************************
-    //*******************************************************************
-    //*******************************************************************
-    ////////// $('.message').delay(4000).fadeOut()
-    ////////// $('.message').remove();
+    // jQuery - Affichage de la notif pendant 5 sec 
+    $('#notif').delay(5000).fadeOut()
+    $('#notifAlert').delay(5000).fadeOut()
+        ////////// $('.message').delay(4000).fadeOut()
+        ////////// $('.message').remove();
 
     // logout before leaving site and NOT PAGE !!!!!!!!!
     // si on prend onbeforeunload, c'est executé dès qu'on change de page et pas à la fermeture de l'appli !
@@ -138,9 +130,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
             } else {
-                console.log("PERDU PAS d'authentification")
-                    // false => on reste sur le form et on affiche les erreurs détectées
-                    // _customError.displayMessages();
+
+                // console.log("PERDU PAS d'authentification")
+
+                // false => on reste sur le form et on affiche les erreurs détectées
+                // _customError.displayMessages();
                 document.querySelector('.auth input[name=password]').value = "";
                 document.querySelector('.auth input[name=password]').focus();
             }
@@ -200,15 +194,10 @@ document.addEventListener('DOMContentLoaded', function() {
     //*******************************************************************
     if (pageAct === 'players') {
 
-        // callback.addInfoLS("log", "PAge Player");
-
         // Ecoute le click sur la checkbox ALL des 2 tableaux Users et Players 
         // Si coché alors il faut cocher TOUS les checkboxes
         // Si décoché, alors décocher TOUS les checkboxes
         const $allCheckboxes = document.querySelectorAll("input[name='checkboxall[]']");
-
-        // console.log('APPEL DE ALL INPUTS : ' + $allCheckboxes);
-
         $allCheckboxes.forEach($checkbox => {
             $checkbox.addEventListener('change', e => {
                 // console.log(e)
@@ -224,23 +213,22 @@ document.addEventListener('DOMContentLoaded', function() {
         // console.log('APPEL DE addplayer et delPlayer');
         // Ecoute des boutons Ajouter un player et Retirer un player
         const $buttonValidUsers = document.querySelectorAll('.addPlayerList, .delPlayerList')
-            // Ecoute le click sur les boutons et passe les checkboses cochées au travers du form
+            // Ecoute le click sur les boutons et passe les checkboxes cochées au travers du form
         $buttonValidUsers.forEach($button => {
             $button.addEventListener('submit', e => {
                 e.preventDefault();
 
-
                 // @TODO
                 // @TODO = vérifier s'il y au moins une ligne de chochée
                 // @TODO
+                if (callback.isAtLeastOneCheck(e.target.value)) {
+                    const form = new FormData(e.target);
+                    e.target.reset();
 
+                    callback.addInfoLS("log", "Button " + $button);
 
-                const form = new FormData(e.target);
-                e.target.reset();
-
-                callback.addInfoLS("log", "Button " + $button);
-
-                ajaxCallback.modifPlayerList(form);
+                    ajaxCallback.modifPlayerList(form);
+                }
             });
         });
     }
@@ -252,41 +240,14 @@ document.addEventListener('DOMContentLoaded', function() {
     if (pageAct === 'game') {
 
         const actualTime = document.getElementById("actualTime");
-        window.setTimeout(updateTime, 1000);
+        window.setTimeout(callback.updateTime(), 1000);
 
         const chrono = document.getElementById("chrono");
-        window.setTimeout(updateChrono, 1000);
+        window.setTimeout(callback.updateChrono(), 1000);
 
 
     };
 
-    /** Met à jour l'affichage de l'heure
-     *  
-     */
-    function updateTime() {
-
-        const now = new Date();
-        const timeStr = getTimeFromDate(now);
-        actualTime.innerText = timeStr;
-
-        window.setTimeout(updateTime, 1000);
-    }
-
-    /** Met à jour l'affichage du chrono
-     *  
-     */
-    function updateChrono() {
-
-        const now = new Date();
-        const timeStr = getTimeFromDate(now);
-        chrono.innerText = timeStr;
-
-        window.setTimeout(updateChrono, 1000);
-    }
-
-    const getTimeFromDate = function(date) {
-        return date.toTimeString().slice(0, 8);
-    };
 
     // page BONUS
     //*******************************************************************

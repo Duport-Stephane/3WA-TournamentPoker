@@ -1,30 +1,21 @@
-<h1>JEU</h1>
-
-<section class='grid c2'>
+<section class='grid col3'>
     <article class="item btn btn-success">Heure actuelle
-        <!-- <?= date('H:i:s') ?> -->
         <p id='actualTime'></p>
     </article>
-    <article class="item btn btn-info">Chronomètre
+    <article class="item btn btn-info portrait3">
         <p id='chrono'></p>
     </article>
-    <article class="item btn btn-alert">Valeur des jetons</article>
-</section>
-
-<section class='grid c2'>
+    <article class="item btn btn-alert portrait2">Valeur des jetons</article>
     <article class="item btn btn-success">Prochaine pause à
-        <?= date('H:i:s') ?>
+        <p><?= date('H:i:s') ?></p>
     </article>
-    <article class="item btn btn-info">Valeurs des blinds
-    </article>
-    <article class="item btn btn-alert">Stack moyen</article>
-</section>
-
-<section class='grid c2'>
     <article class="item btn btn-success">Pause dans
-        <?= date('H:i:s') ?>
+        <p><?= date('H:i:s') ?></p>
     </article>
-    <article class="item btn btn-info">Prochaines blinds
-    </article>
+    <article class="item btn btn-alert">Tapis moyen</article>
 </section>
-
+<section class='grid col2'>
+    <article class="item btn btn-info">Valeurs des blinds</article>
+    <article class="item btn btn-info">Prochaines blinds
+        </article>
+</section>

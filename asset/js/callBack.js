@@ -152,7 +152,7 @@ function addValidate(form, action) {
     const inputs = document.querySelectorAll('input, select');
     inputs.forEach(input => {
 
-        addInfoLS("log", input.name + " : " + input.value);
+        // addInfoLS("log", "Avant : " + input.name + " : " + input.value);
 
         // Si les champs obligatoires sont vides => ERROR
         if (input.value === "" && input.name != 'lastname' && input.name != 'firstname' && input.name != 'avatar' && input.name != 'findUser') {
@@ -192,35 +192,45 @@ function addValidate(form, action) {
             //     // console.log(input.value);
             //     // console.log(_user);
 
+            input.value = htmlEntities(input.value)
+            addInfoLS("log", "Apres : " + input.name + " : " + input.value);
+
             switch (input.name) {
                 case 'nickname':
                     _user.nickname = htmlEntities(input.value)
+                    addInfoLS("log", "_user.nickname : " + _user.nickname);
                     break;
                 case 'lastname':
                     if (_user.lastname !== "") {
                         _user.lastname = htmlEntities(input.value)
+                        addInfoLS("log", "_user.lastname : " + _user.lastname);
                     }
                     break;
                 case 'firstname':
                     if (_user.firstname !== "") {
                         _user.firstname = htmlEntities(input.value)
+                        addInfoLS("log", "_user.firstname : " + _user.firstname);
                     }
                     break;
                 case 'email':
                     _user.email = htmlEntities(input.value)
-                        // console.log(_user.email)
+                    addInfoLS("log", "_user.email : " + _user.email);
+                    // console.log(_user.email)
                     break;
                 case 'password':
                     _user.password = htmlEntities(input.value)
+                    addInfoLS("log", "_user.password : " + _user.password);
                     break;
                 case 'avatar':
                     if (_user.avatar !== "") {
                         _user.avatar = htmlEntities(input.value)
+                        addInfoLS("log", "_user.avatar : " + _user.avatar);
                     }
                     break;
                 case 'role':
                     if (_user.role_id !== "") {
                         _user.role_id = parseInt(input.value)
+                        addInfoLS("log", "_user.role_id : " + _user.role_id);
                     }
                     break;
             }
@@ -244,15 +254,11 @@ function addValidate(form, action) {
 
         return false
     } else {
-
-        addInfoLS("log", "ACTION : " + action)
         let res;
+        addInfoLS("log", "ACTION : " + action);
 
         if (action === 'persist') {
             res = ajaxCallBack.isPersistUser(form);
-
-            // Inscrire le nouvel user dans le localStorage : pas une bonne idée
-            // updateInfoLS(_key, _user.email)
 
         } else if (action === 'updateUser') {
             ajaxCallBack.updateUser(form);
@@ -264,8 +270,11 @@ function addValidate(form, action) {
         // console.log("RES : " + res);
 
         if (!res) {
+
+            addInfoLS("log", action + ": FALSE");
             return false
         } else {
+            addInfoLS("log", action + ": TRUE");
             _customError.viderError();
             return true;
         }
@@ -473,6 +482,26 @@ function checkInputAll(isChecked, type) {
     });
 }
 
+/** 
+ * Control if at least one checkbox is shecked in this tab (type = user or player)
+ * @param {*} type 
+ */
+function isAtLeastOneCheck(type) {
+
+    let isCheck = false;
+    const checkboxes = document.querySelectorAll('.tab' + type + 'List input');
+    checkboxes.forEach(checkbox => {
+        if (checkbox.checked === true) {
+            isCheck = true;
+            // break;
+        };
+    });
+
+    addInfoLS("log", "isAtLeastOneCheck, type : " + type + " = " + isCheck);
+
+    return isCheck;
+}
+
 /**
  * Affiche les 2 tableaux de la page PLAYERS
  * @param {array} users retour de la requête
@@ -536,6 +565,40 @@ function displayTabUser(users, typeUser) {
         }
     })
 }
+
+
+// page GAME
+//*******************************************************************
+/** Update Time in page Game
+ *  
+ */
+function updateTime() {
+
+    const now = new Date();
+    const timeStr = getTimeFromDate(now);
+    actualTime.innerText = timeStr;
+
+    window.setTimeout(updateTime, 1000);
+}
+
+/** Update Chrono in page Game
+ *  
+ */
+function updateChrono() {
+
+    const now = new Date();
+    const timeStr = getTimeFromDate(now);
+    chrono.innerText = timeStr;
+
+    window.setTimeout(updateChrono, 1000);
+}
+
+/** To format Date in Time
+ * 
+ */
+const getTimeFromDate = function(date) {
+    return date.toTimeString().slice(0, 8);
+};
 
 
 // Gestion de l'affichage des MESSAGES
@@ -652,4 +715,4 @@ function switchTheme(e) {
 }
 
 
-export { currentNav, htmlEntities, checkInputAll, displayTabUser, logValidate, addValidate, getInfoLS, updateInfoLS, addInfoLS, isKeyExistLS, removeKeyLS, ListenClickLine, testMessageBeforeDisplay, detectColorScheme, switchTheme }
+export { currentNav, htmlEntities, checkInputAll, isAtLeastOneCheck, displayTabUser, logValidate, addValidate, getInfoLS, updateInfoLS, addInfoLS, isKeyExistLS, removeKeyLS, ListenClickLine, updateTime, updateChrono, testMessageBeforeDisplay, detectColorScheme, switchTheme }

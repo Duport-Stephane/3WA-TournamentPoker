@@ -25,12 +25,12 @@ if (isset($_POST) && !empty($_POST) && array_key_exists('action', $_POST)) {
 
                 // ---> Si l'id est bien un entier
                 if (!is_int(intval($value))) {
-                    throw new DomainException('Danger, L\'identifiant de ce joueur n\'est pas un entier.');
+                    throw new DomainException('L\'identifiant de ce joueur n\'est pas un entier.');
                 }
 
                 // ---> si l'id est bien dans la table User
                 if (!($userM->isIdExist(intval($value)))) {
-                    throw new DomainException('Danger, Ce joueur n\'existe pas ! L\'identifiant n\'est pas reconnu.');
+                    throw new DomainException('Ce joueur n\'existe pas ! L\'identifiant n\'est pas reconnu.');
                 } else {
                     var_dump("Suppression du joueur n° " .$value);
 
@@ -43,13 +43,13 @@ if (isset($_POST) && !empty($_POST) && array_key_exists('action', $_POST)) {
 
                     $userM->delUser(intval($value));
 
-                    \Models\Session::setOffset('info', "Success, La sélection d'utilisateur a bien été supprimée de l'application");
-                    echo "Success, La sélection d'utilisateur a bien été supprimée de l'application";
+                    \Models\Session::setOffset('info', "La sélection d'utilisateur a bien été supprimée de l'application");
+                    echo "La sélection d'utilisateur a bien été supprimée de l'application";
                 }
             }
         } else {
             // Renvoyer un message s'il n'y pas de checkbox cochée
-            throw new DomainException("Warning, Vous n'avez sélectionné aucune ligne dans cette liste !");
+            throw new DomainException("Vous n'avez sélectionné aucune ligne dans cette liste !");
         }
     } catch (DomainException $e) {
         \Models\Session::setOffset('alert', $e->getMessage());

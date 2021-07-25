@@ -8,7 +8,7 @@
 // Actions : Traitement (POST)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    var_dump('INSCRIPTION.PHP en POST');
+    // var_dump('INSCRIPTION.PHP en POST');
     // die;
 
     
@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // 1 er chargement de la page 'login'
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
-    var_dump('INSCRIPTION.PHP en GET');
+    // var_dump('INSCRIPTION.PHP en GET');
 
 }
 

@@ -14,24 +14,25 @@ import ErrorCustom from './ErrorCustom.js' // Gestion des erreurs s'il y en a
  */
 async function persistUser(form) {
 
-    callback.addInfoLS("log", "FETCH persitUser");
-
     const response = await fetch('./index.php?action=persist', {
         method: 'post',
         body: form
     })
     const result = await response.text()
         // .then(response => console.log(response))
+
+    callback.addInfoLS("log", "FETCH persitUser : " + result);
     return result;
 }
 
 function isPersistUser(form) {
 
-    callback.addInfoLS("log", "FETCH isPersistUser");
-
     persistUser(form).then(result => result.text())
         // .then(response => console.log(response))
         .then(result => {
+
+            callback.addInfoLS("log", "FETCH isPersistUser : " + result);
+
             // console.log("RES dans le FETCH : " + result);
             if (result.length < 500) {
                 const _customError = new ErrorCustom;
@@ -210,7 +211,6 @@ function modifPlayerList(form) {
             // refresh()
         });
 }
-
 
 
 export { modifPlayerList, isSamePassword, isPersistUser, updateUser, updateAdmin, delUserList }

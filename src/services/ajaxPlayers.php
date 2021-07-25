@@ -55,7 +55,7 @@ if (isset($_GET) && !empty($_GET) && isset($_GET['action'])) {
                         echo json_encode($playerM->getPlayers($tournament_id));
                         break;
                     default:
-                        throw new DomainException('Danger, Je ne sais pas comment on en est là !');
+                        throw new DomainException('Erreur, retour à la page précédente.');
                 }
         }
     } catch (DomainException $e) {
@@ -87,13 +87,13 @@ function modifUser($action, $userM, $playerM)
 
             // ---> Si l'id est bien un entier
             if (!is_int(intval($value))) {
-                throw new DomainException('Danger, L\'identifiant de ce joueur n\'est pas un entier.');
+                throw new DomainException('L\'identifiant de ce joueur n\'est pas un entier.');
             }
 
 
             // ---> si l'id est bien dans la table User
             if (!($userM->isIdExist(intval($value)))) {
-                throw new DomainException('Danger, Ce joueur n\'existe pas ! L\'identifiant n\'est pas reconnu.');
+                throw new DomainException('Ce joueur n\'existe pas ! L\'identifiant n\'est pas reconnu.');
             } else {
                 // Déterminer l'action à mener
                 switch ($action) {
@@ -102,14 +102,14 @@ function modifUser($action, $userM, $playerM)
 
                         // ---> et si l'id n'est pas déjà présent dans la table Player pour ce tournoi
                         if (!empty($playerM->isPlayerExistTournament(intval($value), intval($tournament_id)))) {
-                            throw new DomainException('Danger, Ce joueur est déjà validé pour ce tournoi !');
+                            throw new DomainException('Ce joueur est déjà validé pour ce tournoi !');
                         }
 
                         // créer une nouvelle entrée dans la table PLAYER avec l'id du User et le numéro du tournoi
                         $playerM->insertPlayer(intval($value), intval($tournament_id));
 
-                        \Models\Session::setOffset('info', "Success, La sélection fait maintenant partie des joueurs validés");
-                        echo "Success, La sélection fait maintenant partie des joueurs validés";
+                        \Models\Session::setOffset('info', "La sélection fait maintenant partie des joueurs validés");
+                        echo "La sélection fait maintenant partie des joueurs validés";
 
                         break;
 
@@ -118,24 +118,24 @@ function modifUser($action, $userM, $playerM)
                         //controle avant la suppression : ID bien présent pour ce tournoi ?
 
                         if (!empty($playerM->isPlayerExistTournament(intval($value), intval($tournament_id)))) {
-                            throw new DomainException('Danger, Ce joueur n\'est pas inscrit à ce tournoi !');
+                            throw new DomainException('Ce joueur n\'est pas inscrit à ce tournoi !');
                         } else {
                             $playerM->deletePlayer(intval($value), intval($tournament_id));
                         };
 
-                        \Models\Session::setOffset('info', "Success, La sélection a bien été retirée de la liste des joueurs validés");
-                        echo "Success, La sélection a bien été retirée de la liste des joueurs validés";
+                        \Models\Session::setOffset('info', "La sélection a bien été retirée de la liste des joueurs validés");
+                        echo "La sélection a bien été retirée de la liste des joueurs validés";
 
                         break;
 
                     default:
                         // code...
-                        throw new DomainException('Danger, Je ne sais pas comment on en est là !');
+                        throw new DomainException('Erreur, retour à la page précédente.');
                 }
             }
         }
     } else {
         // Renvoyer un message s'il n'y pas de checkbox cochée
-        throw new DomainException("Warning, Vous n'avez sélectionné aucune ligne dans cette liste !");
+        throw new DomainException("Vous n'avez sélectionné aucune ligne dans cette liste !");
     }
 }

@@ -1,19 +1,18 @@
-<?php if (isset($_SESSION) && isset($_SESSION['error']) && !empty($_SESSION['errors'])) : ?>
-    <div class="alert alert-danger">
-        <?php foreach ($_SESSION['errors'] as $value) : ?>
+<?php if (\Models\Session::isOffsetExists('alert') && !empty(\Models\Session::getOffset('alert'))) : ?>
+    <div id="notifAlert" class="alert alert-danger">
+        <!-- <?php foreach (\Models\Session::getOffset('alert') as $value) : ?>
             <p><?= $value ?></p>
-        <?php endforeach; ?>
+        <?php endforeach; ?> -->
+        <p><?= \Models\Session::getOffset('alert') ?></p>
     </div>
 <?php endif; ?>
 
-<?php if (isset($_SESSION) && isset($_SESSION['info']) && !empty($_SESSION['info'])) : ?>
-    <div class="alert alert-success">
-        <p><?= $_SESSION['info'] ?></p>
+<?php if (\Models\Session::isOffsetExists('info') && !empty(\Models\Session::getOffset('info'))) : ?>
+    <div id="notif" class="alert alert-info">
+        <p><?= \Models\Session::getOffset('info') ?></p>
     </div>
 <?php endif; ?>
 
-<?php
-// Juste pour s'assurer de ne pas afficher 2 fois les notifications -->
-unset($_SESSION['info']);
-unset($_SESSION['error']);
-?>
+<!-- Juste pour s'assurer de ne pas afficher 2 fois les notifications -->
+<?php \Models\Session::unsetOffset('alert'); ?>
+<?php \Models\Session::unsetOffset('info'); ?>

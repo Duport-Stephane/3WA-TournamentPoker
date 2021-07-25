@@ -158,7 +158,10 @@ class User extends \Database
      * @return string | null
      */
     public function setUser(string $nickName, string $firstName, string $lastName, string $email, string $password, int $role_id, string $avatar = ""): string
-    {
+    {                        
+        // var_dump("PHP SET USER /pseudo= " . $nickName . " /prenom= " . $firstName . " /nom= " . $lastName . " /mail= " . $email . " /role_id= " . $role_id . " /avatar= " . $avatar);
+        // die;
+
         try {
             $sql = 'INSERT INTO user(nickName, firstName, lastName, email, password, role_id, avatar) 
             VALUES (:nickName, :firstName, :lastName, :email, :password, :role_id, :avatar)';

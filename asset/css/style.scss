@@ -17,7 +17,7 @@ a {
 // *******************************************************************
 // ******************         COLORIS     ************************
 // Theme Bleu
-:root {
+ :root {
     --fontColor: #fff;
     --fontInput: rgb(31, 48, 133);
     --bgColor: rgba(31, 48, 133, .5);
@@ -305,10 +305,8 @@ fieldset {
 // ******************            GAME         ************************
 .grid {
     display: grid;
-}
-
-.inline-grid {
-    display: inline-grid;
+    min-height: 40vh;
+    font-size: 1.5rem;
 }
 
 .item {
@@ -317,35 +315,25 @@ fieldset {
     min-height: 50px;
 }
 
-.bleu {
-    background-color: #28B;
+.col2 {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 100px;
 }
 
-.vert {
-    background-color: #2B8;
-}
-
-.jaune {
-    background-color: #BB2;
-}
-
-.rouge {
-    background-color: #D48;
-}
-
-.c1 {
-    grid-template-columns: 200px auto 300px;
-    grid-template-rows: 200px 100px;
-}
-
-.c2 {
+.col3 {
     grid-template-columns: 1fr 2fr 1fr;
     grid-template-rows: auto;
 }
 
-.c3 {
-    grid-template-columns: 1fr 50% 2fr;
-    grid-template-rows: 1fr 1fr;
+.portrait2 {
+    grid-row: span 2;
+    font-size: 1.5rem;
+}
+
+.portrait3 {
+    grid-row: span 3;
+    font-size: 4rem;
+    ;
 }
 
 // *******************************************************************
@@ -626,110 +614,4 @@ footer {
 .bigImg {
     max-width: 15rem;
     height: auto;
-}
-
-// *******************************************************************
-// ******************            FLIP         ************************
-// *******************************************************************
-.clock {
-    display: flex;
-}
-
-.flip {
-    position: relative;
-    width: 60px;
-    height: 100px;
-    margin: 2px;
-    font-size: 66px;
-    line-height: 100px;
-    text-align: center;
-    border: 1px solid black;
-    border-radius: 10px;
-    box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
-}
-
-.digital::before,
-.digital::after {
-    position: absolute;
-    content: attr(data-number);
-    left: 0;
-    right: 0;
-    color: white;
-    background: black;
-    overflow: hidden;
-    perspective: 160px;
-}
-
-.digital::before {
-    top: 0;
-    bottom: 50%;
-    border-bottom: 1px solid #666;
-    border-radius: 10px 10px 0 0;
-}
-
-.digital::after {
-    top: 50%;
-    bottom: 0;
-    line-height: 0;
-    border-radius: 0 0 10px 10px;
-}
-
-.digital.front::after,
-.digital.back::before {
-    z-index: 1;
-}
-
-.digital.back::after {
-    transform-origin: top center;
-    transform: rotateX(0.5turn);
-    z-index: 2;
-}
-
-.digital.front::before {
-    z-index: 3;
-}
-
-.divider {
-    font-size: 66px;
-    line-height: 102px;
-    font-style: normal;
-}
-
-.flip.running .front::before {
-    transform-origin: center bottom;
-    animation: frontFlipDown 0.6s ease-in-out;
-    box-shadow: 0 -2px 6px rgba(255, 255, 255, 0.3);
-    backface-visibility: hidden;
-}
-
-.flip.running .back::after {
-    animation: backFlipDown 0.6s ease-in-out;
-}
-
-@-webkit-keyframes frontFlipDown {
-    to {
-        /* -webkit-transform: rotateX(0.5turn); */
-        transform: rotateX(0.5turn);
-    }
-}
-
-@keyframes frontFlipDown {
-    to {
-        /* -webkit-transform: rotateX(0.5turn); */
-        transform: rotateX(0.5turn);
-    }
-}
-
-@-webkit-keyframes backFlipDown {
-    to {
-        /* -webkit-transform: rotateX(0); */
-        transform: rotateX(0);
-    }
-}
-
-@keyframes backFlipDown {
-    to {
-        /* -webkit-transform: rotateX(0); */
-        transform: rotateX(0);
-    }
 }

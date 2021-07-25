@@ -11,29 +11,32 @@ if (isset($_POST) && !empty($_POST) && isset($_POST['action']) && !empty($_POST[
     // Extraction des paramètres passés dans le POST
     // var_dump("POST AJAX LOG");
     extract($_POST);
-
+    
     // var_dump($_POST);
-
+    
     try {
         foreach ($_POST as $key => $input) {
             // Traitement des saisies utilisateurs
-
-            var_dump($key . " = " . $input);
-
+            
+            var_dump("avant " . $key . " = " . $input);
+            
             if (empty($input) && $key !== 'lastName' && $key !== 'firstName' && $key !== 'avatar') {
-                throw new DomainException("Attention, Le champ $key est vide.");
+                throw new DomainException("Le champ $key est vide.");
             } else if (strlen($input) > 32 && $key !== 'avatar') {
-                throw new DomainException("Attention, Le texte saisi dépasse les 32 caractères autorisés.");
+                throw new DomainException("Le texte saisi dépasse les 32 caractères autorisés.");
             } else {
                 switch ($key) {
-                    case 'nickName':
+                    case 'nickname':
                         $nickName = htmlentities($input);
+                        var_dump("apres " . $key . " = " . $nickName);
                         break;
-                    case 'firstName':
+                    case 'firstname':
                         $firstName = htmlentities($input);
+                        var_dump("apres " . $key . " = " . $firstName);
                         break;
-                    case 'lastName':
+                    case 'lastname':
                         $lastName = htmlentities($input);
+                        var_dump("apres " . $key . " = " . $lastName);
                         break;
                     case 'email':
                         $mailPattern = '/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/';
@@ -41,6 +44,7 @@ if (isset($_POST) && !empty($_POST) && isset($_POST['action']) && !empty($_POST[
                             throw new DomainException("L'adresse mail n'est pas correcte");
                         }
                         $email = $input;
+                        var_dump("apres " . $key . " = " . $email);
                         break;
                     case 'password':
                         $passwordPattern = '/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,32}$/';
@@ -48,9 +52,11 @@ if (isset($_POST) && !empty($_POST) && isset($_POST['action']) && !empty($_POST[
                             throw new DomainException("Le mot de passe doit contenir au moins 8 caractères dont une minuscule, une majuscule, un chiffre et un caractère spécial");
                         }
                         $password = htmlentities($input);
+                        var_dump("apres " . $key . " = " . $password);
                         break;
                     case 'avatar':
                         $avatar = htmlentities($input);
+                        var_dump("apres " . $key . " = " . $avatar);
                         break;
                     case 'role':
 
@@ -61,6 +67,7 @@ if (isset($_POST) && !empty($_POST) && isset($_POST['action']) && !empty($_POST[
                         } else {
                             $role_id = 2;
                         }
+                        var_dump("apres " . $key . " = " . $role_id);
                         break;
                 };
             }
@@ -113,19 +120,20 @@ if (isset($_POST) && !empty($_POST) && isset($_POST['action']) && !empty($_POST[
                         }
                     }
 
-                    var_dump($role_id);
+                    // var_dump($role_id);
+
                     if (!isset($role_id) || $role_id === "") {
                         // c'est au moins un USER : role_id=2
                         $role_id = 2;
                     }
+
                     var_dump($role_id);
                     
                     // Enregistrement du nouvel user
                     if ($action === 'persist') {
-
-                        var_dump('PERSIST ' . $email);
+                        
+                        // var_dump("PERSIST /pseudo= " . $nickName . " /prenom= " . $firstName . " /nom= " . $lastName . " /mail= " . $email . " /role_id= " . $role_id . " /avatar= " . $avatar);
                         // die;
-                        // var_dump($password);
 
                         $password = password_hash($password, PASSWORD_BCRYPT);
 
@@ -151,7 +159,7 @@ if (isset($_POST) && !empty($_POST) && isset($_POST['action']) && !empty($_POST[
                         //if (isset($avatar) && !empty($avatar)) {
                             // avec AVATAR
 
-                            var_dump('UPDATE ' . $user['id'] . " /pseudo= " . $nickName . " /prenom= " . $firstName . " /nom= " . $lastName . " /mail= " . $email . " /role_id= " . $role_id . " /avatar= " . $avatar);
+                            // var_dump('UPDATE ' . $user['id'] . " /pseudo= " . $nickName . " /prenom= " . $firstName . " /nom= " . $lastName . " /mail= " . $email . " /role_id= " . $role_id . " /avatar= " . $avatar);
                             // die;
 
                             // Persit update info in Log Session
@@ -202,7 +210,7 @@ if (isset($_POST) && !empty($_POST) && isset($_POST['action']) && !empty($_POST[
 
                 // on commence par checker le mail pour savoir s'il existe en BDD
                 if (!($user)) {
-                    throw new DomainException("Attention, Cette adresse mail n'est pas reconnue, veuillez la modifier ou vous inscrire.");
+                    throw new DomainException("Cette adresse mail n'est pas reconnue, veuillez la modifier ou vous inscrire.");
                 } else {
                     // considère uniquement le password Hashé
                     // compare le $user['password'] hashé avec celui lu dans le champ input $password du form
@@ -212,9 +220,9 @@ if (isset($_POST) && !empty($_POST) && isset($_POST['action']) && !empty($_POST[
                     } else {
                         \Models\Session::login(
                             $user['id'],
-                            $user['nickName'],
-                            $user['firstName'],
-                            $user['lastName'],
+                            htmlentities($user['nickName']),
+                            htmlentities($user['firstName']),
+                            htmlentities($user['lastName']),
                             $user['email'],
                             $user['role_id'],
                             $user['avatar']
@@ -232,6 +240,7 @@ if (isset($_POST) && !empty($_POST) && isset($_POST['action']) && !empty($_POST[
             case 'logout':
                 if (\Models\Session::isConnected()) {
                     \Models\Session::logout();
+                    \Models\Session::setOffset('info', 'Vous êtes déconnecté.');
                     echo 'Vous êtes déconnecté.';
                     header('Location: ./index.php?page=home&action=null');
                     die;
