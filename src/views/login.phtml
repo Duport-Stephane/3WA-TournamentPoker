@@ -1,14 +1,9 @@
 <h1>Login</h1>
 
-<!-- <section>
-    <img src="./asset/images/Token-70.png" alt="table" width="800px">
-</section> -->
-
 <section class="flex-column">
     <h2 class="from-left">Connectez-vous</h2>
 
     <form class="auth card-body" action='./index.php?page=login' method="POST">
-        <!-- <form class="card-body" id="auth"> -->
         <fieldset>
             <input type="hidden" name="action" value="auth">
             <div class="card-text">
@@ -19,7 +14,7 @@
             <div class="card-text">
                 <label for="password" class="btn-info">Mot de passe *</label>
                 <span class="card-puce"><i class="fas fa-key"></i></span>
-                <input type="text" class="card-input" name="password" placeholder="Mot de passe" required>
+                <input type="password" class="card-input" name="password" placeholder="Mot de passe" required>
             </div>
             <p class="small text-left messageGrey">* : information obligatoire</p>
             <button type="submit" class="btn btn-info">Connexion</button>
@@ -27,9 +22,6 @@
     </form>
 </section>
 <section class="flex-column">
-    <!-- <button type="text" class="btn btn-alert">
-        <bold>Mot de passe oublié ?</bold>
-    </button> -->
     <fieldset class="alert-alert">
         <p>Vous ne possédez pas encore de compte sur Poker Hold'hem Tournament Poker ?</p>
         <button type="text" class="btn btn-info"><a href="./index.php?page=inscription">Inscription</a></button>

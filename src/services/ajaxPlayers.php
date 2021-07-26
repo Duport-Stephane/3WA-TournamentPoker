@@ -72,7 +72,7 @@ if (isset($_GET) && !empty($_GET) && isset($_GET['action'])) {
 function modifUser($action, $userM, $playerM)
 {
 
-    var_dump($_POST);
+    // var_dump($_POST);
     // die;
 
     // Test INPUTS of addPlayerList, delPlayerList

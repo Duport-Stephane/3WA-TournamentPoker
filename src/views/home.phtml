@@ -1,28 +1,28 @@
 <section class="fond-Table border-screen">
     <a href="./index.php?page=game"><img src="./asset/images/token/dealer.png" alt="dealer" class="dealer"></a>
-    <!-- <p>Accès à la table de jeu</p> -->
+    
     <div class="flex-between">
         <p>
-            <a href="./index.php?page=players&action=display"><img src="./asset/images/carte-R.jpg" alt="carte">Joueurs</a>
+            <a href="./index.php?page=players&action=display"><img src="./asset/images/carte-R.jpg" alt="carte joueurs">Joueurs</a>
         </p>
         <p>
-            <a href="./index.php?page=tables"><img src="./asset/images/carte-R.jpg" alt="carte" role="button">Tables</a>
+            <a href="./index.php?page=tables"><img src="./asset/images/carte-R.jpg" alt="carte tables" role="button">Tables</a>
         </p>
         <p>
             <?php if (\Models\Session::isOffsetExists('user') && (\Models\Session::getOffset1_Offset2('user', 'role_id') === '2')) : ?>
                 <a href="./index.php?page=dashboardUser">
-            <?php elseif (\Models\Session::isOffsetExists('user') && ((\Models\Session::getOffset1_Offset2('user', 'role_id') === '1') || (\Models\Session::getOffset1_Offset2('user', 'role_id') === '5'))) : ?>
-                <a href="./index.php?page=dashboardAdmin">
-            <?php else : ?>
-                <a href="./index.php?page=home">
-            <?php endif; ?>
-            <img src="./asset/images/carte-R.jpg" alt="carte">Mon espace</a>
+                <?php elseif (\Models\Session::isOffsetExists('user') && ((\Models\Session::getOffset1_Offset2('user', 'role_id') === '1') || (\Models\Session::getOffset1_Offset2('user', 'role_id') === '5'))) : ?>
+                    <a href="./index.php?page=dashboardAdmin">
+                    <?php else : ?>
+                        <a href="./index.php?page=home">
+                        <?php endif; ?>
+                        <img src="./asset/images/carte-R.jpg" alt="carte mon espace">Mon espace</a>
         </p>
         <p>
-            <a href=""><img src="./asset/images/carte-R.jpg" alt="carte">Classements</a>
+            <a href="./index.php?page=rules"><img src="./asset/images/carte-R.jpg" alt="carte règles">Règles</a>
         </p>
         <p>
-            <a href="./index.php?page=comments"><img src="./asset/images/carte-R.jpg" alt="carte">Commentaires</a>
+            <a href="./index.php?page=comments"><img src="./asset/images/carte-R.jpg" alt="carte commentaires">Comments</a>
         </p>
     </div>
 </section>

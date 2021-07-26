@@ -21,18 +21,19 @@ document.addEventListener('DOMContentLoaded', function() {
     // ENSEMBLE DES PAGES
     //*******************************************************************
 
-    // A chaque changement de page, met en évidence le bon menu de la nav du header et du footer
-    const pageAct = callback.currentNav();
+    // A chaque changement de page, récupère le nom de la page
+    const pageAct = callback.currentPage();
+
+    // met en évidence le bon menu de la nav du header et du footer
+    callback.currentNav(pageAct);
 
     callback.addInfoLS("log", "Display " + pageAct);
 
     // console.log(pageAct);
 
-    // jQuery - Affichage de la notif pendant 5 sec 
-    $('#notif').delay(5000).fadeOut()
-    $('#notifAlert').delay(5000).fadeOut()
-        ////////// $('.message').delay(4000).fadeOut()
-        ////////// $('.message').remove();
+    // jQuery - Affichage de la notif pendant 4 sec 
+    $('#notif').delay(4000).fadeOut()
+    $('#notifAlert').delay(4000).fadeOut()
 
     // logout before leaving site and NOT PAGE !!!!!!!!!
     // si on prend onbeforeunload, c'est executé dès qu'on change de page et pas à la fermeture de l'appli !
@@ -218,14 +219,18 @@ document.addEventListener('DOMContentLoaded', function() {
             $button.addEventListener('submit', e => {
                 e.preventDefault();
 
-                // @TODO
-                // @TODO = vérifier s'il y au moins une ligne de chochée
-                // @TODO
-                if (callback.isAtLeastOneCheck(e.target.value)) {
+                let type;
+                if (e.target.className === 'addPlayerList') {
+                    type = 'users'
+                } else {
+                    type = 'players'
+                }
+
+                callback.addInfoLS("log", "Button " + e.target.className);
+
+                if (callback.isAtLeastOneCheck(type)) {
                     const form = new FormData(e.target);
                     e.target.reset();
-
-                    callback.addInfoLS("log", "Button " + $button);
 
                     ajaxCallback.modifPlayerList(form);
                 }
@@ -241,10 +246,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const actualTime = document.getElementById("actualTime");
         window.setTimeout(callback.updateTime(), 1000);
-
-        const chrono = document.getElementById("chrono");
-        window.setTimeout(callback.updateChrono(), 1000);
-
 
     };
 

@@ -32,32 +32,22 @@ class ErrorCustom {
     }
 
     // Affichage des erreurs s'il y en a
-    displayMessages() {
+    displayMessages(page, action) {
 
         callback.addInfoLS("log", "display ErrorMessages");
         const $errorSpan = document.querySelector('.message');
         // $errorSpan.innerHTML = '';
         $errorSpan.classList.add('form-error');
-        // Fill
-        this._messages.map(msg => {
 
-            callback.addInfoLS("log", `Error = ${msg.field} :: ${msg.message}`);
+        const $p = document.createElement('p');
+        const newContent = document.createTextNode(`${this._messages}`);
+        // $p.textContent = `${this._messages}`;
+        $p.appendChild(newContent);
+        $errorSpan.appendChild($p);
 
-            const $p = document.createElement('p');
-            $p.textContent = `${msg.field} : ${msg.message}`;
-            $errorSpan.appendChild($p);
-        })
-
-        //     setInterval(this.removeMessages(), 5000);
-        this.viderError();
-    }
-
-    removeMessages() {
-
-        callback.addInfoLS("log", "remove ErrorMessage");
-
-        const $errorSpan = document.querySelector('.message');
-        $errorSpan.classList.remove('form-error');
+        window.setTimeout(function() {
+            window.location = './index.php?page=' + page + '&action=' + action
+        }, 4000);
     }
 
     viderError() {
@@ -65,10 +55,13 @@ class ErrorCustom {
         callback.addInfoLS("log", "Clear Errors");
         // Vider les erreurs
         const $errorSpan = document.querySelector('.message')
+        const $errorP = $errorSpan.querySelector('p')
+        const $errorChild = $errorSpan.removeChild($errorP)
+
         $errorSpan.classList.remove('form-error')
-            // const $errorP = $errorSpan.querySelector('p')
-        $errorSpan.innerHTML = ''
-        $errorSpan.innerText = ''
+            // $errorSpan.innerHTML = ''
+            // $errorSpan.innerText = ''
+            // $errorSpan.textContent = ''
     }
 }
 

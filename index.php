@@ -27,9 +27,9 @@ require_once './src/autoload.php';
 // *************** POST ***************
 if (isset($_POST) && !empty($_POST)) {
 
-    var_dump("POST");
+    // var_dump("POST");
     // var_dump($_POST);
-    var_dump($_POST['action']);
+    // var_dump($_POST['action']);
     // die;
 
     if (array_key_exists('action', $_POST) && !empty($_POST['action'])) {

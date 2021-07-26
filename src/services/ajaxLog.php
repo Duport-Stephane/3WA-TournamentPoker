@@ -253,8 +253,6 @@ if (isset($_POST) && !empty($_POST) && isset($_POST['action']) && !empty($_POST[
         die;
     }
 
-    // header('Location: ../controller/layout.php?page=login');
-
     // Fin POST
 }
 

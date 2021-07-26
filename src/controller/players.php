@@ -33,16 +33,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // exit;
 }
 
-// 1 er chargement de la page 'Player'
+// First display page 'Player'
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
-    // var_dump('PLAYERS.PHP en GET');
-
-    // Test de la connexion !!!!!!
-
-        // if(!Session::isConnected()){
-        // throw new DomainException('Veuillez vous connecter pour accéder à cette page.');
-        // }
-
+    // Test if the user is connected
+    try {
+        if(!\Models\Session::isConnected()){
+        throw new DomainException('Veuillez vous connecter pour accéder à cette page.');
+        }
+    } catch (DomainException $e) {
+        \Models\Session::setOffset('alert', $e->getMessage());
+        echo $e->getMessage();
+        header('Location: ./index.php?page=home');
+        die;
+    }
 }
 require_once './src/views/players.phtml';

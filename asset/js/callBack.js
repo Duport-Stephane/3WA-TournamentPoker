@@ -3,16 +3,15 @@
 
 
 // Appels de dépendances
-import * as ajaxCallBack from './ajaxCallback.js'
+import * as ajaxCallBack from './ajaxCallBack.js'
 import ManagerLS from './ManagerLS.js'
 import ErrorCustom from './ErrorCustom.js' // Gestion des erreurs s'il y en a
-
 
 /**
  * Met en évidence le menu courant dans la navbar du header.
  * Arrivée sur une page soit par la navbar soit par le click sur la carte de Home
  */
-function currentNav() {
+function currentPage() {
     const address = window.location.href
         // console.log(address);
     let beginPage = address.indexOf('=') + 1;
@@ -22,14 +21,17 @@ function currentNav() {
     if (endPage === -1) {
         endPage = address.length;
     }
-    // console.log(endPage);
-    const pageAct = address.slice(beginPage, endPage);
+    return address.slice(beginPage, endPage);
+}
 
+function currentNav(pageAct) {
     // addInfoLS("log", "Display " + pageAct)
     // console.log(pageAct);
 
-    // cas particulier de la page HOME lors du premier chargement
-    // il n'y a pas de parametre "page=" dans le root
+    const address = window.location.href
+        // cas particulier de la page HOME lors du premier chargement
+        // il n'y a pas de parametre "page=" dans le root
+    let beginPage = address.indexOf('=') + 1;
     if (beginPage === 0) {
         document.querySelector('.navHeader a.home').classList.add('current');
     } else {
@@ -44,7 +46,6 @@ function currentNav() {
             }
         });
     }
-    return pageAct;
 }
 
 
@@ -250,7 +251,7 @@ function addValidate(form, action) {
         _customError.setMessages(_errors);
         // afin de bénéficier des fonctionnalités de celui-ci pour les affichées par la suite
 
-        _customError.displayMessages();
+        _customError.displayMessages(currentPage(), action);
 
         return false
     } else {
@@ -307,7 +308,8 @@ function logValidate(form) {
     const _customError = new ErrorCustom // Référencer et afficher les erreurs
     const _user = {
             email: '',
-            password: ''
+            password: '',
+            role: ''
         } // Stocker les infos du user
 
     // console.log(form)
@@ -352,6 +354,8 @@ function logValidate(form) {
 
             // addInfoLS("log", "save l'input ", input.name)
 
+            input.value = htmlEntities(input.value)
+
             switch (input.name) {
                 case 'email':
                     _user.email = htmlEntities(input.value)
@@ -368,10 +372,8 @@ function logValidate(form) {
         addInfoLS("log", _errors);
 
         // On enregistre les errors de notre form dans la class ErrorCustom,
-        _customError.messages = _errors
-            // afin de bénéficier des fonctionnalités de celui-ci pour les affichées par la suite
-
-        _customError.displayMessages();
+        _customError.setMessages(_errors);
+        _customError.displayMessages(currentPage(), 'auth');
 
         return false
     } else {
@@ -393,8 +395,8 @@ function logValidate(form) {
                 type: 'format',
                 message: `Vos identifiants sont incorrects. Merci de réessayer.`
             });
-            _customError.messages = _errors;
-            _customError.displayMessages();
+            _customError.setMessages(_errors);
+            _customError.displayMessages(currentPage(), 'auth');
             document.querySelector('.auth input[name=password]').value = "";
             document.querySelector('.auth input[name=password]').focus();
 
@@ -456,7 +458,7 @@ function ListenClickLine() {
     $lineUser.forEach($line => {
         $line.addEventListener('click', e => {
 
-            addInfoLS("log", "Click une ligne")
+            addInfoLS("log", "Click une ligne entière")
 
             const $cell = document.querySelector("input[value='" + e.target.classList[1] + "']");
             $cell.checked ? $cell.checked = false : $cell.checked = true;
@@ -489,8 +491,9 @@ function checkInputAll(isChecked, type) {
 function isAtLeastOneCheck(type) {
 
     let isCheck = false;
-    const checkboxes = document.querySelectorAll('.tab' + type + 'List input');
+    const checkboxes = document.querySelectorAll('.tab' + type + "List input[name='checkboxuser[]']");
     checkboxes.forEach(checkbox => {
+
         if (checkbox.checked === true) {
             isCheck = true;
             // break;
@@ -499,6 +502,11 @@ function isAtLeastOneCheck(type) {
 
     addInfoLS("log", "isAtLeastOneCheck, type : " + type + " = " + isCheck);
 
+    if (!isCheck) {
+        const _customError = new ErrorCustom // Référencer et afficher les erreurs
+        _customError.setMessages('Vous n\'avez sélectionné aucune ligne !');
+        _customError.displayMessages(currentPage(), 'display');
+    }
     return isCheck;
 }
 
@@ -581,18 +589,6 @@ function updateTime() {
     window.setTimeout(updateTime, 1000);
 }
 
-/** Update Chrono in page Game
- *  
- */
-function updateChrono() {
-
-    const now = new Date();
-    const timeStr = getTimeFromDate(now);
-    chrono.innerText = timeStr;
-
-    window.setTimeout(updateChrono, 1000);
-}
-
 /** To format Date in Time
  * 
  */
@@ -600,71 +596,6 @@ const getTimeFromDate = function(date) {
     return date.toTimeString().slice(0, 8);
 };
 
-
-// Gestion de l'affichage des MESSAGES
-//*******************************************************************
-/**
- * 
- * @param {string} message Le message a tester pour savoir si :
- * Danger : le message commence par Danger
- * Alert : le message commence par Attention
- * Success : tous les autres cas 
- */
-
-function testMessageBeforeDisplay(message) {
-
-    addInfoLS("log", "testMessageBeforeDisplay");
-
-    let indexOfFirst;
-    if (indexOfFirst = message.indexOf("Danger") != -1) {
-        displayMessage(message.slice(8), 'Danger');
-    } else if (indexOfFirst = message.indexOf("Warning") != -1) {
-        displayMessage(message.slice(9), 'Warning');
-    } else {
-        displayMessage(message.slice(9), 'Success');
-    }
-}
-
-/**
- * 
- * @param {string} state criticité du message
- * @param {string} message Message à afficher
- */
-function displayMessage(state, message) {
-
-    addInfoLS("log", message);
-
-    const $messages = document.querySelector('.message');
-    const $balise = document.createElement('div')
-    $balise.setAttribute('class', 'alert alert-' + state);
-    $messages.append($balise);
-    $balise.append(message);
-
-    // removeMessage();
-}
-
-/**
- * Gestion du temps d'affichage des messages
- */
-function removeMessage() {
-
-    // addInfoLS("log","REMOVE INFOS")
-
-    // const mess = document.querySelector('.alert');
-    // mess.delay(2500).fadeOut(600);
-    $('.message').delay(2000).fadeOut(600);
-
-
-    // @TODO Supprimer les anciens message, pour qu'il ne s'affichent plus en cas de refresh de la page
-    // voir a supprimer les P plutot que les DIV !!!!!!
-
-    const $messages = document.querySelector('.message');
-    // console.log($messages.childNodes);
-    if ($messages.hasChildNodes()) {
-        $messages.removeChild($messages.querySelector('.alert'))
-    };
-    // console.log($messages.childNodes);
-}
 
 
 // changement de thème
@@ -715,4 +646,4 @@ function switchTheme(e) {
 }
 
 
-export { currentNav, htmlEntities, checkInputAll, isAtLeastOneCheck, displayTabUser, logValidate, addValidate, getInfoLS, updateInfoLS, addInfoLS, isKeyExistLS, removeKeyLS, ListenClickLine, updateTime, updateChrono, testMessageBeforeDisplay, detectColorScheme, switchTheme }
+export { currentPage, currentNav, htmlEntities, checkInputAll, isAtLeastOneCheck, displayTabUser, logValidate, addValidate, getInfoLS, updateInfoLS, addInfoLS, isKeyExistLS, removeKeyLS, ListenClickLine, updateTime, detectColorScheme, switchTheme }
