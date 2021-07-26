@@ -53,13 +53,11 @@ if (isset($_POST) && !empty($_POST) && array_key_exists('action', $_POST)) {
         }
     } catch (DomainException $e) {
         \Models\Session::setOffset('alert', $e->getMessage());
-
-        // var_dump(\Models\Session::getOffset('alert'));
-
         echo $e->getMessage();
 
-        // header('Location: ./index.php?page=players&action=display');
-
+        if ($e->getCode() === 404) {
+            header('Location: ./index.php?page=404');
+        }
         die;
     }
     // Fin POST
@@ -83,8 +81,11 @@ if (isset($_GET) && !empty($_GET) && isset($_GET['action'])) {
         \Models\Session::setOffset('alert', $e->getMessage());
         echo $e->getMessage();
 
-        header('Location: ./index.php?page=dashboardAdmin');
-
+        if ($e->getCode() === 404) {
+            header('Location: ./index.php?page=404');
+        } else {
+            header('Location: ./index.php?page=dashboardAdmin');
+        }
         die;
     }
 };

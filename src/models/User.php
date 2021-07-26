@@ -36,16 +36,13 @@ class User extends \Database
      * @return array
      */
 
-    public function getAllUsers(string $sort, string $findText): array
+    public function getAllUsers(): array
     {
         try {
             $query = 'SELECT user.id, nickName, firstName, lastName, avatar, role_id, created_at
                 FROM user
-                WHERE nickName LIKE :findText
-                ORDER BY :sort';
+                ORDER BY nickName';
             $param = [
-                ':sort'     => $sort,
-                ':findText' => $findText
             ];
 
             $users = $this->findAll($query, $param);

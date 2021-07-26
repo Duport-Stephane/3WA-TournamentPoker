@@ -192,33 +192,36 @@ function addValidate(form, action) {
 
             //     // console.log(input.value);
             //     // console.log(_user);
-
-            input.value = htmlEntities(input.value)
             addInfoLS("log", "Apres : " + input.name + " : " + input.value);
 
             switch (input.name) {
                 case 'nickname':
+                    input.value = htmlEntities(input.value);
                     _user.nickname = htmlEntities(input.value)
                     addInfoLS("log", "_user.nickname : " + _user.nickname);
                     break;
                 case 'lastname':
                     if (_user.lastname !== "") {
+                        input.value = htmlEntities(input.value);
                         _user.lastname = htmlEntities(input.value)
                         addInfoLS("log", "_user.lastname : " + _user.lastname);
                     }
                     break;
                 case 'firstname':
                     if (_user.firstname !== "") {
+                        input.value = htmlEntities(input.value);
                         _user.firstname = htmlEntities(input.value)
                         addInfoLS("log", "_user.firstname : " + _user.firstname);
                     }
                     break;
                 case 'email':
+                    input.value = htmlEntities(input.value);
                     _user.email = htmlEntities(input.value)
                     addInfoLS("log", "_user.email : " + _user.email);
                     // console.log(_user.email)
                     break;
                 case 'password':
+                    input.value = htmlEntities(input.value);
                     _user.password = htmlEntities(input.value)
                     addInfoLS("log", "_user.password : " + _user.password);
                     break;
@@ -504,7 +507,7 @@ function isAtLeastOneCheck(type) {
 
     if (!isCheck) {
         const _customError = new ErrorCustom // Référencer et afficher les erreurs
-        _customError.setMessages('Vous n\'avez sélectionné aucune ligne !');
+        _customError.setMessages('Vous n\'avez sélectionné aucune ligne dans cette liste !');
         _customError.displayMessages(currentPage(), 'display');
     }
     return isCheck;
@@ -598,6 +601,49 @@ const getTimeFromDate = function(date) {
 
 
 
+
+// Gestion de l'affichage des MESSAGES
+//*******************************************************************
+/**
+ * 
+ * @param {string} message Le message a tester pour savoir si :
+ * Danger : le message commence par Danger
+ * Alert : le message commence par Attention
+ * Success : tous les autres cas 
+ */
+
+function testMessageBeforeDisplay(message) {
+
+    addInfoLS("log", "testMessageBeforeDisplay");
+
+    let indexOfFirst;
+    if (indexOfFirst = message.indexOf("Danger") != -1) {
+        displayMessage('Danger', message.slice(8));
+    } else if (indexOfFirst = message.indexOf("Warning") != -1) {
+        displayMessage('Warning', message.slice(9));
+    } else {
+        displayMessage('Success', message.slice(9));
+    }
+}
+
+/**
+ * 
+ * @param {string} state criticité du message
+ * @param {string} message Message à afficher
+ */
+function displayMessage(state, message) {
+
+    addInfoLS("log", message);
+
+    const $messages = document.querySelector('.message');
+    const $balise = document.createElement('div')
+    $balise.setAttribute('class', 'alert alert-' + state);
+    $messages.append($balise);
+    $balise.append(message);
+
+}
+
+
 // changement de thème
 //*******************************************************************
 
@@ -646,4 +692,4 @@ function switchTheme(e) {
 }
 
 
-export { currentPage, currentNav, htmlEntities, checkInputAll, isAtLeastOneCheck, displayTabUser, logValidate, addValidate, getInfoLS, updateInfoLS, addInfoLS, isKeyExistLS, removeKeyLS, ListenClickLine, updateTime, detectColorScheme, switchTheme }
+export { currentPage, currentNav, htmlEntities, checkInputAll, isAtLeastOneCheck, displayTabUser, logValidate, addValidate, getInfoLS, updateInfoLS, addInfoLS, isKeyExistLS, removeKeyLS, ListenClickLine, updateTime, testMessageBeforeDisplay, displayMessage, detectColorScheme, switchTheme }

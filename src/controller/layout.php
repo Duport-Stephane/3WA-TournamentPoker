@@ -10,22 +10,23 @@
     <header>
         <?php if ($page !== 'game') : { ?>
                 <?php require_once './src/views/partials/header.phtml'; ?>
-        <?php } else : { ?>
-            <h1 class="headband">
-                <?php $tournament = new \Models\Tournament ?>
-                <?= $tournament->getTournamentName(1) ?>
-            </h1>
+            <?php }
+        else : { ?>
+                <h1 class="headband">
+                    <?php $tournament = new \Models\Tournament ?>
+                    <?= $tournament->getTournamentName(1) ?>
+                </h1>
         <?php }
         endif; ?>
     </header>
 
     <main class='container'>
 
+        <?php require_once './src/controller/' . $page . '.php' ?>
+
         <div class="message">
             <?php require_once './src/views/partials/message.phtml'; ?>
         </div>
-
-        <?php require_once './src/controller/' . $page . '.php' ?>
 
     </main>
 

@@ -1,8 +1,5 @@
 <?php if (\Models\Session::isOffsetExists('alert') && !empty(\Models\Session::getOffset('alert'))) : ?>
     <div id="notifAlert" class="alert alert-danger">
-        <!-- <?php foreach (\Models\Session::getOffset('alert') as $value) : ?>
-            <p><?= $value ?></p>
-        <?php endforeach; ?> -->
         <p><?= \Models\Session::getOffset('alert') ?></p>
     </div>
 <?php endif; ?>
@@ -13,6 +10,6 @@
     </div>
 <?php endif; ?>
 
-<!-- Juste pour s'assurer de ne pas afficher 2 fois les notifications -->
+<!-- To not display 2 times -->
 <?php \Models\Session::unsetOffset('alert'); ?>
 <?php \Models\Session::unsetOffset('info'); ?>

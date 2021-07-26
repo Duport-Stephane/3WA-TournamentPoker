@@ -12,35 +12,15 @@ require_once './src/autoload.php';
 // Provision of the session
 \Models\Session::init();
 
-
-
-
-// Creer une variable tableau $adminPages = [] avec la liste de toutes les pages où il faut être admin pour y accéder
-
-
-
-
-// var_dump($_POST);
-// var_dump($_GET);
-// die;
-
 // *************** POST ***************
 if (isset($_POST) && !empty($_POST)) {
 
-    // var_dump("POST");
-    // var_dump($_POST);
-    // var_dump($_POST['action']);
-    // die;
-
     if (array_key_exists('action', $_POST) && !empty($_POST['action'])) {
-
-        // var_dump($_POST['action']);
-        // die;
 
         switch ($_POST['action']) {
             case 'addPlayerList':
             case 'delPlayerList':
-                // Call from modifPlayerList from ADD ou DEL button on players page
+                // Call from modifPlayerList from ADD ou REMOVE button on players page
                 $page = 'players';
                 require_once './src/services/ajaxPlayers.php';
                 break;
@@ -75,14 +55,9 @@ if (isset($_POST) && !empty($_POST)) {
     }
 
 
-    // *************** GET ***************
 } else if (isset($_GET) && !empty($_GET)) {
 
     if (array_key_exists('page', $_GET) && !empty($_GET['page']) && array_key_exists('action', $_GET) && !empty($_GET['action'])) {
-
-        // var_dump("GET Action");
-        // var_dump($_GET['action']);
-        // die;
 
         switch ($_GET['action']) {
             case 'display':
@@ -99,18 +74,11 @@ if (isset($_POST) && !empty($_POST)) {
     } else if (array_key_exists('page', $_GET) && !empty($_GET['page'])) {
         // No specific treatment, Display requested page (except home)
 
-        // var_dump("GET Page");
-
         $page = $_GET['page'];
-    // } else {
-    //     $page = 'home';
     }
 } else {
     // First call, Display Home page
 
-    // var_dump("Page Home");
-
-    // Session::logout();
     $page = 'home';
 }
 

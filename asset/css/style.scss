@@ -437,6 +437,11 @@
                 padding: 0.1rem;
             }
             
+            .big {
+                font-size: 2rem;
+                padding: 0.3rem;
+            }
+            
             .current {
                 color: var(--currentNav);
                 text-shadow: 2px 2px 4px var(--textShadowH1);
@@ -628,12 +633,11 @@
             
             .message.form-error {
                 display: block;
-                background-color: var(--bgColorAlert);
-                color: #fff;
-                padding: 0.5em;
-                border: 2px solid var(--border);
-                border-radius: 0.5rem;
-                width: 90%
+                border: 1px solid var(--border);
+                border-radius: 1rem;
+                padding: .8rem;
+                color: var(--fontColor);
+                background-color: var(--bgColorDanger);
             }
             
             .padding-5 {

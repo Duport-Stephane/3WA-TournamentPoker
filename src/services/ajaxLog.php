@@ -250,6 +250,10 @@ if (isset($_POST) && !empty($_POST) && isset($_POST['action']) && !empty($_POST[
     } catch (DomainException $e) {
         \Models\Session::setOffset('alert', $e->getMessage());
         echo $e->getMessage();
+
+        if ($e->getCode() === 404) {
+            header('Location: ./index.php?page=404');
+        }
         die;
     }
 
@@ -271,8 +275,11 @@ if (isset($_GET) && !empty($_GET)) {
         \Models\Session::setOffset('alert', $e->getMessage());
         echo $e->getMessage();
 
-        header('Location: ./index.php?page=login');
-
+        if ($e->getCode() === 404) {
+            header('Location: ./index.php?page=404');
+        } else {
+            header('Location: ./index.php?page=login');
+        }
         die;
     }
 }
