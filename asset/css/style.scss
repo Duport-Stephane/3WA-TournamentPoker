@@ -17,10 +17,10 @@
             }
             
             // *******************************************************************
-            // *************         Déclaration de variables     ****************
+            // *************         Init VARIABLES     ****************
             // *******************************************************************
-            // ******************         COLORIS     ************************
-            // Theme Bleu
+            // ******************         COLORS     ************************
+            // Blue Theme
              :root {
                 --fontColor: #fff;
                 --fontInput: rgb(31, 48, 133);
@@ -48,7 +48,6 @@
             
             //-------------------------------
             [data-theme="green"] {
-                // Theme Vert
                 --fontColor: #fff;
                 --fontInput: rgb(15, 68, 15);
                 --bgColor: rgba(15, 68, 15, 0.5);
@@ -375,6 +374,9 @@
                 & .bonus,
                 .theme-switch {
                     display: none;
+                }
+                & .checkbox {
+                    visibility: hidden;
                 }
             }
             

@@ -334,6 +334,9 @@ footer .bonus,
 footer .theme-switch {
   display: none;
 }
+footer .checkbox {
+  visibility: hidden;
+}
 
 @media screen and (min-width: 768px) {
   .navHeader nav {

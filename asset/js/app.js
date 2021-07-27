@@ -1,10 +1,11 @@
 'use strict';
 
 import * as callback from './callBack.js';
-import * as ajaxCallback from './ajaxCallBack.js';
-import * as canvas from './canvas.js';
-import * as app_Inscription from './app_Inscription.js';
-import * as app_Login from './app_Login.js';
+import * as inscription from './app_Inscription.js';
+import * as login from './app_Login.js';
+import * as admin from './app_Admin.js';
+import * as player from './app_Player.js';
+import * as bonus from './app_Bonus.js';
 
 document.addEventListener('DOMContentLoaded', function() {
 
@@ -28,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
     //*******************************************************************
     if (pageAct === 'inscription' || pageAct === 'dashboardUser' || pageAct === 'dashboardAdmin') {
 
-        app_Inscription.inscriptionDashboard();
+        inscription.funct_inscriptionDashboard();
 
     }
 
@@ -37,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
     //*******************************************************************
     if (pageAct === 'login') {
 
-        app_Login.login_user();
+        login.funct_login_user();
 
     }
 
@@ -57,34 +58,8 @@ document.addEventListener('DOMContentLoaded', function() {
     //*******************************************************************
     if (pageAct === 'dashboardAdmin') {
 
-        // Listen click on line
-        callback.ListenClickLine();
+        admin.funct_dashboard_Admin();
 
-        // Listen DELETE button
-        document.querySelector('.delUserList').addEventListener('submit', e => {
-            e.preventDefault();
-
-            callback.addInfoLS("log", "Button DELETE user");
-
-            if (callback.isAtLeastOneCheck('users')) {
-                const form = new FormData(e.target);
-                e.target.reset();
-
-                // Confirm ?
-                if (window.confirm("Toute suppression est définitve ! Souhaitez-vous supprimer la sélection ?")) {
-
-                    callback.addInfoLS("log", "Button delUserList");
-
-                    ajaxCallback.delUserList(form);
-                } else {
-
-                    callback.addInfoLS("log", "Abort DELETE user");
-
-                    window.location = './index.php?page=dashboardAdmin';
-                }
-
-            }
-        });
     }
 
 
@@ -92,45 +67,8 @@ document.addEventListener('DOMContentLoaded', function() {
     //*******************************************************************
     if (pageAct === 'players') {
 
-        // Ecoute le click sur la checkbox ALL des 2 tableaux Users et Players 
-        // Si coché alors il faut cocher TOUS les checkboxes
-        // Si décoché, alors décocher TOUS les checkboxes
-        const $allCheckboxes = document.querySelectorAll("input[name='checkboxall[]']");
-        $allCheckboxes.forEach($checkbox => {
-            $checkbox.addEventListener('change', e => {
-                // console.log(e)
-                callback.checkInputAll(e.target.checked, e.target.value);
-            })
-        });
+        player.funct_player();
 
-        // Ecoute le clic n'importe où sur une ligne du tableau pour cocher la checkbox
-        callback.ListenClickLine();
-
-
-        // Ecoute des boutons Ajouter un player et Retirer un player
-        const $buttonValidUsers = document.querySelectorAll('.addPlayerList, .delPlayerList')
-            // Ecoute le click sur les boutons et passe les checkboxes cochées au travers du form
-        $buttonValidUsers.forEach($button => {
-            $button.addEventListener('submit', e => {
-                e.preventDefault();
-
-                let type;
-                if (e.target.className === 'addPlayerList') {
-                    type = 'users'
-                } else {
-                    type = 'players'
-                }
-
-                callback.addInfoLS("log", "Button " + e.target.className);
-
-                if (callback.isAtLeastOneCheck(type)) {
-                    const form = new FormData(e.target);
-                    e.target.reset();
-
-                    ajaxCallback.modifPlayerList(form);
-                }
-            });
-        });
     }
 
 
@@ -149,24 +87,12 @@ document.addEventListener('DOMContentLoaded', function() {
     //*******************************************************************
     if (pageAct === 'bonus') {
 
-        // callback.addInfoLS("log", "page Bonus");
+        bonus.funct_bonus();
 
-        const $btnStart = document.getElementById('canvasOn');
-        $btnStart.addEventListener('click', e => {
-            e.preventDefault;
-            $btnStart.disabled = true;
-            canvas.animCanvas();
-        });
-        const $btnStop = document.getElementById('canvasOff');
-        $btnStop.addEventListener('click', e => {
-            e.preventDefault;
-            $btnStart.disabled = false;
-            canvas.stopCanvas();
-        });
     };
 
 
-    // changement de thème
+    // Modify Theme
     //*******************************************************************
     // https://stackoverflow.com/questions/56300132/how-to-override-css-prefers-color-scheme-setting
 
@@ -178,8 +104,8 @@ document.addEventListener('DOMContentLoaded', function() {
     //listener for changing themes
     toggleSwitch.addEventListener('change', callback.switchTheme, false);
 
-    //pre-check the green-theme checkbox if green-theme is set
-    if (document.documentElement.getAttribute("data-theme") == "green") {
-        toggleSwitch.checked = true;
-    }
+    // //pre-check the green-theme checkbox if green-theme is set
+    // if (document.documentElement.getAttribute("data-theme") == "green") {
+    //     toggleSwitch.checked = true;
+    // }
 });

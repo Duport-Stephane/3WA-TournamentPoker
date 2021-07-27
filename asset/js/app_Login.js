@@ -5,7 +5,7 @@ import * as callback from './callBack.js';
 // page LOGIN
 //*******************************************************************
 
-function login_user() {
+function funct_login_user() {
     const user_email = callback.getInfoLS('user');
 
     // If exist : display mail from LocalStorage
@@ -36,4 +36,4 @@ function login_user() {
     });
 };
 
-export { login_user }
+export { funct_login_user }

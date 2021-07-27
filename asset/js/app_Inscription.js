@@ -5,7 +5,7 @@ import * as callback from './callBack.js';
 // page INSCRIPTION || DASHBOARD_USER || DASHBOARD_ADMIN
 //*******************************************************************
 
-function inscriptionDashboard() {
+function funct_inscriptionDashboard() {
     const $manipUsers = document.querySelectorAll('.createUser, .updateUser, .updateAdmin');
     $manipUsers.forEach($manipUser => {
         $manipUser.addEventListener('submit', e => {
@@ -32,4 +32,4 @@ function inscriptionDashboard() {
     });
 }
 
-export { inscriptionDashboard };
+export { funct_inscriptionDashboard };

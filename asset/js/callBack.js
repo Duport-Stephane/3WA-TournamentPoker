@@ -90,15 +90,14 @@ function updateInfoLS(key, value) {
 
 /**
  * add value in LocalStorage for the key
+ * to optimise the UX
  * @param {string} key 
  * @param {string} value 
  */
 function addInfoLS(key, value) {
+    // this function is to optimise the User Experience
     const _manager = new ManagerLS
     const _old = _manager.getDatasByKey(key)
-        // const timeNow = new Date()
-        // const timeNowFormat = timeNow.getHours() + ":" + timeNow.getMinutes() + ":" + timeNow.getSeconds() + " => "
-        // const _new = _old + String.fromCharCode(10) + timeNowFormat + value
     const _new = _old + String.fromCharCode(10) + value
     _manager.setDatas(key, _new)
 }
@@ -644,26 +643,24 @@ function displayMessage(state, message) {
 }
 
 
-// changement de thème
+// Modify Theme
 //*******************************************************************
-
-// https://stackoverflow.com/questions/56300132/how-to-override-css-prefers-color-scheme-setting
 
 //determines if the user has a set theme
 function detectColorScheme() {
-    var theme = "blue"; //default to blue
+    let theme = "blue"; //default to blue
 
     //local storage is used to override OS theme settings
-    if (localStorage.getItem("theme")) {
-        if (localStorage.getItem("theme") == "green") {
-            var theme = "green";
+    if (isKeyExistLS("theme")) {
+        if (getInfoLS("theme") == "green") {
+            theme = "green";
         }
     } else if (!window.matchMedia) {
         //matchMedia method not supported
         return false;
     } else if (window.matchMedia("(prefers-color-scheme: green)").matches) {
         //OS theme setting detected as green
-        var theme = "green";
+        theme = "green";
     }
 
     //green theme preferred, set document with a `data-theme` attribute
@@ -678,17 +675,14 @@ const toggleSwitch = document.querySelector('#theme-switch input[type="checkbox"
 //function that changes the theme, and sets a localStorage variable to track the theme between page loads
 function switchTheme(e) {
     if (e.target.checked) {
-        localStorage.setItem('theme', 'green');
+        updateInfoLS('theme', 'green');
         document.documentElement.setAttribute('data-theme', 'green');
-        toggleSwitch.checked = true;
+        // toggleSwitch.checked = true;
     } else {
-        localStorage.setItem('theme', 'blue');
+        updateInfoLS('theme', 'blue');
         document.documentElement.setAttribute('data-theme', 'blue');
-        toggleSwitch.checked = false;
+        // toggleSwitch.checked = false;
     }
-
-    // Remove Key "log" from LocalStorage
-    removeKeyLS("log");
 }
 
 
