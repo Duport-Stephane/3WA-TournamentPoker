@@ -1,29 +1,30 @@
 'use strict';
 
-import * as callback from './callBack.js';
 import * as inscription from './app_Inscription.js';
 import * as login from './app_Login.js';
 import * as admin from './app_Admin.js';
 import * as player from './app_Player.js';
 import * as bonus from './app_Bonus.js';
+import * as callback from './callBack.js';
+import * as call_LS from './callBack_Localstorage.js'
+import * as call_Game from './callBack_Game.js'
+import * as call_Theme from './callBack_Theme.js'
 
 document.addEventListener('DOMContentLoaded', function() {
 
     // FOR ALL PAGES
     //*******************************************************************
-
-    // A chaque changement de page, récupère le nom de la page
+    // To search for page name
     const pageAct = callback.currentPage();
 
-    // met en évidence le bon menu de la nav du header et du footer
+    // Highlight name in menu and header navbar
     callback.currentNav(pageAct);
 
-    callback.addInfoLS("log", "Display " + pageAct);
+    call_LS.addInfoLS("log", "Display " + pageAct);
 
     // Remove messages after 4 secondes 
     $('#notif').delay(4000).fadeOut()
     $('#notifAlert').delay(4000).fadeOut()
-
 
     // page INSCRIPTION || DASHBOARD_USER || DASHBOARD_ADMIN
     //*******************************************************************
@@ -33,7 +34,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     }
 
-
     // page LOGIN
     //*******************************************************************
     if (pageAct === 'login') {
@@ -42,17 +42,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
     }
 
-
     // Page LOGOUT
     //*******************************************************************
-
-    if (pageAct === 'logout' && callback.isKeyExistLS('user')) {
+    if (pageAct === 'logout' && call_LS.isKeyExistLS('user')) {
         document.querySelector('button').addEventListener('click', e => {
             // Remove localStorage
-            callback.removeKeyLS('user');
+            call_LS.removeKeyLS('user');
         })
     }
-
 
     // page DASHBOARD_ADMIN only
     //*******************************************************************
@@ -62,7 +59,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     }
 
-
     // page PLAYER
     //*******************************************************************
     if (pageAct === 'players') {
@@ -71,17 +67,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
     }
 
-
     // page GAME
     //*******************************************************************
-
     if (pageAct === 'game') {
 
         const actualTime = document.getElementById("actualTime");
-        window.setTimeout(callback.updateTime(), 1000);
+        window.setTimeout(call_Game.updateTime(), 1000);
 
     };
-
 
     // page BONUS
     //*******************************************************************
@@ -91,21 +84,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     };
 
-
     // Modify Theme
     //*******************************************************************
-    // https://stackoverflow.com/questions/56300132/how-to-override-css-prefers-color-scheme-setting
-
-    callback.detectColorScheme();
+    call_Theme.detectColorScheme();
 
     //identify the toggle switch HTML element
     const toggleSwitch = document.querySelector('#theme-switch input[type="checkbox"]');
 
     //listener for changing themes
-    toggleSwitch.addEventListener('change', callback.switchTheme, false);
-
-    // //pre-check the green-theme checkbox if green-theme is set
-    // if (document.documentElement.getAttribute("data-theme") == "green") {
-    //     toggleSwitch.checked = true;
-    // }
+    toggleSwitch.addEventListener('change', call_Theme.switchTheme, false);
 });

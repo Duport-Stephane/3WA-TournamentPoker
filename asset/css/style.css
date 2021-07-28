@@ -39,7 +39,7 @@ q {
 [data-theme=green] {
   --fontColor: #fff;
   --fontInput: rgb(15, 68, 15);
-  --bgColor: rgba(15, 68, 15, 0.5);
+  --bgColor: rgba(15, 68, 15, .5);
   --hoverNav: yellowgreen;
   --hoverBtn: rgb(178, 253, 178);
   --currentNav: rgb(219, 55, 55);
@@ -51,12 +51,12 @@ q {
   --fontColorCaption: rgb(15, 68, 15);
   --bgColorArray: rgba(15, 110, 15, .8);
   --bgHeadbandLeft: #fff;
-  --bgHeadbandRight: rgba(15, 68, 15, .5);
+  --bgHeadbandRight: rgba(15, 68, 15, .8);
   --border: #000;
-  --bgColorSuccess: rgba(15, 110, 15, .8);
+  --bgColorSuccess: rgba(21, 158, 21, .8);
   --bgColorInfo: rgba(15, 68, 15, .8);
-  --bgColorAlert: rgba(161, 96, 20, .8);
-  --bgColorDanger: rgba(201, 40, 40, .5);
+  --bgColorAlert: rgba(206, 122, 25, .8);
+  --bgColorDanger: rgba(139, 27, 27, .8);
   --bgColorGrey: rgba(128, 128, 128, .8);
   --bgColorGreySoft: rgba(128, 128, 128, .4);
 }
@@ -64,7 +64,7 @@ q {
 body {
   margin: 0 auto;
   text-align: center;
-  min-width: 450px;
+  min-width: 400px;
   max-width: 1450px;
   font-family: "Zilla Slab", serif;
   color: var(--fontColor);
@@ -140,7 +140,7 @@ h3 {
 }
 
 .container {
-  margin: 0 auto;
+  margin: 0 0.5rem;
   height: 85vh;
 }
 
@@ -261,6 +261,7 @@ fieldset {
 .grid {
   display: grid;
   font-size: 1.5rem;
+  row-gap: 0.4rem;
 }
 
 .item {
@@ -269,19 +270,20 @@ fieldset {
   min-height: 50px;
 }
 
-.col2 {
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 100px;
-}
-
 .col3 {
   grid-template-columns: 1fr 2fr 1fr;
   grid-template-rows: auto;
+  margin-top: 0.4rem;
+  margin-bottom: 0.4rem;
 }
 
 .col4 {
-  grid-template-columns: 25% 50% 12.5% 12.5%;
+  grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: auto;
+  margin-top: 0.4rem;
+}
+.col4 .btn-alert {
+  display: none;
 }
 
 .portrait2 {
@@ -299,6 +301,7 @@ footer {
   bottom: 0;
   font-size: 0.8rem;
   width: 100%;
+  max-width: 1450px;
   padding-top: 1rem;
 }
 footer section {
@@ -352,6 +355,13 @@ footer .checkbox {
   }
   .fond-Table div {
     width: 30rem;
+  }
+
+  .col4 {
+    grid-template-columns: 25% 50% 12.5% 12.5%;
+  }
+  .col4 .btn-alert {
+    display: block;
   }
 
   footer {

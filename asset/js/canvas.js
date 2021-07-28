@@ -1,5 +1,8 @@
-////////////////////////////////////////////////////////////////////////////////
-//////////////////// CANVAS pour BONUS
+'use strict'
+
+import * as call_LS from './callBack_Localstorage.js'
+
+//////////////////// CANVAS for BONUS
 let timeoutId;
 let ctx;
 const carte = {
@@ -8,33 +11,25 @@ const carte = {
     picture: './asset/images/bonus/Card75x100.png'
 }
 const nbCard = 20;
-const pos = new Array(); // pos[i] = [ x , y ]
+const pos = new Array();
 
 function animCanvas() {
-    console.log('ANIME CANVAS')
-        // Manipulation du CANVAS
+    call_LS.addInfoLS('log', 'ANIME CANVAS')
+
     let $canvas = document.querySelector('.canvas');
     ctx = $canvas.getContext('2d');
 
-    // ctx.strokeStyle = "black";
     for (let i = 0; i < nbCard; i++) {
-        // pos[i][0].push(Math.floor(Math.random() * (canvas.width - carte.largeur)));
-        // pos[i][1].push(-(Math.random() * (600 - 50) + 50));
-
-        // pos[i] = [ x , y ]
         pos[i] = [0, 0];
         pos[i][0] = Math.floor(Math.random() * (canvas.width - carte.largeur));
         pos[i][1] = -(Math.random() * 600 + 50);
-        // pos[i][1] = -carte.hauteur;
-        // console.log("i = " + i + " - " + pos[i][0] + ' / ' + pos[i][1]);
     }
-    timeoutId = window.setTimeout(updateTime($canvas), 1);
+    timeoutId = window.setTimeout(updateTime(), 1);
 
 }
 
-function updateTime($canvas) {
+function updateTime() {
     onClear();
-    // ctx.strokeRect(pos.coordX, pos.coordY, carte.largeur, carte.hauteur);
     for (let i = 0; i < nbCard; i++) {
         addImage('./asset/images/carte-R-50x70.jpg', pos[i][0], pos[i][1], ctx);
         pos[i][1] += 1;
@@ -42,14 +37,13 @@ function updateTime($canvas) {
             pos[i][1] = -(Math.random() * 400 + 100);
             pos[i][0] = Math.floor(Math.random() * (canvas.width - carte.largeur));
         }
-        // console.log("i = " + i + " - " + pos[i][0] + ' / ' + pos[i][1]);
     }
 
     timeoutId = window.setTimeout(updateTime, 1);
 }
 
 function stopCanvas() {
-    console.log('STOP CNAVAS')
+    call_LS.addInfoLS('log', 'STOP CNAVAS')
     window.clearTimeout(timeoutId);
     stop;
 }
@@ -71,6 +65,5 @@ function addImage(src, posX, posY, ctx) {
     // ctx.restore();
     // };
 }
-
 
 export { animCanvas, stopCanvas }

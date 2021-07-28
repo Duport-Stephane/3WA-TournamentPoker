@@ -1,6 +1,7 @@
 'use strict';
 
-import * as callback from './callBack.js';
+import * as call_LS from './callBack_Localstorage.js'
+import * as call_Inscription from './callBack_Inscription.js'
 
 // page INSCRIPTION || DASHBOARD_USER || DASHBOARD_ADMIN
 //*******************************************************************
@@ -14,12 +15,12 @@ function funct_inscriptionDashboard() {
             // Get action to do (from input hidden)
             const action = e.target[1].value;
 
-            callback.addInfoLS("log", action);
+            call_LS.addInfoLS("log", action);
 
             // form datas
             const form = new FormData(e.currentTarget)
 
-            if (callback.addValidate(form, action)) {
+            if (call_Inscription.addValidate(form, action)) {
 
                 if (action === 'persist') {
                     // Back to Home Page
