@@ -1,9 +1,11 @@
 'use strict'
 
+import * as callback from './callBack.js'
+import * as call_LS from './callBack_Localstorage.js';
+import * as call_Log_Inscript from './callBack_Log_Inscript.js'
 import * as ajaxCallBack from './ajaxCallBack.js';
 import ManagerLS from './ManagerLS.js';
 import ErrorCustom from './ErrorCustom.js';
-import * as call_LS from './callBack_Localstorage.js';
 
 // page LOGIN
 //*******************************************************************
@@ -38,7 +40,7 @@ function logValidate(form) {
                 type: 'empty',
                 message: `Merci de remplir le champ ${input.placeholder}`
             })
-        } else if (input.name === 'email' && !isMailValid(input.value)) {
+        } else if (input.name === 'email' && !call_Log_Inscript.isMailValid(input.value)) {
 
             call_LS.addInfoLS("log", "invalid EMAIL ", input)
 
@@ -47,7 +49,7 @@ function logValidate(form) {
                 type: 'format',
                 message: `Merci de remplir le champ ${input.placeholder} avec un email correctement formaté`
             })
-        } else if (input.name === 'password' && !isPasswordValid(input.value)) {
+        } else if (input.name === 'password' && !call_Log_Inscript.isPasswordValid(input.value)) {
 
             call_LS.addInfoLS("log", "invalid PWD ", input)
 
@@ -58,14 +60,14 @@ function logValidate(form) {
             })
         } else {
 
-            input.value = htmlEntities(input.value)
+            input.value = callback.htmlEntities(input.value)
 
             switch (input.name) {
                 case 'email':
-                    _user.email = htmlEntities(input.value)
+                    _user.email = callback.htmlEntities(input.value)
                     break;
                 case 'password':
-                    _user.password = htmlEntities(input.value)
+                    _user.password = callback.htmlEntities(input.value)
                     break;
             }
         }
