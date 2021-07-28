@@ -1,7 +1,6 @@
-/* Ici, les fonctions AJAX de Callback appelées par les écouteurs de app.js */
+'use strict';
 
-// Appels de dépendances
-import * as callback from './callBack.js'
+import * as call_LS from './callBack_Localstorage.js'
 import ErrorCustom from './ErrorCustom.js' // Gestion des erreurs s'il y en a
 
 
@@ -19,7 +18,7 @@ async function persistUser(form) {
     })
     const result = await response.text()
 
-    callback.addInfoLS("log", "FETCH persitUser : " + result);
+    call_LS.addInfoLS("log", "FETCH persitUser : " + result);
     return result;
 }
 
@@ -28,7 +27,7 @@ function isPersistUser(form) {
     persistUser(form).then(result => result.text())
         .then(result => {
 
-            callback.addInfoLS("log", "FETCH isPersistUser : " + result);
+            call_LS.addInfoLS("log", "FETCH isPersistUser : " + result);
 
             if (result.length < 500) {
                 const _customError = new ErrorCustom;
@@ -46,7 +45,7 @@ function isPersistUser(form) {
  */
 async function updateUser(form) {
 
-    callback.addInfoLS("log", "FETCH updateUser");
+    call_LS.addInfoLS("log", "FETCH updateUser");
 
     const response = await fetch('./index.php?action=updateUser', {
         method: 'post',
@@ -60,7 +59,7 @@ async function updateUser(form) {
  */
 async function updateAdmin(form) {
 
-    callback.addInfoLS("log", "FETCH updateAdmin");
+    call_LS.addInfoLS("log", "FETCH updateAdmin");
 
     const response = await fetch('./index.php?action=updateAdmin#userProfilDashboard', {
         method: 'post',
@@ -78,7 +77,7 @@ async function updateAdmin(form) {
  */
 function isSamePassword(form) {
 
-    callback.addInfoLS("log", "FETCH isSamePassword");
+    call_LS.addInfoLS("log", "FETCH isSamePassword");
 
     // on compare les 2 password
     return fetch('./index.php', {
@@ -98,7 +97,7 @@ function isSamePassword(form) {
  */
 function delUserList(form) {
 
-    callback.addInfoLS("log", "FETCH delUserList");
+    call_LS.addInfoLS("log", "FETCH delUserList");
 
     fetch('./index.php?action=delUserList', {
             method: 'POST',
@@ -120,7 +119,7 @@ function delUserList(form) {
 function modifPlayerList(form) {
 
 
-    callback.addInfoLS("log", "FETCH modifPlayerList");
+    call_LS.addInfoLS("log", "FETCH modifPlayerList");
 
     // Fetch pour actualiser la table Player
 
