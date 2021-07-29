@@ -1,6 +1,6 @@
 'use strict'
 
-import * as callback from './callBack.js';
+import * as call_LS from './callBack_Localstorage.js';
 
 class ErrorCustom {
 
@@ -14,7 +14,7 @@ class ErrorCustom {
      * @return array messages
      */
     getMessages() {
-        callback.addInfoLS("log", "get errorMessages");
+        call_LS.addInfoLS("log", "get errorMessages");
         return this._messages
     }
 
@@ -23,7 +23,7 @@ class ErrorCustom {
      */
     setMessages(errorMessages) {
 
-        callback.addInfoLS("log", "Set errorMessages");
+        call_LS.addInfoLS("log", "Set errorMessages");
 
         this._messages = errorMessages
     }
@@ -31,7 +31,7 @@ class ErrorCustom {
     // Display errors
     displayMessages(page, action) {
 
-        callback.addInfoLS("log", "display ErrorMessages");
+        call_LS.addInfoLS("log", "display ErrorMessages");
         const $errorSpan = document.querySelector('.message');
         $errorSpan.classList.add('form-error');
 
@@ -47,7 +47,7 @@ class ErrorCustom {
 
     viderError() {
 
-        callback.addInfoLS("log", "Clear Errors");
+        call_LS.addInfoLS("log", "Clear Errors");
         const $errorSpan = document.querySelector('.message')
         const $errorP = $errorSpan.querySelector('p')
         const $errorChild = $errorSpan.removeChild($errorP)

@@ -1,6 +1,7 @@
 'use strict'
 
 import ErrorCustom from './ErrorCustom.js';
+import * as callback from './callBack.js'
 import * as call_LS from './callBack_Localstorage.js';
 
 /**
@@ -38,7 +39,7 @@ function isAtLeastOneCheck(type) {
     if (!isCheck) {
         const _customError = new ErrorCustom
         _customError.setMessages('Vous n\'avez sélectionné aucune ligne dans cette liste !');
-        _customError.displayMessages(currentPage(), 'display');
+        _customError.displayMessages(callback.currentPage(), 'display');
     }
     return isCheck;
 }
