@@ -2,7 +2,7 @@
 
 import * as call_LS from './callBack_Localstorage.js'
 import * as call_Payer_DashAdmin from './callBack_Player_DashAdmin.js'
-import * as call_Player from './callBack_Player.js'
+import * as call_checkbox from './callBack_Checkbox.js'
 import * as ajaxCallback from './ajaxCallBack.js';
 
 // page PLAYER
@@ -15,7 +15,7 @@ function funct_player() {
     const $allCheckboxes = document.querySelectorAll("input[name='checkboxall[]']");
     $allCheckboxes.forEach($checkbox => {
         $checkbox.addEventListener('change', e => {
-            call_Player.checkInputAll(e.target.checked, e.target.value);
+            call_checkbox.checkInputAll(e.target.checked, e.target.value);
         })
     });
 
@@ -37,7 +37,7 @@ function funct_player() {
 
             call_LS.addInfoLS("log", "Button " + e.target.className);
 
-            if (call_Player.isAtLeastOneCheck(type)) {
+            if (call_checkbox.isAtLeastOneCheck(type)) {
                 const form = new FormData(e.target);
                 e.target.reset();
 

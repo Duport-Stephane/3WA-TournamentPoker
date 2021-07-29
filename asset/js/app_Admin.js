@@ -2,7 +2,7 @@
 
 import * as call_LS from './callBack_Localstorage.js'
 import * as call_Payer_DashAdmin from './callBack_Player_DashAdmin.js'
-import * as call_Player from './callBack_Player.js'
+import * as call_checkbox from './callBack_Checkbox.js'
 import * as ajaxCallback from './ajaxCallBack.js';
 
 // page DASHBOARD_ADMIN only
@@ -17,7 +17,7 @@ function funct_dashboard_Admin() {
 
         call_LS.addInfoLS("log", "Button DELETE user");
 
-        if (call_Player.isAtLeastOneCheck('users')) {
+        if (call_checkbox.isAtLeastOneCheck('users')) {
             const form = new FormData(e.target);
             e.target.reset();
 

@@ -54,16 +54,8 @@ function onClear() {
 
 function addImage(src, posX, posY, ctx) {
     let myImg = document.createElement('img')
-        // On définie la source de cette image 
     myImg.src = src;
-    // Quand l'image est chargée par le navigateur on la place dans le Canvas 
-    // myImg.onload = function() {
-    //On place l'image 
-    // ctx.save();
-    // ctx.rotate(pos.angle);
     ctx.drawImage(myImg, posX, posY);
-    // ctx.restore();
-    // };
 }
 
 export { animCanvas, stopCanvas }

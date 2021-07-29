@@ -296,6 +296,11 @@ fieldset {
   font-size: 3rem;
 }
 
+.canvas {
+  margin-top: 1rem;
+  border: 1px solid var(--border);
+}
+
 footer {
   position: fixed;
   bottom: 0;
@@ -622,4 +627,4 @@ footer .theme-switch {
 .bigImg {
   max-width: 15rem;
   height: auto;
-}/*# sourceMappingURL=style.css.map */
+}/*# sourceMappingURL=style.css.map */*/

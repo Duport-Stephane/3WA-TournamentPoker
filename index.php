@@ -1,18 +1,10 @@
 <?php
 
-/////////////////////////////////// A SUPPRIMER //////////////////////////////////
-// Display all errors
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-/////////////////////////////////// FIN SUPPRESSION //////////////////////////////////
-
 require_once './src/autoload.php';
 
 // Provision of the session
 \Models\Session::init();
 
-// *************** POST ***************
 if (isset($_POST) && !empty($_POST)) {
 
     if (array_key_exists('action', $_POST) && !empty($_POST['action'])) {
@@ -78,7 +70,6 @@ if (isset($_POST) && !empty($_POST)) {
     }
 } else {
     // First call, Display Home page
-
     $page = 'home';
 }
 

@@ -1,24 +1,12 @@
 <?php
 
-// var_dump($_GET);
-// var_dump($_SERVER);
-// var_dump($_SESSION);
-// die;
-
-// Actions : Traitement (POST)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    // var_dump('DASHBOARD USER.PHP en POST');
-
-    // Si pas de param, je repars à l'accueil
     header('Location: ./index.php?page=dashboardUser');
     die;
 }
 
-// 1 er chargement de la page
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-
-    // var_dump('DASHBOARD USER.PHP en GET');
 
         // Test if the user is connected
         try {
@@ -32,17 +20,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             die;
         }
 
-
     $roleM = new \Models\Role;
-    // role du user
+    // role of user, only for Admin
     if (\Models\Session::getOffset1_Offset2('user', 'role_id')) {
         $roleName = $roleM->getRoleNameById((int)\Models\Session::getOffset1_Offset2('user', 'role_id'))['roleName'];
     };
 
-    // on récupère la liste des tournois à venir (closed_at = null) pour les afficher en Tableau
+    // Tournament with closed_at = null
     $tournament = new \Models\Tournament;
     $tournaments = $tournament->getAllTournamentOn();
-    // var_dump($tournaments);
 }
 
 require_once './src/views/dashboardUser.phtml';

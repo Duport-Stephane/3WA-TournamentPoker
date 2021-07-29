@@ -33,11 +33,14 @@ function updateInfoLS(key, value) {
  * @param {string} value 
  */
 function addInfoLS(key, value) {
+    // ************************************************
     // this function is to optimise the User Experience
-    const _manager = new ManagerLS
-    const _old = _manager.getDatasByKey(key)
-    const _new = _old + String.fromCharCode(10) + value
-    _manager.setDatas(key, _new)
+    // ************************************************
+
+    // const _manager = new ManagerLS
+    // const _old = _manager.getDatasByKey(key)
+    // const _new = _old + String.fromCharCode(10) + value
+    // _manager.setDatas(key, _new)
 }
 
 /**

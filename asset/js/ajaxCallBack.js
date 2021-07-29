@@ -1,8 +1,7 @@
 'use strict';
 
 import * as call_LS from './callBack_Localstorage.js'
-import ErrorCustom from './ErrorCustom.js' // Gestion des erreurs s'il y en a
-
+import ErrorCustom from './ErrorCustom.js'
 
 // page INSCRIPTION
 //*******************************************************************
@@ -67,7 +66,6 @@ async function updateAdmin(form) {
     })
 }
 
-
 // page LOGIN
 //*******************************************************************
 /**
@@ -79,7 +77,6 @@ function isSamePassword(form) {
 
     call_LS.addInfoLS("log", "FETCH isSamePassword");
 
-    // on compare les 2 password
     return fetch('./index.php', {
             method: 'POST',
             body: form
@@ -87,13 +84,12 @@ function isSamePassword(form) {
         .then(response => response.text())
 }
 
-
 // page DASHBOARDADMIN
 //*******************************************************************
 /**
 /** 
  * Delete User checked on List
- * @param {*} form Le formulaire validé
+ * @param {*} form
  */
 function delUserList(form) {
 
@@ -108,20 +104,14 @@ function delUserList(form) {
         });
 }
 
-
 // page PLAYER
 //*******************************************************************
 /**
- * récupère le(s) input(s) coché(s) dans le tableau des users pour déplacer ce(s) user(s) dans la table des players
- * Uniquement si la partie n'est pas commencée !
- * @param {*} form Le formulaire validé
+ * @param {*} form
  */
 function modifPlayerList(form) {
 
-
     call_LS.addInfoLS("log", "FETCH modifPlayerList");
-
-    // Fetch pour actualiser la table Player
 
     fetch('./index.php', {
             method: 'POST',
@@ -132,6 +122,5 @@ function modifPlayerList(form) {
             window.location = './index.php?page=players&action=display';
         });
 }
-
 
 export { modifPlayerList, isSamePassword, isPersistUser, updateUser, updateAdmin, delUserList }

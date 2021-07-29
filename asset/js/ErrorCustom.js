@@ -1,7 +1,4 @@
 'use strict'
-/*
-    Gestion des erreurs
-*/
 
 import * as callback from './callBack.js';
 
@@ -12,7 +9,7 @@ class ErrorCustom {
     }
 
     /**
-     * Récupération des erreurs
+     * Get errors
      *
      * @return array messages
      */
@@ -22,7 +19,7 @@ class ErrorCustom {
     }
 
     /**
-     * Mise à jour des erreurs
+     * Set errors
      */
     setMessages(errorMessages) {
 
@@ -31,17 +28,15 @@ class ErrorCustom {
         this._messages = errorMessages
     }
 
-    // Affichage des erreurs s'il y en a
+    // Display errors
     displayMessages(page, action) {
 
         callback.addInfoLS("log", "display ErrorMessages");
         const $errorSpan = document.querySelector('.message');
-        // $errorSpan.innerHTML = '';
         $errorSpan.classList.add('form-error');
 
         const $p = document.createElement('p');
         const newContent = document.createTextNode(`${this._messages}`);
-        // $p.textContent = `${this._messages}`;
         $p.appendChild(newContent);
         $errorSpan.appendChild($p);
 
@@ -53,15 +48,11 @@ class ErrorCustom {
     viderError() {
 
         callback.addInfoLS("log", "Clear Errors");
-        // Vider les erreurs
         const $errorSpan = document.querySelector('.message')
         const $errorP = $errorSpan.querySelector('p')
         const $errorChild = $errorSpan.removeChild($errorP)
 
         $errorSpan.classList.remove('form-error')
-            // $errorSpan.innerHTML = ''
-            // $errorSpan.innerText = ''
-            // $errorSpan.textContent = ''
     }
 }
 

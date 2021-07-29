@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
     $('#notif').delay(4000).fadeOut()
     $('#notifAlert').delay(4000).fadeOut()
 
+
     // page INSCRIPTION || DASHBOARD_USER || DASHBOARD_ADMIN
     //*******************************************************************
     if (pageAct === 'inscription' || pageAct === 'dashboardUser' || pageAct === 'dashboardAdmin') {

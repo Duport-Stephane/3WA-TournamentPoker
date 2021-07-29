@@ -7,8 +7,6 @@
                 &:hover {
                     color: var(--hoverNav);
                     text-shadow: 2px 2px 2px var(--textShadowNav);
-                    // background-color: rgba(255, 255, 255, .3);
-                    // border-radius: 10px;
                 }
             }
             
@@ -73,12 +71,6 @@
             }
             
             // *******************************************************************
-            // ******************           FONT          ************************
-            // *******************************************************************
-            // *******************************************************************
-            // ******************          ICONS          ************************
-            // *******************************************************************
-            // *******************************************************************
             // ******************           BODY          ************************
             // *******************************************************************
             body {
@@ -90,7 +82,6 @@
                 color: var(--fontColor);
                 background-position: center;
                 background-image: url('../../asset/images/Background-0.png');
-                // background-size: 1280px;
                 background-repeat: repeat;
                 background-color: var(--bgColor);
                 overflow-y: scroll;
@@ -135,7 +126,6 @@
                 margin-left: auto;
                 margin-right: auto;
                 padding-top: .5rem;
-                // font-family: 'Rye', cursive;
                 font-family: 'Merienda', cursive;
                 font-size: 2.5rem;
                 text-shadow: 4px 2px var(--textShadowH1);
@@ -170,8 +160,6 @@
             .container {
                 margin: 0 .5rem;
                 height: 85vh;
-                // top: calc(50% - 200px);
-                // left: calc(50% - 240px);
             }
             
             fieldset div label {
@@ -294,7 +282,6 @@
             // ******************            GAME         ************************
             .grid {
                 display: grid;
-                // min-height: 40vh;
                 font-size: 1.5rem;
                 row-gap: .4rem;
             }
@@ -332,6 +319,12 @@
                 ;
             }
             
+            // ******************            BONUS         ************************
+            .canvas {
+                margin-top: 1rem;
+                border: 1px solid var(--border);
+            }
+            
             // *******************************************************************
             // ******************          FOOTER         ************************
             // *******************************************************************
@@ -348,9 +341,6 @@
                         width: 15%;
                     }
                 }
-                // & p {
-                //     padding-bottom: .5rem;
-                // }
                 & img {
                     padding-right: .7rem;
                 }
@@ -471,7 +461,6 @@
                 margin-top: 1rem;
                 margin-left: auto;
                 margin-right: auto;
-                // border: 1px solid var(--border);
                 overflow-y: auto;
             }
             

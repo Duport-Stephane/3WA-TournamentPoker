@@ -1,5 +1,6 @@
 'use strict'
 
+import * as callback from './callBack.js';
 import * as call_LS from './callBack_Localstorage.js';
 import * as call_Log_Inscript from './callBack_Log_Inscript.js'
 import * as ajaxCallBack from './ajaxCallBack.js';
@@ -61,32 +62,32 @@ function addValidate(form, action) {
         } else {
             switch (input.name) {
                 case 'nickname':
-                    input.value = htmlEntities(input.value);
-                    _user.nickname = htmlEntities(input.value)
+                    input.value = callback.htmlEntities(input.value);
+                    _user.nickname = callback.htmlEntities(input.value)
                     break;
                 case 'lastname':
                     if (_user.lastname !== "") {
-                        input.value = htmlEntities(input.value);
-                        _user.lastname = htmlEntities(input.value)
+                        input.value = callback.htmlEntities(input.value);
+                        _user.lastname = callback.htmlEntities(input.value)
                     }
                     break;
                 case 'firstname':
                     if (_user.firstname !== "") {
-                        input.value = htmlEntities(input.value);
-                        _user.firstname = htmlEntities(input.value)
+                        input.value = callback.htmlEntities(input.value);
+                        _user.firstname = callback.htmlEntities(input.value)
                     }
                     break;
                 case 'email':
-                    input.value = htmlEntities(input.value);
-                    _user.email = htmlEntities(input.value)
+                    input.value = callback.htmlEntities(input.value);
+                    _user.email = callback.htmlEntities(input.value)
                     break;
                 case 'password':
-                    input.value = htmlEntities(input.value);
-                    _user.password = htmlEntities(input.value)
+                    input.value = callback.htmlEntities(input.value);
+                    _user.password = callback.htmlEntities(input.value)
                     break;
                 case 'avatar':
                     if (_user.avatar !== "") {
-                        _user.avatar = htmlEntities(input.value)
+                        _user.avatar = callback.htmlEntities(input.value)
                     }
                     break;
                 case 'role':

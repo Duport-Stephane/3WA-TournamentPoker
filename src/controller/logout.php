@@ -18,5 +18,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
 \Models\Session::logout();
 
-
 require_once './src/views/logout.phtml';

@@ -1,5 +1,3 @@
-<!-- Page PLAYER : Affiche le tableau avec le bon titre en fonction de l'appel : User ou Player -->
-
 <table class='array'>
         <?php if ($type === "users") {
             $list = $users;
@@ -16,7 +14,6 @@
     </tr> 
 </table>
 <div class='array-border tab<?= $type ?>List'>
-    <!-- Emplacement du tableau des users / players -->
     <table class='array <?= $type ?>'>
         <?php foreach ($list as $user) : { ?>
                 <tr>

@@ -14,7 +14,7 @@ function isMailValid(email) {
 
     call_LS.addInfoLS("log", "isMailValid");
 
-    // https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
+    // from https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript and adapted
     const regExMail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,4}))$/;
     if (regExMail.test(email) && email.length < 32) {
         return true;
@@ -32,8 +32,8 @@ function isPasswordValid(pwd) {
 
     call_LS.addInfoLS("log", "isPassordValid");
 
-    // https://ihateregex.io/expr/password/
-    // At least 8 characters [max 32] with 1 uppercase, [1 lowercase], 1 number and 1 special char
+    // from https://ihateregex.io/expr/password/ and adapted
+    // At least 8 characters [max 32] with 1 uppercase, 1 lowercase, 1 number and 1 special char
     const regExPwd = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,32}$/;
     if (regExPwd.test(pwd)) {
         return true;

@@ -4,7 +4,7 @@ import * as call_LS from './callBack_Localstorage.js';
 
 // Modify Theme
 //*******************************************************************
-// https://stackoverflow.com/questions/56300132/how-to-override-css-prefers-color-scheme-setting
+// from https://stackoverflow.com/questions/56300132/how-to-override-css-prefers-color-scheme-setting and adapted
 
 //determines if the user has a set theme
 function detectColorScheme() {

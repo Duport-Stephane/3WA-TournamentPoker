@@ -3,21 +3,11 @@ declare(strict_types=1);
 
 namespace Models;
 
-// // Init Session
-// if (session_status() === PHP_SESSION_NONE) {
-//     // start
-//     session_start();
-// }
-
-
 class Session
 {
     public static function init(): void
     {
-        // test if session exists or not
-        // if (session_status() === PHP_SESSION_NONE) {
         session_start();
-        // }
     }
 
     public static function login(int $id, string $pseudo, string $prenom, string $nom, string $email, int $role_id, string $avatar): void
@@ -31,7 +21,6 @@ class Session
             'role_id'   => $role_id,
             'avatar'    => htmlentities($avatar)
         ];
-        // var_dump($_SESSION['user']['email']);
     }
 
 
@@ -58,14 +47,12 @@ class Session
 
     public static function getOffset1_Offset2(string $offset1, string $offset2): ?string
     {
-        // var_dump($_SESSION[$offset1][$offset2]);
         return isset($_SESSION[$offset1][$offset2]) ? strval($_SESSION[$offset1][$offset2]) : "";
     }
 
 
     public static function setOffset($offset, $value)
     {
-        // $_SESSION[$offset] = htmlentities($value);
         $_SESSION[$offset] = $value;
     }
 

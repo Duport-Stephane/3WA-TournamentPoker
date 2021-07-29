@@ -99,9 +99,8 @@ class Player extends \Database
         return $this;
     }
 
-
     /**
-     * Retourne l'ensemble des joueurs VALIDES dans la table PLAYER pour CE tournoi $_SESSION['tournament']
+     * Return all players valid for THIS tournament_id
      * @param integer tournament_id
      *
      * @return array
@@ -128,7 +127,7 @@ class Player extends \Database
     }
 
     /**
-     * Test if user_id exist in table Player for this Tournament_id
+     * Test if user_id exist in Player table for this Tournament_id
      * @param {int} user_id
      * @param {int} tournament_id
      */
