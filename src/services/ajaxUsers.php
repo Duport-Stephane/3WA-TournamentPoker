@@ -4,39 +4,29 @@ $userM = new \Models\User;
 $playerM = new \Models\Player;
 
 if (isset($_POST) && !empty($_POST) && array_key_exists('action', $_POST)) {
-    // on arrive ici lors de l'appui sur le bouton DEL de la page DashboardAdmin
 
     extract($_POST);
 
     try {
 
-        // var_dump($_POST);
-        // die;
-
         // Test INPUTS of delUserList
-        // pour savoir si au moins un de coché
         if (isset($_POST['checkboxuser']) && !empty($_POST['checkboxuser'])) {
 
             $chkUsers = $_POST['checkboxuser'];
 
             foreach ($chkUsers as $value) {
 
-                var_dump($value);
-
-                // ---> Si l'id est bien un entier
+                // if 'id' is not an integer
                 if (!is_int(intval($value))) {
                     throw new DomainException('L\'identifiant de ce joueur n\'est pas un entier.');
                 }
 
-                // ---> si l'id est bien dans la table User
+                // if 'id' is not in User's array
                 if (!($userM->isIdExist(intval($value)))) {
                     throw new DomainException('Ce joueur n\'existe pas ! L\'identifiant n\'est pas reconnu.');
                 } else {
-                    var_dump("Suppression du joueur n° " .$value);
-
-                    // Vérifier la présence de cet utilisateur dans la table des PLAYERS
-                    // Si présent, il faut d'abord le supprimer de cette table (avec une demande de confirmation ?)
-                    $tournament_id = 1; // impose le num tournoi car pas possible d'en créer pour l'instant
+                    // if this user is in player's array -> remove
+                    $tournament_id = 1; // only 1 tournament for the moment, with id = 1
                     if (empty($playerM->isPlayerExistTournament(intval($value), intval($tournament_id)))) {
                         $playerM->deletePlayer(intval($value), intval($tournament_id));
                     };
@@ -48,7 +38,7 @@ if (isset($_POST) && !empty($_POST) && array_key_exists('action', $_POST)) {
                 }
             }
         } else {
-            // Renvoyer un message s'il n'y pas de checkbox cochée
+            // Any checkbox checked
             throw new DomainException("Vous n'avez sélectionné aucune ligne dans cette liste !");
         }
     } catch (DomainException $e) {
@@ -60,31 +50,22 @@ if (isset($_POST) && !empty($_POST) && array_key_exists('action', $_POST)) {
         }
         die;
     }
-    // Fin POST
 }
 
-// test GET
 if (isset($_GET) && !empty($_GET) && isset($_GET['action'])) {
 
     extract($_GET);
 
     try {
+        
+        header('Location: ./index.php?page=dashboardAdmin');
 
-        var_dump($_GET);
-
-        // switch ($action) {
-        //     case 'display':
-        //         $users      = $userM->getUsers($tournament_id);
-        //         break;
-        // }
     } catch (DomainException $e) {
         \Models\Session::setOffset('alert', $e->getMessage());
         echo $e->getMessage();
 
         if ($e->getCode() === 404) {
             header('Location: ./index.php?page=404');
-        } else {
-            header('Location: ./index.php?page=dashboardAdmin');
         }
         die;
     }

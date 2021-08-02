@@ -3,7 +3,7 @@
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     header('Location: ./index.php?page=home');
-    exit;
+    die;
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {

@@ -1,3 +1,6 @@
+/* *******************************************************************
+******************         GENERALITIES     ***********************
+******************************************************************* */
 a {
   text-decoration: none;
   color: var(--fontColor);
@@ -11,6 +14,11 @@ q {
   font-style: italic;
 }
 
+/* *******************************************************************
+*************         Init VARIABLES     ****************
+*******************************************************************
+******************         COLORS     ************************ */
+/* Blue Theme */
 :root {
   --fontColor: #fff;
   --fontInput: rgb(31, 48, 133);
@@ -36,6 +44,7 @@ q {
   --bgColorGreySoft: rgba(128, 128, 128, .4);
 }
 
+/*------------------------------- */
 [data-theme=green] {
   --fontColor: #fff;
   --fontInput: rgb(15, 68, 15);
@@ -61,6 +70,9 @@ q {
   --bgColorGreySoft: rgba(128, 128, 128, .4);
 }
 
+/* *******************************************************************
+******************           BODY          ************************
+******************************************************************* */
 body {
   margin: 0 auto;
   text-align: center;
@@ -75,6 +87,9 @@ body {
   overflow-y: scroll;
 }
 
+/* *******************************************************************
+******************           HEADER        ************************
+******************************************************************* */
 .navHeader {
   width: 100%;
 }
@@ -101,6 +116,9 @@ body {
   max-width: 15%;
 }
 
+/* *******************************************************************
+******************            MAIN         ************************
+******************************************************************* */
 h1 {
   text-align: center;
   margin-top: 0.5rem;
@@ -152,6 +170,7 @@ fieldset div label {
   display: block;
 }
 
+/* ******************            HOME         ************************ */
 .fond-Table {
   margin: 3rem auto;
   background-image: url("../../asset/images/table-70.png");
@@ -194,10 +213,12 @@ fieldset div label {
   transform: scale(0.95);
 }
 
+/* ******************            LOGIN         ************************ */
 fieldset {
   width: 25rem;
 }
 
+/* ******************            PLAYERS         ************************ */
 .array-border {
   width: 33rem;
   height: 24rem;
@@ -258,6 +279,7 @@ fieldset {
   color: var(--hoverNav);
 }
 
+/* ******************            GAME         ************************ */
 .grid {
   display: grid;
   font-size: 1.5rem;
@@ -296,11 +318,15 @@ fieldset {
   font-size: 3rem;
 }
 
+/* ******************            BONUS         ************************ */
 .canvas {
   margin-top: 1rem;
   border: 1px solid var(--border);
 }
 
+/* *******************************************************************
+******************          FOOTER         ************************
+******************************************************************* */
 footer {
   position: fixed;
   bottom: 0;
@@ -346,15 +372,22 @@ footer .checkbox {
   visibility: hidden;
 }
 
+/* *******************************************************************
+******************      MEDIA QUERIES       ************************
+******************************************************************* */
+/* For TABLET */
 @media screen and (min-width: 768px) {
+  /* ******************           MEDIA QUERIES HEADER   */
   .navHeader nav {
     font-size: 2rem;
   }
 
+  /* ******************           MEDIA QUERIES MAIN   */
   .container {
     height: 90vh;
   }
 
+  /* ******************            MEDIA QUERIES HOME */
   .fond-Table {
     background-size: initial;
   }
@@ -362,6 +395,7 @@ footer .checkbox {
     width: 30rem;
   }
 
+  /* ******************          MEDIA QUERIES GAME */
   .col4 {
     grid-template-columns: 25% 50% 12.5% 12.5%;
   }
@@ -369,6 +403,7 @@ footer .checkbox {
     display: block;
   }
 
+  /* ******************          MEDIA QUERIES FOOTER */
   footer {
     font-size: 0.9rem;
   }
@@ -377,6 +412,7 @@ footer .theme-switch {
     display: block;
   }
 
+  /* ******************      MEDIA QUERIES MY FRAMEWORK */
   .flex-between-top {
     display: flex;
     justify-content: space-between;
@@ -388,6 +424,9 @@ footer .theme-switch {
     height: 72vh;
   }
 }
+/* *******************************************************************
+******************      MY FRAMEWORK      ************************
+******************************************************************* */
 .hide {
   display: none;
 }
@@ -627,4 +666,4 @@ footer .theme-switch {
 .bigImg {
   max-width: 15rem;
   height: auto;
-}/*# sourceMappingURL=style.css.map */*/
+}/*# sourceMappingURL=style.css.map */

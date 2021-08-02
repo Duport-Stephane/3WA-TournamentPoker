@@ -15,24 +15,13 @@ function funct_dashboard_Admin() {
     document.querySelector('.delUserList').addEventListener('submit', e => {
         e.preventDefault();
 
-        call_LS.addInfoLS("log", "Button DELETE user");
-
         if (call_checkbox.isAtLeastOneCheck('users')) {
             const form = new FormData(e.target);
             e.target.reset();
 
-            // Confirm ?
-            if (window.confirm("Toute suppression est définitve ! Souhaitez-vous supprimer la sélection ?")) {
+            call_LS.addInfoLS("log", "Button DELETE user");
 
-                call_LS.addInfoLS("log", "Button delUserList");
-
-                ajaxCallback.delUserList(form);
-            } else {
-
-                call_LS.addInfoLS("log", "Abort DELETE user");
-
-                window.location = './index.php?page=dashboardAdmin';
-            }
+            ajaxCallback.delUserList(form);
 
         }
     });

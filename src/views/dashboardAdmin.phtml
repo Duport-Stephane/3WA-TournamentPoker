@@ -5,9 +5,6 @@
         <a class="btn btn-info" href="#userProfilDashboard">Mon espace</a>
         <a class="btn btn-info" href="#userListDashboard">Liste des utilisateurs</a>
         <a class="btn btn-info" href="#tournamentOnDashboard">Tournois à venir</a>
-        <!-- <a class="btn btn-info">Structure des tournois</a>
-    <a class="btn btn-info">Valeur des jetons</a>
-    <a class="btn btn-info">Accès aux commentaires</a> -->
     </section>
     <section class="flex-around-wrap border-screen">
         <article id="userProfilDashboard">
@@ -20,13 +17,15 @@
         <article id="userListDashboard">
             <form class="delUserList card-body" action='./index.php?page=dashboardAdmin' method="POST">
                 <input type='hidden' name='action' value='delUserList'>
+
                 <?php require_once './src/views/partials/usersList.phtml' ?>
+                
                 <button type='submit' class='btn btn-alert'>Supprimer le(s) joueur(s) sélectionné(s)</button>
             </form>
         </article>
         <article id="tournamentOnDashboard">
-            <!-- <h2>LISTE DES TOURNOIS DISPONIBLES</h2> -->
+
             <?php require_once './src/views/partials/arrayTournament.phtml' ?>
-        </article>
+        
     </section>
 </div>

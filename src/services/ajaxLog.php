@@ -53,7 +53,7 @@ if (isset($_POST) && !empty($_POST) && isset($_POST['action']) && !empty($_POST[
         }
 
         if ($action === 'updateUser' || $action === 'updateAdmin' || $action === 'logout') {
-            // Si updateUser || updateAdmin, we can not modify the mail, so we get directly from Session
+            // if updateUser || updateAdmin, we can not modify the mail, so we get directly from Session
             $email = \Models\Session::getOffset1_Offset2('user', 'email');
         }
 

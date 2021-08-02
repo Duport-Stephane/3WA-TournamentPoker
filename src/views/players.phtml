@@ -7,18 +7,21 @@
         <?php $type = 'users'; ?>
         <?php $title = 'Joueurs inscrits'; ?>
         <div>
+
             <?php require './src/views/partials/arrayUser.phtml'; ?>
+
         </div>
         <button type='submit' class='btn btn-info'>Valider le(s) joueur(s) selectionné(s)</button>
     </form>
-
-    <!-- <form class='delPlayerList'> -->
+    
     <form class='delPlayerList' action='./index.php?page=players' method="POST">
         <input type='hidden' name='action' value='delPlayerList'>
         <?php $type = 'players'; ?>
         <?php $title = 'Joueurs validés pour ce tournoi'; ?>
         <div>
+
             <?php require './src/views/partials/arrayUser.phtml'; ?>
+            
         </div>
         <button type='submit' class='btn btn-alert'>Retirer le(s) joueur(s) de ce tournoi</button>
     </form>
