@@ -1,7 +1,7 @@
 'use strict';
 
-import * as call_Login from './callBack_Login.js';
-import * as call_LS from './callBack_Localstorage.js'
+import * as call_Login from '../callback/callBack_Login.js';
+import * as call_LS from '../callback/callBack_Localstorage.js'
 
 // page LOGIN
 //*******************************************************************

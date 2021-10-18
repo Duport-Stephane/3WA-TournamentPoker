@@ -1,10 +1,10 @@
 'use strict'
 
-import * as callback from './callBack.js';
-import * as call_LS from './callBack_Localstorage.js';
-import * as call_Log_Inscript from './callBack_Log_Inscript.js'
-import * as ajaxCallBack from './ajaxCallBack.js';
-import ErrorCustom from './ErrorCustom.js';
+import * as callback from '../callBack.js';
+import * as call_LS from '../callback/callBack_Localstorage.js';
+import * as call_Log_Inscript from '../callback/callBack_Log_Inscript.js'
+import * as ajaxCallBack from '../ajaxCallBack.js';
+import ErrorCustom from '../class/ErrorCustom.js';
 
 
 // page INSCRIPTION || DASHBOARDUSER || DASHBOARDADMIN

@@ -1,14 +1,14 @@
 'use strict';
 
-import * as inscription from './app_Inscription.js';
-import * as login from './app_Login.js';
-import * as admin from './app_Admin.js';
-import * as player from './app_Player.js';
-import * as bonus from './app_Bonus.js';
+import * as inscription from './app/app_Inscription.js';
+import * as login from './app/app_Login.js';
+import * as admin from './app/app_Admin.js';
+import * as player from './app/app_Player.js';
+import * as bonus from './app/app_Bonus.js';
 import * as callback from './callBack.js';
-import * as call_LS from './callBack_Localstorage.js'
-import * as call_Game from './callBack_Game.js'
-import * as call_Theme from './callBack_Theme.js'
+import * as call_LS from './callback/callBack_Localstorage.js'
+import * as call_Game from './callback/callBack_Game.js'
+import * as call_Theme from './callback/callBack_Theme.js'
 
 document.addEventListener('DOMContentLoaded', function() {
 

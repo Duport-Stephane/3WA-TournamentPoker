@@ -1,6 +1,6 @@
 'use strict'
 
-import ManagerLS from './ManagerLS.js';
+import ManagerLS from '../class/ManagerLS.js';
 
 // For LOCALSTORAGE
 //*******************************************************************

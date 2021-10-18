@@ -1,9 +1,9 @@
 'use strict';
 
-import * as call_LS from './callBack_Localstorage.js'
-import * as call_Payer_DashAdmin from './callBack_Player_DashAdmin.js'
-import * as call_checkbox from './callBack_Checkbox.js'
-import * as ajaxCallback from './ajaxCallBack.js';
+import * as call_LS from '../callback/callBack_Localstorage.js'
+import * as call_Payer_DashAdmin from '../callback/callBack_Player_DashAdmin.js'
+import * as call_checkbox from '../callback/callBack_Checkbox.js'
+import * as ajaxCallback from '../ajaxCallBack.js';
 
 // page DASHBOARD_ADMIN only
 //*******************************************************************

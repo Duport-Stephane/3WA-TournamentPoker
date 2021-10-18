@@ -1,6 +1,6 @@
 'use strict';
 
-import * as canvas from './canvas.js';
+import * as canvas from '../canvas.js';
 
 // page BONUS
 //*******************************************************************

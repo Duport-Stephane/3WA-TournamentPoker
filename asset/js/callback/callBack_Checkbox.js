@@ -1,8 +1,8 @@
 'use strict'
 
-import ErrorCustom from './ErrorCustom.js';
-import * as callback from './callBack.js'
-import * as call_LS from './callBack_Localstorage.js';
+import ErrorCustom from '../class/ErrorCustom.js';
+import * as callback from '../callBack.js'
+import * as call_LS from '../callback/callBack_Localstorage.js';
 
 /**
  * If checkBox ALL is shecked, then all the CheckBox are checked

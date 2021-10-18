@@ -498,6 +498,7 @@ footer .theme-switch {
 }
 
 .position-sticky {
+  position: -webkit-sticky;
   position: sticky;
   top: 0;
   left: 5%;
@@ -513,7 +514,7 @@ footer .theme-switch {
   padding-left: 1rem;
 }
 
-.samll-token {
+.small-token {
   width: 2rem;
   padding-right: 2rem;
 }

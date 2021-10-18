@@ -1,12 +1,15 @@
 <h1 class="flex-center-items headband">
-    <img src="./asset/images/logo.png" alt="logo" class="token">Poker Hold'hem Tournament Poker
+    <img src="./asset/images/logo.png" alt="logo" class="token">
+    <?php $tournament = new \Models\Tournament ?>
+    <?= $tournament->getTournamentName(1) ?>
 </h1>
 <section class="navHeader flex-between headband">
     <nav>
         <ul class="flex-around">
             <li><a href="./index.php?page=home" class='home'>Accueil</a></li>
-            <li><a href="./index.php?page=game" class='game'>Jeu</a></li>
+            <li><a href="./index.php?page=tables" class='tables'>Tables</a></li>
             <li><a href="./index.php?page=players&action=display" class='players'>Joueurs</a></li>
+            <li><a href="./index.php?page=game" class='game'>Jeu</a></li>
         </ul>
     </nav>
     <nav class="log">

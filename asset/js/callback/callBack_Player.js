@@ -1,8 +1,8 @@
 'use strict'
 
-import * as callback from './callBack.js';
-import * as call_LS from './callBack_Localstorage.js';
-import * as call_checkbox from './callBack_Checkbox.js'
+import * as callback from '../callBack.js';
+import * as call_LS from '../callback/callBack_Localstorage.js';
+import * as call_checkbox from '../callback/callBack_Checkbox.js'
 
 // page PLAYER
 //*******************************************************************

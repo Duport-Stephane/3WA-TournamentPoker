@@ -12,9 +12,14 @@
                 <?php require_once './src/views/partials/header.phtml'; ?>
             <?php }
         else : { ?>
-                <h1 class="headband">
+                <h1 class="headband flex-around">
                     <?php $tournament = new \Models\Tournament ?>
                     <?= $tournament->getTournamentName(1) ?>
+                    <nav>
+                        <a href="./index.php?page=home" class='medium home'>Accueil</a>
+                        <a href="./index.php?page=tables" class='medium tables'>Tables</a>
+                        <a href="./index.php?page=players&action=display" class='medium players'>Joueurs</a>
+                    </nav>
                 </h1>
         <?php }
         endif; ?>

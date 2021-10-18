@@ -1,7 +1,7 @@
 'use strict';
 
-import * as call_LS from './callBack_Localstorage.js'
-import * as call_Inscription from './callBack_Inscription.js'
+import * as call_LS from '../callback/callBack_Localstorage.js'
+import * as call_Inscription from '../callback/callBack_Inscription.js'
 
 // page INSCRIPTION || DASHBOARD_USER || DASHBOARD_ADMIN
 //*******************************************************************
