@@ -3,7 +3,7 @@
 L'application 3W Tournament Poker permet de gérer une partie, un tournoi ou même un championnat de poker Texas Hold'hem. Créer votre partie en quelques clics, enregistrer les joueurs et lancer le chronomètre... Shuffle Up and Deal !"
 
 Fonctionnement :
-S'inscrire et se connecter à partir de la page d'accueil à partir de l'adresse mail et le mot de passe correspondant.
+S'inscrire et se connecter à partir de la page d'accueil avec une adresse mail et le mot de passe correspondant.
 
 Accueil : déplacement sur les différentes pages soit par menu, soit sur les cartes.
 Jeton avec pseudo (en haut à droite) ou carte Mon espace : dashboard pour user ou admin.
