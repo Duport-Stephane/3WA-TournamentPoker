@@ -1,15 +1,16 @@
 <h1 class="flex-center-items headband">
-    <img src="./asset/images/logo.png" alt="logo" class="token">
+    <img src="./asset/images/logo.png" alt="logo" class="token">Gestion de tournois de Poker Texas Hold'hem
     <?php $tournament = new \Models\Tournament ?>
-    <?= $tournament->getTournamentName(1) ?>
+    <!-- <?= $tournament->getTournamentName(1) ?> -->
 </h1>
 <section class="navHeader flex-between headband">
     <nav>
         <ul class="flex-around">
             <li><a href="./index.php?page=home" class='home'>Accueil</a></li>
-            <li><a href="./index.php?page=tables" class='tables'>Tables</a></li>
+            <li><a href="./index.php?page=game" class='game'>Tableau de bord</a></li>
             <li><a href="./index.php?page=players&action=display" class='players'>Joueurs</a></li>
-            <li><a href="./index.php?page=game" class='game'>Jeu</a></li>
+            <li><a href="./index.php?page=tables" class='tables'>Tables</a></li>
+            <li><a href="./index.php?page=dashboardAdmin#tournamentOnDashboard" class="dashboardAdmin flex-column">Tournois</a></li>
         </ul>
     </nav>
     <nav class="log">

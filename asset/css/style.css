@@ -94,7 +94,6 @@ body {
   width: 100%;
 }
 .navHeader nav {
-  font-size: 1.5rem;
   width: 60%;
   margin: 0 auto;
 }
@@ -105,12 +104,14 @@ body {
 .navHeader nav ul li {
   list-style: none;
   transition: opacity 0.1s ease, text-shadow 0.1s ease, color 0.1s ease, transform 0.1s ease;
+  width: 15%;
+  margin: auto;
 }
 .navHeader nav ul li:hover {
   opacity: 0.9;
   text-shadow: 2px 2px 4px var(--textShadowNav), -2px -2px 4px var(--textShadowNav);
   color: var(--hoverBtn);
-  transform: scale(0.95);
+  transform: scale(1.2);
 }
 .navHeader nav:last-child {
   max-width: 15%;
@@ -379,7 +380,7 @@ footer .checkbox {
 @media screen and (min-width: 768px) {
   /* ******************           MEDIA QUERIES HEADER   */
   .navHeader nav {
-    font-size: 2rem;
+    font-size: 1.8rem;
   }
 
   /* ******************           MEDIA QUERIES MAIN   */

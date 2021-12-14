@@ -1,11 +1,11 @@
-<h1>Liste des joueurs</h1>
+<h1>Liste des joueurs pour le tournoi</h1>
 
 <div class='flex-around-wrap'>
 
     <form class='addPlayerList' action='./index.php?page=players' method="POST">
         <input type='hidden' name='action' value='addPlayerList'>
         <?php $type = 'users'; ?>
-        <?php $title = 'Joueurs inscrits'; ?>
+        <?php $title = 'Joueurs inscrits à ce tournoi'; ?>
         <div>
 
             <?php require './src/views/partials/arrayUser.phtml'; ?>
@@ -13,7 +13,7 @@
         </div>
         <button type='submit' class='btn btn-info'>Valider le(s) joueur(s) selectionné(s)</button>
     </form>
-    
+
     <form class='delPlayerList' action='./index.php?page=players' method="POST">
         <input type='hidden' name='action' value='delPlayerList'>
         <?php $type = 'players'; ?>
@@ -21,7 +21,7 @@
         <div>
 
             <?php require './src/views/partials/arrayUser.phtml'; ?>
-            
+
         </div>
         <button type='submit' class='btn btn-alert'>Retirer le(s) joueur(s) de ce tournoi</button>
     </form>
